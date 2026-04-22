@@ -20,3 +20,19 @@ Current report includes:
 - filtered irradiance windows
 - dry-run mode counts and top reasons
 - latest 24h dry-run allocation metrics
+
+## `avalon_daily_lost_harvest.py`
+
+Estimates daily lost harvest from persisted expected-vs-actual PV values.
+
+Example:
+
+```bash
+OPENHAB_TOKEN='YOUR_TOKEN' python3 scripts/avalon_daily_lost_harvest.py --pretty
+```
+
+What it reports:
+- daily lost kWh
+- daily lost kWh during high-irradiance windows
+- mean and max expected-vs-actual gap
+- median curtailment ratio per day

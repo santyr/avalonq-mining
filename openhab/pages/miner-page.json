@@ -103,6 +103,19 @@
                 "default": [
                   {
                     "component": "oh-grid-col",
+                    "config": {},
+                    "slots": {"default": [{"component": "oh-label-card", "config": {"item": "AvalonQ_Miner1_DryRun_ThrashAlert", "title": "Thrash Alert", "outline": true, "trendItem": "AvalonQ_Miner1_DryRun_ModeChanges_24h", "fontWeight": "bold", "label": "=(items.AvalonQ_Miner1_DryRun_ThrashAlert.state === 'normal') ? 'normal' : items.AvalonQ_Miner1_DryRun_ThrashAlert.state", "style": {"background": "=(items.AvalonQ_Miner1_DryRun_ThrashAlert.state === 'normal') ? '#1b5e20' : '#8e0000'", "color": "#ffffff"}}}]}
+                  }
+                ]
+              }
+            },
+            {
+              "component": "oh-grid-row",
+              "config": {},
+              "slots": {
+                "default": [
+                  {
+                    "component": "oh-grid-col",
                     "config": {"width": "25"},
                     "slots": {"default": [{"component": "oh-label-card", "config": {"item": "AvalonQ_Miner1_SoC_Effective", "title": "Effective SoC", "outline": true, "trendItem": "AvalonQ_Miner1_SoC_Effective"}}]}
                   },
