@@ -222,18 +222,62 @@
                 "default": [
                   {
                     "component": "oh-grid-col",
-                    "config": {"width": "33"},
-                    "slots": {"default": [{"component": "oh-link-card", "config": {"title": "Expected vs Actual PV", "iconF7": "chart_bar_square", "action": "navigate", "actionPage": "Miner_Avalon_PV_Chart", "outline": true}}]}
+                    "config": {},
+                    "slots": {
+                      "default": [
+                        {
+                          "component": "oh-webframe-card",
+                          "config": {
+                            "title": "Expected vs Actual PV",
+                            "height": "360px",
+                            "src": "/page/Miner_Avalon_PV_Chart",
+                            "outline": true
+                          }
+                        }
+                      ]
+                    }
+                  }
+                ]
+              }
+            },
+            {
+              "component": "oh-grid-row",
+              "config": {},
+              "slots": {
+                "default": [
+                  {
+                    "component": "oh-grid-col",
+                    "config": {"width": "50"},
+                    "slots": {
+                      "default": [
+                        {
+                          "component": "oh-webframe-card",
+                          "config": {
+                            "title": "Curtailment Ratio",
+                            "height": "320px",
+                            "src": "/page/Miner_Avalon_Curtailment_Chart",
+                            "outline": true
+                          }
+                        }
+                      ]
+                    }
                   },
                   {
                     "component": "oh-grid-col",
-                    "config": {"width": "33"},
-                    "slots": {"default": [{"component": "oh-link-card", "config": {"title": "Curtailment Ratio", "iconF7": "chart_pie", "action": "navigate", "actionPage": "Miner_Avalon_Curtailment_Chart", "outline": true}}]}
-                  },
-                  {
-                    "component": "oh-grid-col",
-                    "config": {"width": "33"},
-                    "slots": {"default": [{"component": "oh-link-card", "config": {"title": "Irradiance & Slopes", "iconF7": "sun_max", "action": "navigate", "actionPage": "Miner_Avalon_Irradiance_Chart", "outline": true}}]}
+                    "config": {"width": "50"},
+                    "slots": {
+                      "default": [
+                        {
+                          "component": "oh-webframe-card",
+                          "config": {
+                            "title": "Irradiance & Slopes",
+                            "height": "320px",
+                            "src": "/page/Miner_Avalon_Irradiance_Chart",
+                            "outline": true
+                          }
+                        }
+                      ]
+                    }
                   }
                 ]
               }
