@@ -1,6 +1,6 @@
 # avalonq-mining
 
-Repo for the off-grid Earthship mining setup in Coaldale, CO.
+Repo for the off-grid Earthship mining setup.
 
 Currently running:
 - a **Bitaxe Gamma** (BM1370 / AxeOS v2.13.1) live at `192.168.1.39`, fully managed by openHAB
