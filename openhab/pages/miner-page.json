@@ -194,6 +194,50 @@
             }
           ]
         }
+      },
+      {
+        "component": "f7-block-title",
+        "config": {
+          "title": "Charts"
+        }
+      },
+      {
+        "component": "oh-grid-cells",
+        "config": {
+          "cellsPerRow": 3,
+          "layout": "fixed"
+        },
+        "slots": {
+          "default": [
+            {
+              "component": "oh-link-card",
+              "config": {
+                "title": "Expected vs Actual PV",
+                "iconF7": "chart_bar_square",
+                "action": "navigate",
+                "actionPage": "Miner_Avalon_PV_Chart"
+              }
+            },
+            {
+              "component": "oh-link-card",
+              "config": {
+                "title": "Curtailment Ratio",
+                "iconF7": "chart_pie",
+                "action": "navigate",
+                "actionPage": "Miner_Avalon_Curtailment_Chart"
+              }
+            },
+            {
+              "component": "oh-link-card",
+              "config": {
+                "title": "Irradiance & Slopes",
+                "iconF7": "sun_max",
+                "action": "navigate",
+                "actionPage": "Miner_Avalon_Irradiance_Chart"
+              }
+            }
+          ]
+        }
       }
     ]
   }

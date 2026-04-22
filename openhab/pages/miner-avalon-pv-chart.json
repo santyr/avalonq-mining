@@ -1,0 +1,70 @@
+{
+  "uid": "Miner_Avalon_PV_Chart",
+  "tags": ["mining", "avalonq"],
+  "props": {
+    "parameters": [],
+    "parameterGroups": []
+  },
+  "component": "oh-chart-page",
+  "config": {
+    "label": "Avalon PV: Expected vs Actual",
+    "period": "D"
+  },
+  "slots": {
+    "dataZoom": [
+      {"component": "oh-chart-datazoom", "config": {"type": "inside"}}
+    ],
+    "grid": [
+      {"component": "oh-chart-grid", "config": {"includeLabels": true}}
+    ],
+    "legend": [
+      {"component": "oh-chart-legend", "config": {"bottom": 3, "type": "scroll"}}
+    ],
+    "tooltip": [
+      {"component": "oh-chart-tooltip", "config": {"confine": true, "smartFormatter": true}}
+    ],
+    "xAxis": [
+      {"component": "oh-time-axis", "config": {"gridIndex": 0}}
+    ],
+    "yAxis": [
+      {"component": "oh-value-axis", "config": {"gridIndex": 0, "name": "W", "scale": true}}
+    ],
+    "series": [
+      {
+        "component": "oh-time-series",
+        "config": {
+          "item": "AvalonQ_Miner1_PV_Expected_Watts",
+          "name": "Expected PV",
+          "type": "line",
+          "gridIndex": 0,
+          "xAxisIndex": 0,
+          "yAxisIndex": 0,
+          "areaStyle": {"opacity": 0.12}
+        }
+      },
+      {
+        "component": "oh-time-series",
+        "config": {
+          "item": "AvalonQ_Miner1_PV_Actual_Watts",
+          "name": "Actual PV",
+          "type": "line",
+          "gridIndex": 0,
+          "xAxisIndex": 0,
+          "yAxisIndex": 0
+        }
+      },
+      {
+        "component": "oh-time-series",
+        "config": {
+          "item": "PV_Power",
+          "name": "Live PV_Power",
+          "type": "line",
+          "gridIndex": 0,
+          "xAxisIndex": 0,
+          "yAxisIndex": 0,
+          "lineStyle": {"type": "dashed"}
+        }
+      }
+    ]
+  }
+}

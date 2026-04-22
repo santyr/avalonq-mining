@@ -1,0 +1,53 @@
+{
+  "uid": "Miner_Avalon_Curtailment_Chart",
+  "tags": ["mining", "avalonq"],
+  "props": {
+    "parameters": [],
+    "parameterGroups": []
+  },
+  "component": "oh-chart-page",
+  "config": {
+    "label": "Avalon Curtailment Ratio",
+    "period": "D"
+  },
+  "slots": {
+    "dataZoom": [
+      {"component": "oh-chart-datazoom", "config": {"type": "inside"}}
+    ],
+    "grid": [
+      {"component": "oh-chart-grid", "config": {"includeLabels": true}}
+    ],
+    "legend": [
+      {"component": "oh-chart-legend", "config": {"bottom": 3, "type": "scroll"}}
+    ],
+    "tooltip": [
+      {"component": "oh-chart-tooltip", "config": {"confine": true, "smartFormatter": true}}
+    ],
+    "xAxis": [
+      {"component": "oh-time-axis", "config": {"gridIndex": 0}}
+    ],
+    "yAxis": [
+      {"component": "oh-value-axis", "config": {"gridIndex": 0, "name": "ratio", "scale": true}}
+    ],
+    "series": [
+      {
+        "component": "oh-time-series",
+        "config": {
+          "item": "AvalonQ_Miner1_PV_Curtailment_Ratio",
+          "name": "Curtailment Ratio",
+          "type": "line",
+          "gridIndex": 0,
+          "xAxisIndex": 0,
+          "yAxisIndex": 0,
+          "markPoint": {
+            "data": [
+              {"name": "min", "type": "min"},
+              {"name": "max", "type": "max"}
+            ],
+            "label": {"backgroundColor": "auto"}
+          }
+        }
+      }
+    ]
+  }
+}
