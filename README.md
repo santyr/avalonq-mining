@@ -18,8 +18,11 @@ Current status:
 Repo structure:
 - `openhab/examples/`
   - `avalonq.items`
+  - `avalonq-dryrun.items`
   - `avalonq.js`
   - `avalonq-voltage-protection.js`
+  - `avalonq-irradiance-dry-run.js`
+  - `avalonq-irradiance-dry-run-action.js`
 - `docs/`
   - deployment notes, integration plans, and operational runbooks
 - `references/`

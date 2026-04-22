@@ -2,6 +2,8 @@
  * Inline script body for the REST-managed openHAB rule action:
  * "AvalonQ Irradiance Dry Run".
  *
+ * Keep this file aligned with openhab/examples/avalonq-irradiance-dry-run.js.
+ *
  * Safe to enable before hardware arrival because it only updates Avalon dry-run
  * items and logs intended mode decisions. It never sends miner commands.
  */
@@ -25,9 +27,11 @@ const CFG = {
   fixedLossFactor: 0.90,
   baselineHouseLoadWatts: 300,
 
-  standardExpectedPvWatts: 1800,
-  ecoExpectedPvWatts: 1100,
-  ecoTrendingExpectedPvWatts: 800,
+  allowMiningWithoutCharger: false,
+
+  standardAvailableWatts: 1500,
+  ecoAvailableWatts: 800,
+  ecoTrendingAvailableWatts: 500,
   standardMinSoc: 80,
   ecoMinSoc: 60,
   ecoTrendingMinSoc: 75,
@@ -106,10 +110,23 @@ function computeWindowSlope(samples, minutes) {
   const cutoff = nowMs() - (minutes * 60 * 1000);
   const filtered = samples.filter(s => s.ts >= cutoff);
   if (filtered.length < 2) return 0;
-  const first = filtered[0];
-  const last = filtered[filtered.length - 1];
-  const dtMinutes = Math.max(1 / 60.0, (last.ts - first.ts) / 60000.0);
-  return (last.value - first.value) / dtMinutes;
+
+  const n = filtered.length;
+  const meanX = filtered.reduce((acc, s) => acc + s.ts, 0) / n;
+  const meanY = filtered.reduce((acc, s) => acc + s.value, 0) / n;
+
+  let num = 0;
+  let den = 0;
+  for (const s of filtered) {
+    const dx = s.ts - meanX;
+    const dy = s.value - meanY;
+    num += dx * dy;
+    den += dx * dx;
+  }
+  if (den <= 0) return 0;
+
+  const slopePerMs = num / den;
+  return slopePerMs * 60000.0;
 }
 
 function updateIrradianceSeries(irradiance) {
@@ -193,27 +210,29 @@ function computeModeMetrics(history, currentMode) {
 }
 
 function decideMode(ctx) {
-  const { soc, expectedPvWatts, availableWatts, slope15m, slope15mSustainMinutes } = ctx;
+  const { soc, charging, availableWatts, slope15m, slope15mSustainMinutes } = ctx;
+  if (!charging && !CFG.allowMiningWithoutCharger) return { mode: 'Standby', reason: 'charger_inactive' };
   if (soc <= CFG.standbyHardLowSoc) return { mode: 'Standby', reason: 'soc_hard_low' };
   if (soc < CFG.standbyLowSoc) return { mode: 'Standby', reason: 'soc_low' };
   if (slope15m <= CFG.standbySlope15mThreshold && slope15mSustainMinutes >= CFG.standbySlopeSustainMinutes) {
     return { mode: 'Standby', reason: 'irradiance_drop_sustained' };
   }
   if (soc >= CFG.dumpLoadMinSoc) return { mode: 'Eco', reason: 'high_soc_dump_load' };
-  if (expectedPvWatts > CFG.standardExpectedPvWatts && availableWatts > 1000 && soc > CFG.standardMinSoc && slope15m > CFG.standardSlope15mFloor) {
+  if (availableWatts > CFG.standardAvailableWatts && soc > CFG.standardMinSoc && slope15m > CFG.standardSlope15mFloor) {
     return { mode: 'Standard', reason: 'strong_solar' };
   }
-  if (expectedPvWatts > CFG.ecoExpectedPvWatts && soc > CFG.ecoMinSoc) {
+  if (availableWatts > CFG.ecoAvailableWatts && soc > CFG.ecoMinSoc) {
     return { mode: 'Eco', reason: 'moderate_solar' };
   }
-  if (expectedPvWatts > CFG.ecoTrendingExpectedPvWatts && soc > CFG.ecoTrendingMinSoc && slope15m > 0) {
+  if (availableWatts > CFG.ecoTrendingAvailableWatts && soc > CFG.ecoTrendingMinSoc && slope15m > 0) {
     return { mode: 'Eco', reason: 'solar_trending_up' };
   }
   return { mode: 'Standby', reason: 'insufficient_margin' };
 }
 
 (function runDryPolicy() {
-  const irradiance = getNumericState(CFG.irradianceItem);
+  const irradianceRaw = getNumericState(CFG.irradianceItem);
+  const irradiance = Number.isFinite(irradianceRaw) ? Math.max(0, irradianceRaw) : irradianceRaw;
   const ambientRaw = getNumericState(CFG.ambientTempItem);
   const ambientC = fahrenheitToCelsiusIfNeeded(ambientRaw);
   const pvActual = getNumericState(CFG.pvActualItem, 0);
@@ -237,7 +256,7 @@ function decideMode(ctx) {
   const availableWatts = Math.max(0, expectedPvWatts - CFG.baselineHouseLoadWatts);
   const curtailmentRatio = expectedPvWatts > 0 ? (pvActual / expectedPvWatts) : 0;
 
-  const decision = decideMode({ soc, expectedPvWatts, availableWatts, slope15m, slope15mSustainMinutes });
+  const decision = decideMode({ soc, charging, availableWatts, slope15m, slope15mSustainMinutes });
   const history = updateModeHistory(decision.mode);
   const metrics = computeModeMetrics(history, decision.mode);
 
