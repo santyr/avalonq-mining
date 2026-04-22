@@ -30,18 +30,26 @@ const CFG = {
   loadMgmtItem: 'Bitaxe_Gamma1_LoadManagement_Enable',
   loadDecisionItem: 'Bitaxe_Gamma1_LoadDecision',
 
+  // AGM-REGIME thresholds (conservative). The Fullriver DC400-6 bank is at
+  // end-of-life: 4 of 16 cells failed, ~50-60% usable capacity, cannot tolerate
+  // deep discharge or high charge voltage. Owner's stated shallow discharge
+  // floor is ~50.2 V. See https://github.com/santyr/Solar_PV.
+  //
+  // Post-LFP-upgrade target values (Q2 2026, after Discover AES install):
+  //   softLowVolts: 49.0, hardLowVolts: 47.0, recoveryVolts: 50.0
+  //
   // Stage 1 (soft): drop Bitaxe to Min via the live controller.
-  softLowVolts: 50.0,
+  softLowVolts: 51.5,
   softDelayNormalS: 30,
   softDelayCriticalS: 10,
 
   // Stage 2 (hard): kill the relay outright.
-  hardLowVolts: 48.5,
+  hardLowVolts: 50.2,
   hardDelayNormalS: 60,
   hardDelayCriticalS: 20,
 
   // Recovery: both stages release once voltage climbs above this.
-  recoveryVolts: 51.0,
+  recoveryVolts: 53.0,
   // After relay-on, wait this long for the Bitaxe to boot before re-enabling
   // live load management (otherwise the live controller PATCHes a booting
   // device and hits connection errors).

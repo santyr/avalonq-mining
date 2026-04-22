@@ -52,13 +52,20 @@ const CFG = {
   // Mirrors the Avalon policy: do not run miners while the charger is idle.
   allowMiningWithoutCharger: false,
 
-  // SoC guardrails reused from the Avalon policy intent.
-  standbyHardLowSoc: 40,
-  standbyLowSoc: 50,
-  minProfileMinSoc: 50,
-  stockProfileMinSoc: 65,
-  highProfileMinSoc: 80,
-  maxProfileMinSoc: 90,
+  // AGM-REGIME SoC guardrails (conservative). The Fullriver DC400-6 bank is at
+  // end-of-life — 4 of 16 cells dead, ~50-60% usable capacity. We only run
+  // mining when the bank is well above mid-charge so the discretionary load
+  // never compounds the bank's stress. See https://github.com/santyr/Solar_PV.
+  //
+  // Post-LFP-upgrade target values (after Discover AES install, Q2 2026):
+  //   standbyHardLowSoc: 40, standbyLowSoc: 50, minProfileMinSoc: 50,
+  //   stockProfileMinSoc: 65, highProfileMinSoc: 80, maxProfileMinSoc: 90
+  standbyHardLowSoc: 70,
+  standbyLowSoc: 80,
+  minProfileMinSoc: 70,
+  stockProfileMinSoc: 82,
+  highProfileMinSoc: 92,
+  maxProfileMinSoc: 96,
 
   // Sustained negative-irradiance gating (mirrors avalon).
   standbySlope15mThreshold: -150,
@@ -99,14 +106,16 @@ const CFG = {
 // this chip at ambient. Max is now capped at 550 / 1250.
 //
 // Stock is pinned to the operator-tuned efficient pair (525 MHz / 1150 mV)
-// which has run 0% error over thousands of shares at ~17 W.
+// which has run 0% error over thousands of shares at ~17 W. Per-profile
+// minSoc values are AGM-regime conservative; lower them ~15 points across
+// the board after the LFP upgrade lands.
 const PROFILES = [
-  { name: 'Min',   frequency: 400, coreVoltage: 1100, watts: 10, minSoc: 50 },
-  { name: 'Low',   frequency: 490, coreVoltage: 1150, watts: 14, minSoc: 55 },
-  { name: 'Stock', frequency: 525, coreVoltage: 1150, watts: 17, minSoc: 65 },
-  { name: 'Mid',   frequency: 525, coreVoltage: 1200, watts: 19, minSoc: 75 },
-  { name: 'High',  frequency: 550, coreVoltage: 1200, watts: 21, minSoc: 80 },
-  { name: 'Max',   frequency: 550, coreVoltage: 1250, watts: 23, minSoc: 90 },
+  { name: 'Min',   frequency: 400, coreVoltage: 1100, watts: 10, minSoc: 70 },
+  { name: 'Low',   frequency: 490, coreVoltage: 1150, watts: 14, minSoc: 75 },
+  { name: 'Stock', frequency: 525, coreVoltage: 1150, watts: 17, minSoc: 82 },
+  { name: 'Mid',   frequency: 525, coreVoltage: 1200, watts: 19, minSoc: 88 },
+  { name: 'High',  frequency: 550, coreVoltage: 1200, watts: 21, minSoc: 92 },
+  { name: 'Max',   frequency: 550, coreVoltage: 1250, watts: 23, minSoc: 96 },
 ];
 
 const PROFILE_NAMES = ['Standby'].concat(PROFILES.map(p => p.name));

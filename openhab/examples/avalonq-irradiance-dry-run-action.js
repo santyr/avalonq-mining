@@ -48,19 +48,31 @@ const CFG = {
   superAvailableWatts: 1900,
   ecoAvailableWatts: 800,
   ecoTrendingAvailableWatts: 500,
-  standardMinSoc: 80,
-  superMinSoc: 90,
-  ecoMinSoc: 60,
-  ecoTrendingMinSoc: 75,
-  dumpLoadMinSoc: 90,
+
+  // AGM-REGIME SoC guardrails (conservative). The Fullriver DC400-6 bank is
+  // at end-of-life and cannot tolerate deep discharge or sustained heavy
+  // load. SoC thresholds are pushed up ~10-15 points so the Avalon only
+  // engages when the bank is well above mid-charge. Super is disabled
+  // entirely until the Discover AES LiFePO4 upgrade lands (Q2 2026).
+  // See https://github.com/santyr/Solar_PV.
+  //
+  // Post-LFP-upgrade target values (after Discover AES install):
+  //   standardMinSoc: 80, superMinSoc: 90, ecoMinSoc: 60,
+  //   ecoTrendingMinSoc: 75, dumpLoadMinSoc: 90, standbyLowSoc: 50,
+  //   standbyHardLowSoc: 40, allowSuperMode: true
+  standardMinSoc: 90,
+  superMinSoc: 96,
+  ecoMinSoc: 80,
+  ecoTrendingMinSoc: 85,
+  dumpLoadMinSoc: 95,
 
   standardSlope15mFloor: -50,
   superSlope15mFloor: 0,
   standbySlope15mThreshold: -150,
   standbySlopeSustainMinutes: 10,
 
-  standbyLowSoc: 50,
-  standbyHardLowSoc: 40,
+  standbyLowSoc: 80,
+  standbyHardLowSoc: 70,
 
   // Rolling windows.
   irradianceAvgWindowMinutes: 5,
@@ -68,10 +80,10 @@ const CFG = {
   slopeLongWindowMinutes: 15,
   metricsWindowHours: 24,
 
-  // Super mode is enabled for the 20A mining branch. Avalon Super draws
-  // ~1674 W; branch capacity is 2400 W raw (1920 W NEC-derated), leaving
-  // ~220 W of slack for the Bitaxe and margin.
-  allowSuperMode: true,
+  // Super disabled in AGM regime. The 20A branch can carry it electrically,
+  // but driving a 1674 W load through a dying bank would accelerate failure
+  // and risks tipping a fragile cell into a short. Re-enable after LFP.
+  allowSuperMode: false,
 };
 
 function itemName(suffix) {
