@@ -15,8 +15,8 @@
       {"component": "oh-chart-datazoom", "config": {"type": "inside"}}
     ],
     "grid": [
-      {"component": "oh-chart-grid", "config": {"includeLabels": true}},
-      {"component": "oh-chart-grid", "config": {"includeLabels": true, "top": "58%", "height": "24%"}}
+      {"component": "oh-chart-grid", "config": {"includeLabels": true, "top": "8%", "height": "42%"}},
+      {"component": "oh-chart-grid", "config": {"includeLabels": true, "top": "58%", "height": "30%"}}
     ],
     "legend": [
       {"component": "oh-chart-legend", "config": {"bottom": 3, "type": "scroll"}}

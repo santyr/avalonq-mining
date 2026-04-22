@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
 import argparse
+import bisect
 import json
 import math
 import statistics
@@ -59,13 +60,19 @@ def numeric_series(payload):
     return out
 
 
-def nearest(series, ts, maxdiff_ms):
-    best = None
-    for t, v in series:
-        diff = abs(t - ts)
-        if diff <= maxdiff_ms and (best is None or diff < best[0]):
-            best = (diff, v)
-    return None if best is None else best[1]
+def nearest(times, series, ts, maxdiff_ms):
+    if not series:
+        return None
+    idx = bisect.bisect_left(times, ts)
+    candidates = []
+    if idx < len(series):
+        candidates.append(series[idx])
+    if idx > 0:
+        candidates.append(series[idx - 1])
+    if not candidates:
+        return None
+    best_t, best_v = min(candidates, key=lambda tv: abs(tv[0] - ts))
+    return best_v if abs(best_t - ts) <= maxdiff_ms else None
 
 
 def build_report(raw):
@@ -73,12 +80,15 @@ def build_report(raw):
     expw = numeric_series(raw['expected'])
     actw = numeric_series(raw['actual'])
     irr = numeric_series(raw['irradiance'])
+    curt_times = [t for t, _ in curt]
+    act_times = [t for t, _ in actw]
+    irr_times = [t for t, _ in irr]
 
     rows = []
     for ts, exp in expw:
-        act = nearest(actw, ts, 120_000)
-        c = nearest(curt, ts, 120_000)
-        ir = nearest(irr, ts, 120_000)
+        act = nearest(act_times, actw, ts, 120_000)
+        c = nearest(curt_times, curt, ts, 120_000)
+        ir = nearest(irr_times, irr, ts, 120_000)
         if act is not None and c is not None:
             rows.append((ts, exp, act, c, ir))
 
