@@ -222,3 +222,31 @@ Recommended next operational step:
 4. after the Discover upgrade, repeat the same analysis and compare
 
 That will give a quantitative before/after story for lost harvest and discretionary-load headroom.
+
+## Bitaxe Gamma persistence additions
+
+Once the Bitaxe integration is deployed, add the following items to the same JDBC persistence configuration so the same before/after analysis can include the fine-grain dump load.
+
+Bitaxe live telemetry, persist on every update:
+- `Bitaxe_Gamma1_Power` — actual wattage drawn by the Bitaxe; required to compute the realized fine-grain harvest contribution.
+- `Bitaxe_Gamma1_Hashrate` — primary mining performance signal; pairs with power for efficiency tracking and detection of unstable frequency/voltage pairs.
+- `Bitaxe_Gamma1_ASIC_Temp` — thermal trend; required to validate that the dry-run thermal guardrails (`thermalDownshiftC`, `thermalStandbyC`) are reasonable in this enclosure.
+- `Bitaxe_Gamma1_ErrorPct` — leading indicator of an over-frequency / under-voltage pairing problem; persistence makes it possible to correlate error spikes with profile changes.
+- `Bitaxe_Gamma1_Frequency` — applied target frequency at the device; needed to attribute power and hashrate to a specific profile.
+- `Bitaxe_Gamma1_CoreVoltage` — applied target core voltage at the device; same attribution role as frequency.
+
+Bitaxe dry-run state, persist on change:
+- `Bitaxe_Gamma1_DryRun_ModeDecision` — the comma-separated detail string describing what the policy intended; preserves the reason at the moment of decision for forensic review.
+
+Bitaxe profile allocation metrics, persist on every update:
+- `Bitaxe_Gamma1_DryRun_Min_Pct_24h`
+- `Bitaxe_Gamma1_DryRun_Stock_Pct_24h`
+- `Bitaxe_Gamma1_DryRun_Max_Pct_24h`
+
+These three are the most informative subset of the seven `DryRun_*_Pct_24h` items because they bracket the operating envelope (lowest, default, highest). Persist the others (`Low`, `Mid`, `High`, `Standby`) too if the JDBC budget allows; they are cheap and useful for the same coarse/fine before/after story the Avalon items already drive.
+
+Why this set is the minimum:
+- `Power` and `Hashrate` together let us compute realized J/TH for the Bitaxe and compare against the dry-run's expected `watts` per profile.
+- `ASIC_Temp` and `ErrorPct` are the two signals that catch profile choices that look fine on paper but stress the hardware.
+- `Frequency` and `CoreVoltage` make every other Bitaxe sample interpretable; without them you cannot tell which profile any given power/hashrate sample belongs to.
+- `DryRun_ModeDecision` and the percentage-allocation items mirror what the Avalon analysis already relies on, so the same scripts and dashboards generalize naturally to the Bitaxe.

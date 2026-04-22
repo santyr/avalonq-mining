@@ -45,14 +45,17 @@ const CFG = {
 
   // Dry-run mode thresholds use available watts after baseline house load.
   standardAvailableWatts: 1500,
+  superAvailableWatts: 1900,
   ecoAvailableWatts: 800,
   ecoTrendingAvailableWatts: 500,
   standardMinSoc: 80,
+  superMinSoc: 90,
   ecoMinSoc: 60,
   ecoTrendingMinSoc: 75,
   dumpLoadMinSoc: 90,
 
   standardSlope15mFloor: -50,
+  superSlope15mFloor: 0,
   standbySlope15mThreshold: -150,
   standbySlopeSustainMinutes: 10,
 
@@ -65,7 +68,10 @@ const CFG = {
   slopeLongWindowMinutes: 15,
   metricsWindowHours: 24,
 
-  allowSuperMode: false,
+  // Super mode is enabled for the 20A mining branch. Avalon Super draws
+  // ~1674 W; branch capacity is 2400 W raw (1920 W NEC-derated), leaving
+  // ~220 W of slack for the Bitaxe and margin.
+  allowSuperMode: true,
 };
 
 function itemName(suffix) {
@@ -207,8 +213,8 @@ function updateModeHistory(mode) {
 function computeModeMetrics(history, currentMode) {
   const now = nowMs();
   const windowStart = now - (CFG.metricsWindowHours * 3600 * 1000);
-  const modes = ['Eco', 'Standard', 'Standby'];
-  const totals = { Eco: 0, Standard: 0, Standby: 0 };
+  const modes = ['Eco', 'Standard', 'Super', 'Standby'];
+  const totals = { Eco: 0, Standard: 0, Super: 0, Standby: 0 };
 
   if (!history.length) {
     return { changeCount: 0, dwellMinutes: 0, pct: totals };
@@ -232,6 +238,7 @@ function computeModeMetrics(history, currentMode) {
   const pct = {
     Eco: (totals.Eco / totalMs) * 100,
     Standard: (totals.Standard / totalMs) * 100,
+    Super: (totals.Super / totalMs) * 100,
     Standby: (totals.Standby / totalMs) * 100,
   };
 
@@ -251,7 +258,17 @@ function decideMode(ctx) {
     slope15mSustainMinutes,
   } = ctx;
 
-  if (!charging && !CFG.allowMiningWithoutCharger) {
+  // "Charger effectively active" tolerates the brief BatteryChargingStatus
+  // flickers the XW+ produces when holding Float on a full bank. High SoC or
+  // any active charger stage (Bulk/Absorption/Float) counts as charging even
+  // if the instantaneous current momentarily dips to zero. Without this, the
+  // dry-run mode flips Standby/Standard on every pulse and the thrash alert
+  // fires for the wrong reason.
+  const activeStages = ['Bulk', 'Absorption', 'Float'];
+  const stageActive = typeof ctx.chargerStage === 'string' && activeStages.includes(ctx.chargerStage);
+  const highSoc = Number.isFinite(soc) && soc >= 95;
+  const chargerEffective = charging || stageActive || highSoc;
+  if (!chargerEffective && !CFG.allowMiningWithoutCharger) {
     return { mode: 'Standby', reason: 'charger_inactive' };
   }
   if (soc <= CFG.standbyHardLowSoc) {
@@ -263,15 +280,32 @@ function decideMode(ctx) {
   if (slope15m <= CFG.standbySlope15mThreshold && slope15mSustainMinutes >= CFG.standbySlopeSustainMinutes) {
     return { mode: 'Standby', reason: 'irradiance_drop_sustained' };
   }
-  if (soc >= CFG.dumpLoadMinSoc) {
-    return { mode: 'Eco', reason: 'high_soc_dump_load' };
+  // Peak-solar Super mode (requires 20A mining branch + allowSuperMode). Only
+  // fires when irradiance is stable or rising so a cloud edge does not strand
+  // the Avalon at full load. `chargerEffective` is used instead of the raw
+  // charging flag for the same flicker-tolerance reason.
+  if (
+    CFG.allowSuperMode &&
+    chargerEffective &&
+    availableWatts > CFG.superAvailableWatts &&
+    soc > CFG.superMinSoc &&
+    slope15m > CFG.superSlope15mFloor
+  ) {
+    return { mode: 'Super', reason: 'peak_solar' };
   }
+  // Strong-solar Standard is checked before the high-SoC shortcut so a full
+  // battery does not cap the dump load at Eco when PV is actively being
+  // curtailed. The Schneider XW6848-21 has 6.8 kW of continuous capacity, so
+  // running Standard on top of normal house load is well within envelope.
   if (
     availableWatts > CFG.standardAvailableWatts &&
     soc > CFG.standardMinSoc &&
     slope15m > CFG.standardSlope15mFloor
   ) {
     return { mode: 'Standard', reason: 'strong_solar' };
+  }
+  if (soc >= CFG.dumpLoadMinSoc) {
+    return { mode: 'Eco', reason: 'high_soc_dump_load' };
   }
   if (availableWatts > CFG.ecoAvailableWatts && soc > CFG.ecoMinSoc) {
     return { mode: 'Eco', reason: 'moderate_solar' };
@@ -314,6 +348,7 @@ function runDryPolicy() {
   const decision = decideMode({
     soc,
     charging,
+    chargerStage: chargerStatus,
     availableWatts,
     slope15m,
     slope15mSustainMinutes,
@@ -336,6 +371,7 @@ function runDryPolicy() {
   post(itemName('DryRun_DwellTime_Current'), `${metrics.dwellMinutes.toFixed(1)} min`);
   post(itemName('DryRun_Eco_Pct_24h'), metrics.pct.Eco.toFixed(1));
   post(itemName('DryRun_Standard_Pct_24h'), metrics.pct.Standard.toFixed(1));
+  post(itemName('DryRun_Super_Pct_24h'), metrics.pct.Super.toFixed(1));
   post(itemName('DryRun_Standby_Pct_24h'), metrics.pct.Standby.toFixed(1));
 
   const detail = [

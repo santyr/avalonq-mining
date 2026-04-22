@@ -7,7 +7,7 @@ Use this checklist on hardware arrival day when moving from dry-run-only monitor
 - Confirm the Avalon Q has a stable LAN IP or DHCP reservation.
 - Confirm which smart plug / relay powers the Avalon path.
 - Confirm that the Avalon path remains separate from the existing `Miner` / `Miner_Power` path.
-- Confirm the Avalon branch is on the intended 15A circuit.
+- Confirm the Avalon branch is on the intended 20A circuit.
 - Confirm no other unexpected discretionary loads are sharing that branch during testing.
 
 Record:
@@ -120,15 +120,16 @@ Commissioning check:
 
 If the parsed power is clearly wrong, update the parser before trusting efficiency or curtailment math involving miner load.
 
-## 8. Keep automatic mode ceiling at Standard
+## 8. Verify Super-mode thresholds on the 20A branch
 
-For now:
-- automatic policy should only select `Eco` or `Standard`
-- `Super` remains disabled because of the 15A circuit constraint
+Super mode (~1674 W) is enabled by default now that the Avalon branch is on a 20A circuit. The XW6848-21 has 6.8 kW of continuous capacity, so Super on top of normal house load is well within envelope.
 
-Commissioning check:
-- verify no rule path can automatically promote to Super
-- verify manual tests, if any, are deliberate and temporary
+Commissioning checks:
+- verify the branch is in fact a 20A circuit and not still 15A (NEC derate to 1920 W on 20A leaves ~220 W of slack with Super + Bitaxe)
+- verify the policy's `superAvailableWatts`/`superMinSoc`/`superSlope15mFloor` thresholds in `avalonq-dryrun-policy-core.js` still match site reality
+- verify the dry-run policy promotes to Super when `availableWatts > 1900 && soc > 90 && slope15m > 0 && charging`
+- verify `Super` is also represented in the metrics (`AvalonQ_Miner1_DryRun_Super_Pct_24h` populating)
+- if any first-run instability is seen on the 20A breaker, fall back by setting `allowSuperMode: false` in the policy core
 
 ## 9. Retune SoC thresholds after the battery upgrade
 
@@ -176,3 +177,88 @@ Record after first successful day:
 - whether `PS[...]` parsing matched real power
 - any firmware quirks
 - whether Eco/Standard thresholds need adjustment
+
+## 13. Bitaxe commissioning addendum
+
+The Bitaxe Gamma uses a different API (plain HTTP on port 80 over the AxeOS REST surface), so it has its own commissioning steps. Walk these in parallel with the Avalon steps above once the Bitaxe is on the LAN.
+
+### 13.1 Network and power assignment
+
+- Confirm the Bitaxe has a stable LAN IP or DHCP reservation; update `CFG.host` in `openhab/examples/bitaxe.js`.
+- Confirm the Bitaxe is physically powered through the existing `Miner_Power` relay. If this is not the case, stop and reassign before continuing.
+- Confirm the Bitaxe's 25 W envelope is accounted for on top of the Avalon 1674 W ceiling; the 15 A circuit has room for both.
+- Confirm `Bitaxe_Gamma1_LoadManagement_Enable` remains OFF until end-to-end validation is complete.
+
+### 13.2 Basic HTTP/API connectivity
+
+From a shell on the openHAB host or another LAN host:
+
+```bash
+curl -sS http://BITAXE_IP/api/system/info | jq .
+curl -sS http://BITAXE_IP/api/system/asic | jq .
+```
+
+Validate:
+- port 80 is reachable
+- JSON is well-formed
+- `ASICModel` is `BM1370`
+- `frequencyOptions` and `voltageOptions` arrays are non-empty
+
+If this fails:
+- verify IP
+- verify the miner finished booting
+- verify there is no firewall rule blocking port 80 between openHAB and the Bitaxe
+
+### 13.3 Validate the default profile table against `/api/system/asic`
+
+The default table baked into `bitaxe.js` is only a starting point. The authoritative source at runtime is `/api/system/asic`. Verify that every `(frequency, coreVoltage)` pair in the default table appears in `frequencyOptions` and `voltageOptions` respectively. If the live device reports different options:
+- trust the live options
+- update the profile table in `bitaxe-residual-policy-core.js` if the power/hashrate figures drift meaningfully
+
+### 13.4 Validate a non-destructive PATCH round-trip
+
+Use fan speed first because it is the lowest-risk setting to flip.
+
+```bash
+curl -sS -X PATCH http://BITAXE_IP/api/system \
+  -H 'Content-Type: application/json' \
+  -d '{"autofanspeed":0,"fanspeed":40}'
+sleep 2
+curl -sS http://BITAXE_IP/api/system/info | jq '.fanspeed, .autofanspeed'
+```
+
+Validate:
+- PATCH returns 200
+- `fanspeed` in the next `/api/system/info` matches what was sent
+- flipping `autofanspeed` back to `1` restores automatic fan control
+
+### 13.5 Validate the overclock gate
+
+With `CFG.allowOverclock = false` (default), attempt to set a frequency/voltage pair via `Bitaxe_Gamma1_TargetFrequency_Set` or `Bitaxe_Gamma1_Profile_Set`. Validate:
+- the rule logs a refusal indicating the overclock gate is off
+- no PATCH is sent
+
+Only then, carefully flip `allowOverclock` to `true`, retry with the `Stock` profile, and confirm:
+- PATCH returns 200
+- `/api/system/info` reflects the new `frequency` and `coreVoltage` values
+- hashrate and power trend toward the expected profile figures
+- `errorPercentage` stays near zero
+
+Revert to `Stock` when done unless you are explicitly tuning.
+
+### 13.6 Validate firmware currency
+
+Check the firmware version reported in `Bitaxe_Gamma1_Firmware` and `Bitaxe_Gamma1_AxeOSVersion` against the latest ESP-Miner release. Upgrade out-of-band before trusting long-running automation. Reference: the ESP-Miner repository releases page on GitHub (navigate to it manually, do not bake a URL into the rule).
+
+### 13.7 Validate thermal guardrails before long-running automation
+
+Before enabling load management, confirm the live `Bitaxe_Gamma1_ASIC_Temp` value is sane and that `Bitaxe_Gamma1_TempTarget` matches the configured target (recommended 60-65 C). The dry-run policy downshifts one profile at 70 C and forces Standby at 80 C; verify that behavior by temporarily applying a high profile during a warm part of the day and observing the dry-run decision.
+
+### 13.8 Live enablement order
+
+Only after every step above is green:
+1. verify the Avalon commissioning checklist is complete
+2. confirm the dry-run rule `Bitaxe Residual Dry Run` is updating items
+3. confirm persistence is recording the Bitaxe items listed in `docs/persistence-and-before-after-analysis.md`
+4. flip `Bitaxe_Gamma1_LoadManagement_Enable` to ON
+5. watch the first few profile transitions manually before trusting overnight operation

@@ -96,16 +96,17 @@ Derived Avalon items should be updated as follows:
 ## Policy adjustments for this site
 
 Given the current constraints:
-- 15A circuit
-- no Super mode for now
+- 20A circuit on the Avalon mining branch (upgraded from 15A)
+- 6.8 kW Schneider XW6848-21 inverter with substantial AC headroom
 - preference for standby via API rather than hard power-off
 
-The control policy should remain constrained to:
+The control policy now selects from:
 - `Eco`
 - `Standard`
+- `Super` (gated by `superAvailableWatts`, `superMinSoc`, positive irradiance slope, and `allowSuperMode`)
 - `Standby`
 
-Do not auto-select `Super` in the first live version.
+`Super` is enabled by default on the 20A branch. Disable by flipping `allowSuperMode: false` in `avalonq-dryrun-policy-core.js` if site conditions change.
 
 ## Interpretation of the external feedback in this environment
 

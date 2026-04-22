@@ -1,6 +1,6 @@
 {
   "uid": "Miner_Page",
-  "tags": ["mining", "avalonq"],
+  "tags": ["mining", "avalonq", "bitaxe"],
   "props": {
     "parameters": [],
     "parameterGroups": []
@@ -20,81 +20,13 @@
         "config": {},
         "slots": {
           "default": [
-            { "component": "f7-block-title", "config": { "title": "Miner Overview" } },
             {
               "component": "oh-grid-row",
               "config": {},
               "slots": {
                 "default": [
-                  {"component": "oh-grid-col", "config": {"width": "17"}, "slots": {"default": [{"component": "oh-toggle-card", "config": {"item": "Miner_Power", "title": "Existing Miner Power", "outline": true}}]}},
-                  {"component": "oh-grid-col", "config": {"width": "17"}, "slots": {"default": [{"component": "oh-label-card", "config": {"item": "AvalonQ_Miner1_Availability", "title": "Avalon Availability", "outline": true}}]}},
-                  {"component": "oh-grid-col", "config": {"width": "16"}, "slots": {"default": [{"component": "oh-label-card", "config": {"item": "AvalonQ_Miner1_Workmode", "title": "Avalon Workmode", "outline": true}}]}},
-                  {"component": "oh-grid-col", "config": {"width": "17"}, "slots": {"default": [{"component": "oh-label-card", "config": {"item": "AvalonQ_Miner1_DryRun_ThrashAlert", "title": "Thrash Alert", "outline": true, "fontWeight": "bold", "label": "=(items.AvalonQ_Miner1_DryRun_ThrashAlert.state === 'normal') ? 'normal' : items.AvalonQ_Miner1_DryRun_ThrashAlert.state", "style": {"background": "=(items.AvalonQ_Miner1_DryRun_ThrashAlert.state === 'normal') ? '#1b5e20' : '#8e0000'", "color": "#ffffff"}}}]}},
-                  {"component": "oh-grid-col", "config": {"width": "17"}, "slots": {"default": [{"component": "oh-toggle-card", "config": {"item": "AvalonQ_Miner1_LoadManagement_Enable", "title": "Load Mgmt", "outline": true}}]}}
-                ]
-              }
-            }
-          ]
-        }
-      },
-      {
-        "component": "oh-block",
-        "config": {},
-        "slots": {
-          "default": [
-            { "component": "f7-block-title", "config": { "title": "Policy Snapshot" } },
-            {
-              "component": "oh-grid-row",
-              "config": {},
-              "slots": {
-                "default": [
-                  {"component": "oh-grid-col", "config": {"width": "34"}, "slots": {"default": [{"component": "oh-label-card", "config": {"item": "AvalonQ_Miner1_DryRun_ModeDecision", "title": "Mode Decision", "outline": true, "fontSize": "12px"}}]}},
-                  {"component": "oh-grid-col", "config": {"width": "16"}, "slots": {"default": [{"component": "oh-label-card", "config": {"item": "AvalonQ_Miner1_SoC_Effective", "title": "Effective SoC", "outline": true, "trendItem": "AvalonQ_Miner1_SoC_Effective"}}]}},
-                  {"component": "oh-grid-col", "config": {"width": "16"}, "slots": {"default": [{"component": "oh-label-card", "config": {"item": "AvalonQ_Miner1_PV_Expected_Watts", "title": "Expected PV", "outline": true, "trendItem": "AvalonQ_Miner1_PV_Expected_Watts"}}]}},
-                  {"component": "oh-grid-col", "config": {"width": "16"}, "slots": {"default": [{"component": "oh-label-card", "config": {"item": "AvalonQ_Miner1_PV_Actual_Watts", "title": "Actual PV", "outline": true, "trendItem": "AvalonQ_Miner1_PV_Actual_Watts"}}]}},
-                  {"component": "oh-grid-col", "config": {"width": "18"}, "slots": {"default": [{"component": "oh-label-card", "config": {"item": "AvalonQ_Miner1_PV_Curtailment_Ratio", "title": "Curtailment Ratio", "outline": true, "trendItem": "AvalonQ_Miner1_PV_Curtailment_Ratio"}}]}}
-                ]
-              }
-            }
-          ]
-        }
-      },
-      {
-        "component": "oh-block",
-        "config": {},
-        "slots": {
-          "default": [
-            { "component": "f7-block-title", "config": { "title": "Avalon Telemetry" } },
-            {
-              "component": "oh-grid-row",
-              "config": {},
-              "slots": {
-                "default": [
-                  {"component": "oh-grid-col", "config": {"width": "17"}, "slots": {"default": [{"component": "oh-label-card", "config": {"item": "AvalonQ_Miner1_HashrateTHS", "title": "Hashrate", "outline": true}}]}},
-                  {"component": "oh-grid-col", "config": {"width": "17"}, "slots": {"default": [{"component": "oh-label-card", "config": {"item": "AvalonQ_Miner1_PowerW", "title": "Miner Power", "outline": true}}]}},
-                  {"component": "oh-grid-col", "config": {"width": "16"}, "slots": {"default": [{"component": "oh-label-card", "config": {"item": "AvalonQ_Miner1_EfficiencyJTH", "title": "Efficiency", "outline": true}}]}},
-                  {"component": "oh-grid-col", "config": {"width": "16"}, "slots": {"default": [{"component": "oh-label-card", "config": {"item": "AvalonQ_Miner1_PoolOnline", "title": "Pool Online", "outline": true}}]}},
-                  {"component": "oh-grid-col", "config": {"width": "16"}, "slots": {"default": [{"component": "oh-label-card", "config": {"item": "AvalonQ_Miner1_PingMS", "title": "Ping", "outline": true}}]}},
-                  {"component": "oh-grid-col", "config": {"width": "18"}, "slots": {"default": [{"component": "oh-label-card", "config": {"item": "AvalonQ_Miner1_AvgChipTemp", "title": "Avg Chip Temp", "outline": true}}]}}
-                ]
-              }
-            }
-          ]
-        }
-      },
-      {
-        "component": "oh-block",
-        "config": {},
-        "slots": {
-          "default": [
-            { "component": "f7-block-title", "config": { "title": "Charts" } },
-            {
-              "component": "oh-grid-row",
-              "config": {},
-              "slots": {
-                "default": [
-                  {"component": "oh-grid-col", "config": {"width": "50"}, "slots": {"default": [{"component": "oh-webframe-card", "config": {"title": "Expected vs Actual PV", "height": "320px", "src": "/page/Miner_Avalon_PV_Chart", "outline": true}}]}},
-                  {"component": "oh-grid-col", "config": {"width": "50"}, "slots": {"default": [{"component": "oh-webframe-card", "config": {"title": "Curtailment Ratio", "height": "320px", "src": "/page/Miner_Avalon_Curtailment_Chart", "outline": true}}]}}
+                  {"component": "oh-grid-col", "config": {"width": "50"}, "slots": {"default": [{"component": "oh-label-card", "config": {"item": "AvalonQ_Miner1_HashrateTHS", "title": "Avalon Q", "trendItem": "AvalonQ_Miner1_HashrateTHS", "label": "=(items.AvalonQ_Miner1_Availability.state === 'online') ? ((items.AvalonQ_Miner1_Workmode.state || '-') + ' · ' + ((items.AvalonQ_Miner1_HashrateTHS.state && items.AvalonQ_Miner1_HashrateTHS.state !== 'NULL') ? Number(items.AvalonQ_Miner1_HashrateTHS.state).toFixed(1) + ' TH/s' : '-') + ' · ' + ((items.AvalonQ_Miner1_PowerW.state && items.AvalonQ_Miner1_PowerW.state !== 'NULL') ? Number(items.AvalonQ_Miner1_PowerW.state).toFixed(0) + ' W' : '-')) : 'offline'"}}]}},
+                  {"component": "oh-grid-col", "config": {"width": "50"}, "slots": {"default": [{"component": "oh-label-card", "config": {"item": "Bitaxe_Gamma1_Hashrate", "title": "Bitaxe Gamma", "trendItem": "Bitaxe_Gamma1_Hashrate", "label": "=(items.Bitaxe_Gamma1_Availability.state === 'online') ? ((items.Bitaxe_Gamma1_DryRun_Profile.state || '-') + ' · ' + ((items.Bitaxe_Gamma1_Hashrate.state && items.Bitaxe_Gamma1_Hashrate.state !== 'NULL') ? Number(items.Bitaxe_Gamma1_Hashrate.state).toFixed(0) + ' GH/s' : '-') + ' · ' + ((items.Bitaxe_Gamma1_Power.state && items.Bitaxe_Gamma1_Power.state !== 'NULL') ? Number(items.Bitaxe_Gamma1_Power.state).toFixed(1) + ' W' : '-')) : 'offline'"}}]}}
                 ]
               }
             },
@@ -103,7 +35,148 @@
               "config": {},
               "slots": {
                 "default": [
-                  {"component": "oh-grid-col", "config": {}, "slots": {"default": [{"component": "oh-webframe-card", "config": {"title": "Irradiance & Slopes", "height": "320px", "src": "/page/Miner_Avalon_Irradiance_Chart", "outline": true}}]}}
+                  {"component": "oh-grid-col", "config": {"width": "50"}, "slots": {"default": [{"component": "oh-toggle-card", "config": {"item": "AvalonQ_Miner1_LoadManagement_Enable", "title": "Avalon Load Mgmt"}}]}},
+                  {"component": "oh-grid-col", "config": {"width": "50"}, "slots": {"default": [{"component": "oh-toggle-card", "config": {"item": "Miner_Power", "title": "Bitaxe AC Power"}}]}}
+                ]
+              }
+            },
+            {
+              "component": "oh-grid-row",
+              "config": {},
+              "slots": {
+                "default": [
+                  {"component": "oh-grid-col", "config": {"width": "50"}, "slots": {"default": [{"component": "oh-label-card", "config": {"item": "AvalonQ_Miner1_DryRun_ThrashAlert", "title": "Avalon Thrash", "fontWeight": "bold", "label": "=(items.AvalonQ_Miner1_DryRun_ThrashAlert.state === 'normal') ? 'normal' : items.AvalonQ_Miner1_DryRun_ThrashAlert.state", "style": {"background": "=(items.AvalonQ_Miner1_DryRun_ThrashAlert.state === 'normal') ? '#1b5e20' : '#8e0000'", "color": "#ffffff"}}}]}},
+                  {"component": "oh-grid-col", "config": {"width": "50"}, "slots": {"default": [{"component": "oh-toggle-card", "config": {"item": "Bitaxe_Gamma1_LoadManagement_Enable", "title": "Bitaxe Load Mgmt"}}]}}
+                ]
+              }
+            },
+            {
+              "component": "oh-grid-row",
+              "config": {},
+              "slots": {
+                "default": [
+                  {"component": "oh-grid-col", "config": {"width": "50"}, "slots": {"default": [{"component": "oh-label-card", "config": {"item": "AvalonQ_Miner1_PoolOnline", "title": "Avalon Pool", "fontWeight": "bold", "label": "=(items.AvalonQ_Miner1_PoolOnline.state === 'ON') ? 'online' : 'offline'", "style": {"background": "=(items.AvalonQ_Miner1_PoolOnline.state === 'ON') ? '#1b5e20' : '#8e0000'", "color": "#ffffff"}}}]}},
+                  {"component": "oh-grid-col", "config": {"width": "50"}, "slots": {"default": [{"component": "oh-label-card", "config": {"item": "Bitaxe_Gamma1_OverheatMode", "title": "Bitaxe Overheat", "fontWeight": "bold", "style": {"background": "=(items.Bitaxe_Gamma1_OverheatMode.state === 'ON') ? '#8e0000' : '#1b5e20'", "color": "#ffffff"}}}]}}
+                ]
+              }
+            },
+            {
+              "component": "oh-grid-row",
+              "config": {},
+              "slots": {
+                "default": [
+                  {"component": "oh-grid-col", "config": {"width": "50"}, "slots": {"default": [{"component": "oh-label-card", "config": {"item": "AvalonQ_Miner1_HashrateTHS", "title": "Avalon Hashrate", "trendItem": "AvalonQ_Miner1_HashrateTHS"}}]}},
+                  {"component": "oh-grid-col", "config": {"width": "50"}, "slots": {"default": [{"component": "oh-label-card", "config": {"item": "Bitaxe_Gamma1_Hashrate", "title": "Bitaxe Hashrate", "trendItem": "Bitaxe_Gamma1_Hashrate"}}]}}
+                ]
+              }
+            },
+            {
+              "component": "oh-grid-row",
+              "config": {},
+              "slots": {
+                "default": [
+                  {"component": "oh-grid-col", "config": {"width": "50"}, "slots": {"default": [{"component": "oh-label-card", "config": {"item": "AvalonQ_Miner1_PowerW", "title": "Avalon Power", "trendItem": "AvalonQ_Miner1_PowerW"}}]}},
+                  {"component": "oh-grid-col", "config": {"width": "50"}, "slots": {"default": [{"component": "oh-label-card", "config": {"item": "Bitaxe_Gamma1_Power", "title": "Bitaxe Power", "trendItem": "Bitaxe_Gamma1_Power"}}]}}
+                ]
+              }
+            },
+            {
+              "component": "oh-grid-row",
+              "config": {},
+              "slots": {
+                "default": [
+                  {"component": "oh-grid-col", "config": {"width": "50"}, "slots": {"default": [{"component": "oh-label-card", "config": {"item": "AvalonQ_Miner1_EfficiencyJTH", "title": "Avalon Efficiency"}}]}},
+                  {"component": "oh-grid-col", "config": {"width": "50"}, "slots": {"default": [{"component": "oh-label-card", "config": {"item": "Bitaxe_Gamma1_ErrorPct", "title": "Bitaxe Error %", "trendItem": "Bitaxe_Gamma1_ErrorPct"}}]}}
+                ]
+              }
+            },
+            {
+              "component": "oh-grid-row",
+              "config": {},
+              "slots": {
+                "default": [
+                  {"component": "oh-grid-col", "config": {"width": "50"}, "slots": {"default": [{"component": "oh-label-card", "config": {"item": "AvalonQ_Miner1_AvgChipTemp", "title": "Avalon Avg Chip Temp", "trendItem": "AvalonQ_Miner1_AvgChipTemp"}}]}},
+                  {"component": "oh-grid-col", "config": {"width": "50"}, "slots": {"default": [{"component": "oh-label-card", "config": {"item": "Bitaxe_Gamma1_ASIC_Temp", "title": "Bitaxe ASIC Temp", "trendItem": "Bitaxe_Gamma1_ASIC_Temp"}}]}}
+                ]
+              }
+            },
+            {
+              "component": "oh-grid-row",
+              "config": {},
+              "slots": {
+                "default": [
+                  {"component": "oh-grid-col", "config": {"width": "50"}, "slots": {"default": [{"component": "oh-label-card", "config": {"item": "AvalonQ_Miner1_MaxChipTemp", "title": "Avalon Max Chip Temp"}}]}},
+                  {"component": "oh-grid-col", "config": {"width": "50"}, "slots": {"default": [{"component": "oh-label-card", "config": {"item": "Bitaxe_Gamma1_VR_Temp", "title": "Bitaxe VR Temp", "trendItem": "Bitaxe_Gamma1_VR_Temp"}}]}}
+                ]
+              }
+            },
+            {
+              "component": "oh-grid-row",
+              "config": {},
+              "slots": {
+                "default": [
+                  {"component": "oh-grid-col", "config": {"width": "50"}, "slots": {"default": [{"component": "oh-label-card", "config": {"item": "AvalonQ_Miner1_PingMS", "title": "Avalon Pool Ping"}}]}},
+                  {"component": "oh-grid-col", "config": {"width": "50"}, "slots": {"default": [{"component": "oh-label-card", "config": {"item": "Bitaxe_Gamma1_FanRPM", "title": "Bitaxe Fan RPM"}}]}}
+                ]
+              }
+            },
+            {
+              "component": "oh-grid-row",
+              "config": {},
+              "slots": {
+                "default": [
+                  {"component": "oh-grid-col", "config": {"width": "50"}, "slots": {"default": [{"component": "oh-label-card", "config": {"item": "AvalonQ_Miner1_AcceptedShares", "title": "Avalon Accepted"}}]}},
+                  {"component": "oh-grid-col", "config": {"width": "50"}, "slots": {"default": [{"component": "oh-label-card", "config": {"item": "Bitaxe_Gamma1_Frequency", "title": "Bitaxe Frequency", "label": "=items.Bitaxe_Gamma1_Frequency.state + ' MHz'"}}]}}
+                ]
+              }
+            },
+            {
+              "component": "oh-grid-row",
+              "config": {},
+              "slots": {
+                "default": [
+                  {"component": "oh-grid-col", "config": {"width": "50"}, "slots": {"default": [{"component": "oh-label-card", "config": {"item": "AvalonQ_Miner1_RejectedShares", "title": "Avalon Rejected"}}]}},
+                  {"component": "oh-grid-col", "config": {"width": "50"}, "slots": {"default": [{"component": "oh-label-card", "config": {"item": "Bitaxe_Gamma1_CoreVoltage", "title": "Bitaxe Core Voltage", "label": "=items.Bitaxe_Gamma1_CoreVoltage.state + ' mV'"}}]}}
+                ]
+              }
+            },
+            {
+              "component": "oh-grid-row",
+              "config": {},
+              "slots": {
+                "default": [
+                  {"component": "oh-grid-col", "config": {"width": "50"}, "slots": {"default": [{"component": "oh-label-card", "config": {"item": "AvalonQ_Miner1_HardwareErrors", "title": "Avalon HW Errors"}}]}},
+                  {"component": "oh-grid-col", "config": {"width": "50"}, "slots": {"default": [{"component": "oh-label-card", "config": {"item": "Bitaxe_Gamma1_DryRun_ResidualWatts", "title": "Bitaxe Residual W", "trendItem": "Bitaxe_Gamma1_DryRun_ResidualWatts"}}]}}
+                ]
+              }
+            },
+            {
+              "component": "oh-grid-row",
+              "config": {},
+              "slots": {
+                "default": [
+                  {"component": "oh-grid-col", "config": {"width": "50"}, "slots": {"default": [{"component": "oh-label-card", "config": {"item": "AvalonQ_Miner1_UptimeSeconds", "title": "Avalon Uptime"}}]}},
+                  {"component": "oh-grid-col", "config": {"width": "50"}, "slots": {"default": [{"component": "oh-label-card", "config": {"item": "Bitaxe_Gamma1_UptimeSeconds", "title": "Bitaxe Uptime"}}]}}
+                ]
+              }
+            },
+            {
+              "component": "oh-grid-row",
+              "config": {},
+              "slots": {
+                "default": [
+                  {"component": "oh-grid-col", "config": {"width": "50"}, "slots": {"default": [{"component": "oh-label-card", "config": {"item": "AvalonQ_Miner1_Firmware", "title": "Avalon Firmware"}}]}},
+                  {"component": "oh-grid-col", "config": {"width": "50"}, "slots": {"default": [{"component": "oh-label-card", "config": {"item": "Bitaxe_Gamma1_Firmware", "title": "Bitaxe Firmware"}}]}}
+                ]
+              }
+            },
+            {
+              "component": "oh-grid-row",
+              "config": {},
+              "slots": {
+                "default": [
+                  {"component": "oh-grid-col", "config": {"width": "50"}, "slots": {"default": [{"component": "oh-label-card", "config": {"item": "AvalonQ_Miner1_DryRun_ModeDecision", "title": "Avalon decision", "fontSize": "12px"}}]}},
+                  {"component": "oh-grid-col", "config": {"width": "50"}, "slots": {"default": [{"component": "oh-label-card", "config": {"item": "Bitaxe_Gamma1_DryRun_ModeDecision", "title": "Bitaxe decision", "fontSize": "12px"}}]}}
                 ]
               }
             }

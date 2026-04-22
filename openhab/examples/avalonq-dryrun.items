@@ -22,4 +22,5 @@ Number             AvalonQ_Miner1_DryRun_ModeChanges_24h     "Dry Run Mode Chang
 Number:Time        AvalonQ_Miner1_DryRun_DwellTime_Current   "Dry Run Current Dwell [%s]"              <time>         (gAvalonQ_Miner1)
 Number:Dimensionless AvalonQ_Miner1_DryRun_Eco_Pct_24h       "Dry Run Eco 24h [%.1f %%]"               <chart>        (gAvalonQ_Miner1)
 Number:Dimensionless AvalonQ_Miner1_DryRun_Standard_Pct_24h  "Dry Run Standard 24h [%.1f %%]"          <chart>        (gAvalonQ_Miner1)
+Number:Dimensionless AvalonQ_Miner1_DryRun_Super_Pct_24h     "Dry Run Super 24h [%.1f %%]"             <chart>        (gAvalonQ_Miner1)
 Number:Dimensionless AvalonQ_Miner1_DryRun_Standby_Pct_24h   "Dry Run Standby 24h [%.1f %%]"           <chart>        (gAvalonQ_Miner1)
