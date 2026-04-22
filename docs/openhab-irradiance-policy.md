@@ -57,13 +57,17 @@ To support this future policy, these placeholder Avalon items were created:
 
 These are scaffold items only right now.
 
-## Placeholder dry-run rule added in openHAB
+## Real dry-run rule added in openHAB, but kept disabled
 
-A disabled placeholder rule was created:
-- `hex_avalonq_irradiance_dry_run_placeholder`
-- name: `AvalonQ Irradiance Dry Run Placeholder`
+A disabled real dry-run rule was created:
+- `hex_avalonq_irradiance_dry_run`
+- name: `AvalonQ Irradiance Dry Run`
 
-It is intentionally disabled for now, consistent with the current pre-hardware strategy.
+Important properties:
+- contains the actual first-pass irradiance-aware decision logic
+- updates the Avalon dry-run items and logs intended mode decisions
+- never sends miner commands
+- remains intentionally disabled for now, consistent with the current pre-hardware strategy
 
 ## Recommended mapping for the eventual dry-run/live policy
 
