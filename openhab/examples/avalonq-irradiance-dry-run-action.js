@@ -1,22 +1,10 @@
 /*
- * Avalon Q irradiance-aware dry-run control rule for openHAB.
+ * Inline script body for the REST-managed openHAB rule action:
+ * "AvalonQ Irradiance Dry Run".
  *
- * Purpose:
- * - consume live weather irradiance, PV output, ambient temperature, and battery SoC
- * - compute smoothed irradiance plus 3-minute and 15-minute slopes
- * - estimate cell temperature using an explicit NOCT model (not measured panel temp)
- * - estimate expected PV production and discretionary solar margin
- * - decide the intended Avalon mode (Standby / Eco / Standard)
- * - update Avalon dry-run items and log decisions only
- * - never send miner commands in this file
- *
- * Current site assumptions:
- * - 15A circuit, so automatic control is capped at Standard
- * - no direct BMS SoC item exists yet; SoC_Effective currently falls back to BatterySoC_Calculated
- * - cell temperature is NOCT-modeled from outdoor ambient temperature and irradiance
+ * Safe to enable before hardware arrival because it only updates Avalon dry-run
+ * items and logs intended mode decisions. It never sends miner commands.
  */
-
-const { rules, triggers, items } = require('openhab');
 
 const CFG = {
   irradianceItem: 'AmbientWeatherWS2902A_SolarRadiation',
@@ -30,7 +18,6 @@ const CFG = {
 
   prefix: 'AvalonQ_Miner1_',
 
-  // Array and thermal model assumptions.
   arrayNameplateWatts: 4200,
   mpptCapWatts: 3120,
   noctC: 45,
@@ -38,7 +25,6 @@ const CFG = {
   fixedLossFactor: 0.90,
   baselineHouseLoadWatts: 300,
 
-  // Dry-run mode thresholds.
   standardExpectedPvWatts: 1800,
   ecoExpectedPvWatts: 1100,
   ecoTrendingExpectedPvWatts: 800,
@@ -54,13 +40,10 @@ const CFG = {
   standbyLowSoc: 50,
   standbyHardLowSoc: 40,
 
-  // Rolling windows.
   irradianceAvgWindowMinutes: 5,
   slopeShortWindowMinutes: 3,
   slopeLongWindowMinutes: 15,
   metricsWindowHours: 24,
-
-  allowSuperMode: false,
 };
 
 function itemName(suffix) {
@@ -142,7 +125,6 @@ function updateNegativeSlopeSustain(slope15m) {
   const key = 'avalonqNegativeSlopeStart';
   const ts = nowMs();
   const prev = cache.private.get(key);
-
   if (slope15m <= CFG.standbySlope15mThreshold) {
     if (!prev) {
       cache.private.put(key, ts);
@@ -150,7 +132,6 @@ function updateNegativeSlopeSustain(slope15m) {
     }
     return (ts - prev) / 60000.0;
   }
-
   if (prev) cache.private.remove(key);
   return 0;
 }
@@ -177,7 +158,6 @@ function updateModeHistory(mode) {
   const cutoff = ts - (CFG.metricsWindowHours * 3600 * 1000);
   let history = cache.private.get(key) || [];
   history = history.filter(e => e.ts >= cutoff);
-
   const last = history.length ? history[history.length - 1] : null;
   if (!last || last.mode !== mode) {
     history.push({ ts, mode });
@@ -191,66 +171,36 @@ function computeModeMetrics(history, currentMode) {
   const windowStart = now - (CFG.metricsWindowHours * 3600 * 1000);
   const modes = ['Eco', 'Standard', 'Standby'];
   const totals = { Eco: 0, Standard: 0, Standby: 0 };
-
-  if (!history.length) {
-    return { changeCount: 0, dwellMinutes: 0, pct: totals };
-  }
-
+  if (!history.length) return { changeCount: 0, dwellMinutes: 0, pct: totals };
   const entries = history.slice();
-  if (entries[0].ts > windowStart) {
-    entries.unshift({ ts: windowStart, mode: entries[0].mode });
-  }
-
+  if (entries[0].ts > windowStart) entries.unshift({ ts: windowStart, mode: entries[0].mode });
   for (let i = 0; i < entries.length; i += 1) {
     const cur = entries[i];
     const end = (i + 1 < entries.length) ? entries[i + 1].ts : now;
     const durMs = Math.max(0, end - cur.ts);
-    if (modes.includes(cur.mode)) {
-      totals[cur.mode] += durMs;
-    }
+    if (modes.includes(cur.mode)) totals[cur.mode] += durMs;
   }
-
   const totalMs = CFG.metricsWindowHours * 3600 * 1000;
   const pct = {
     Eco: (totals.Eco / totalMs) * 100,
     Standard: (totals.Standard / totalMs) * 100,
     Standby: (totals.Standby / totalMs) * 100,
   };
-
   const changeCount = Math.max(0, history.length - 1);
   const last = history[history.length - 1];
   const dwellMinutes = currentMode === last.mode ? ((now - last.ts) / 60000.0) : 0;
-
   return { changeCount, dwellMinutes, pct };
 }
 
 function decideMode(ctx) {
-  const {
-    soc,
-    expectedPvWatts,
-    availableWatts,
-    slope15m,
-    slope15mSustainMinutes,
-  } = ctx;
-
-  if (soc <= CFG.standbyHardLowSoc) {
-    return { mode: 'Standby', reason: 'soc_hard_low' };
-  }
-  if (soc < CFG.standbyLowSoc) {
-    return { mode: 'Standby', reason: 'soc_low' };
-  }
+  const { soc, expectedPvWatts, availableWatts, slope15m, slope15mSustainMinutes } = ctx;
+  if (soc <= CFG.standbyHardLowSoc) return { mode: 'Standby', reason: 'soc_hard_low' };
+  if (soc < CFG.standbyLowSoc) return { mode: 'Standby', reason: 'soc_low' };
   if (slope15m <= CFG.standbySlope15mThreshold && slope15mSustainMinutes >= CFG.standbySlopeSustainMinutes) {
     return { mode: 'Standby', reason: 'irradiance_drop_sustained' };
   }
-  if (soc >= CFG.dumpLoadMinSoc) {
-    return { mode: 'Eco', reason: 'high_soc_dump_load' };
-  }
-  if (
-    expectedPvWatts > CFG.standardExpectedPvWatts &&
-    availableWatts > 1000 &&
-    soc > CFG.standardMinSoc &&
-    slope15m > CFG.standardSlope15mFloor
-  ) {
+  if (soc >= CFG.dumpLoadMinSoc) return { mode: 'Eco', reason: 'high_soc_dump_load' };
+  if (expectedPvWatts > CFG.standardExpectedPvWatts && availableWatts > 1000 && soc > CFG.standardMinSoc && slope15m > CFG.standardSlope15mFloor) {
     return { mode: 'Standard', reason: 'strong_solar' };
   }
   if (expectedPvWatts > CFG.ecoExpectedPvWatts && soc > CFG.ecoMinSoc) {
@@ -262,16 +212,14 @@ function decideMode(ctx) {
   return { mode: 'Standby', reason: 'insufficient_margin' };
 }
 
-function runDryPolicy() {
+(function runDryPolicy() {
   const irradiance = getNumericState(CFG.irradianceItem);
   const ambientRaw = getNumericState(CFG.ambientTempItem);
   const ambientC = fahrenheitToCelsiusIfNeeded(ambientRaw);
   const pvActual = getNumericState(CFG.pvActualItem, 0);
   const soc = getEffectiveSoc();
   const charging = getBoolState(CFG.chargingItem, false);
-  const chargerStatus = (() => {
-    try { return String(items.getItem(CFG.chargerStatusItem).state); } catch (e) { return ''; }
-  })();
+  const chargerStatus = (() => { try { return String(items.getItem(CFG.chargerStatusItem).state); } catch (e) { return ''; } })();
   const dcVoltage = getNumericState(CFG.dcVoltageItem);
 
   if (!Number.isFinite(irradiance) || !Number.isFinite(soc) || !Number.isFinite(ambientC)) {
@@ -284,20 +232,12 @@ function runDryPolicy() {
   const slope3m = computeWindowSlope(samples, CFG.slopeShortWindowMinutes);
   const slope15m = computeWindowSlope(samples, CFG.slopeLongWindowMinutes);
   const slope15mSustainMinutes = updateNegativeSlopeSustain(slope15m);
-
   const cellTempC = computeCellTempEstimateC(ambientC, avg5m);
   const expectedPvWatts = computeExpectedPvWatts(avg5m, cellTempC);
   const availableWatts = Math.max(0, expectedPvWatts - CFG.baselineHouseLoadWatts);
   const curtailmentRatio = expectedPvWatts > 0 ? (pvActual / expectedPvWatts) : 0;
 
-  const decision = decideMode({
-    soc,
-    expectedPvWatts,
-    availableWatts,
-    slope15m,
-    slope15mSustainMinutes,
-  });
-
+  const decision = decideMode({ soc, expectedPvWatts, availableWatts, slope15m, slope15mSustainMinutes });
   const history = updateModeHistory(decision.mode);
   const metrics = computeModeMetrics(history, decision.mode);
 
@@ -341,27 +281,5 @@ function runDryPolicy() {
   post(itemName('DryRun_ModeDecision'), detail);
   post(itemName('DryRun_Status'), 'enabled-dry-run-no-command-output');
   post(itemName('LoadDecision'), `dryrun:${detail}`);
-
   console.info(`AvalonQ dry-run decision: ${detail}`);
-}
-
-rules.JSRule({
-  name: 'AvalonQ Irradiance Dry Run',
-  description: 'Dry-run only. Computes intended Avalon mode from irradiance, ambient temp, PV output, and SoC without sending miner commands.',
-  triggers: [
-    triggers.ItemStateChangeTrigger(CFG.irradianceItem),
-    triggers.ItemStateChangeTrigger(CFG.ambientTempItem),
-    triggers.ItemStateChangeTrigger(CFG.pvActualItem),
-    triggers.ItemStateChangeTrigger(CFG.socFallbackItem),
-    triggers.ItemStateChangeTrigger(CFG.chargingItem),
-    triggers.GenericCronTrigger('0 */5 * * * ?'),
-  ],
-  execute: () => {
-    try {
-      runDryPolicy();
-    } catch (e) {
-      console.warn(`AvalonQ irradiance dry-run failed: ${e}`);
-      post(itemName('DryRun_Status'), `error:${e}`);
-    }
-  },
-});
+})();

@@ -57,17 +57,18 @@ To support this future policy, these placeholder Avalon items were created:
 
 These are scaffold items only right now.
 
-## Real dry-run rule added in openHAB, but kept disabled
+## Real dry-run rule added in openHAB and enabled
 
-A disabled real dry-run rule was created:
+A real dry-run rule is now present in the live system:
 - `hex_avalonq_irradiance_dry_run`
 - name: `AvalonQ Irradiance Dry Run`
 
 Important properties:
 - contains the actual first-pass irradiance-aware decision logic
+- uses `AmbientWeatherWS2902A_WeatherDataWs2902a_Temperature` as the ambient input to an explicit NOCT cell-temperature estimate
 - updates the Avalon dry-run items and logs intended mode decisions
 - never sends miner commands
-- remains intentionally disabled for now, consistent with the current pre-hardware strategy
+- is now enabled in openHAB because it is dry-run only and safe before hardware arrival
 
 ## Recommended mapping for the eventual dry-run/live policy
 
