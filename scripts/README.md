@@ -36,3 +36,19 @@ What it reports:
 - daily lost kWh during high-irradiance windows
 - mean and max expected-vs-actual gap
 - median curtailment ratio per day
+
+## `avalon_weekly_lost_harvest.py`
+
+Aggregates the same lost-harvest analysis at ISO week granularity.
+
+Example:
+
+```bash
+OPENHAB_TOKEN='YOUR_TOKEN' python3 scripts/avalon_weekly_lost_harvest.py --pretty
+```
+
+What it reports:
+- weekly lost kWh
+- weekly lost kWh during high-irradiance windows
+- weekly mean and max expected-vs-actual gap
+- weekly median curtailment ratios
