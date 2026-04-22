@@ -30,8 +30,7 @@
                   {"component": "oh-grid-col", "config": {"width": "17"}, "slots": {"default": [{"component": "oh-label-card", "config": {"item": "AvalonQ_Miner1_Availability", "title": "Avalon Availability", "outline": true}}]}},
                   {"component": "oh-grid-col", "config": {"width": "16"}, "slots": {"default": [{"component": "oh-label-card", "config": {"item": "AvalonQ_Miner1_Workmode", "title": "Avalon Workmode", "outline": true}}]}},
                   {"component": "oh-grid-col", "config": {"width": "17"}, "slots": {"default": [{"component": "oh-label-card", "config": {"item": "AvalonQ_Miner1_DryRun_ThrashAlert", "title": "Thrash Alert", "outline": true, "fontWeight": "bold", "label": "=(items.AvalonQ_Miner1_DryRun_ThrashAlert.state === 'normal') ? 'normal' : items.AvalonQ_Miner1_DryRun_ThrashAlert.state", "style": {"background": "=(items.AvalonQ_Miner1_DryRun_ThrashAlert.state === 'normal') ? '#1b5e20' : '#8e0000'", "color": "#ffffff"}}}]}},
-                  {"component": "oh-grid-col", "config": {"width": "16"}, "slots": {"default": [{"component": "oh-toggle-card", "config": {"item": "AvalonQ_Miner1_LoadManagement_Enable", "title": "Load Mgmt", "outline": true}}]}},
-                  {"component": "oh-grid-col", "config": {"width": "17"}, "slots": {"default": [{"component": "oh-toggle-card", "config": {"item": "AvalonQ_Miner1_PowerRelay_Set", "title": "Power Relay", "outline": true}}]}}
+                  {"component": "oh-grid-col", "config": {"width": "17"}, "slots": {"default": [{"component": "oh-toggle-card", "config": {"item": "AvalonQ_Miner1_LoadManagement_Enable", "title": "Load Mgmt", "outline": true}}]}}
                 ]
               }
             }
