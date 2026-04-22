@@ -1,13 +1,4 @@
 /*
- * GENERATED FILE — do not edit directly.
- *
- * Canonical source of policy logic:
- * openhab/examples/avalonq-dryrun-policy-core.js
- *
- * This inline action body is for the REST-managed live openHAB rule.
- */
-
-/*
  * Canonical shared policy source for the Avalon Q irradiance-aware dry-run model.
  *
  * This file is the single source of truth for the dry-run policy logic.
@@ -366,5 +357,4 @@ function runDryPolicy() {
   console.info(`AvalonQ dry-run decision: ${detail}`);
 }
 
-
-runDryPolicy();
+module.exports = { CFG, runDryPolicy };

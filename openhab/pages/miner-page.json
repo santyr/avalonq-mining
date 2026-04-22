@@ -222,29 +222,21 @@
                 "default": [
                   {
                     "component": "oh-grid-col",
-                    "config": {},
+                    "config": {"width": "50"},
                     "slots": {
                       "default": [
                         {
                           "component": "oh-webframe-card",
                           "config": {
                             "title": "Expected vs Actual PV",
-                            "height": "360px",
+                            "height": "320px",
                             "src": "/page/Miner_Avalon_PV_Chart",
                             "outline": true
                           }
                         }
                       ]
                     }
-                  }
-                ]
-              }
-            },
-            {
-              "component": "oh-grid-row",
-              "config": {},
-              "slots": {
-                "default": [
+                  },
                   {
                     "component": "oh-grid-col",
                     "config": {"width": "50"},
@@ -261,10 +253,18 @@
                         }
                       ]
                     }
-                  },
+                  }
+                ]
+              }
+            },
+            {
+              "component": "oh-grid-row",
+              "config": {},
+              "slots": {
+                "default": [
                   {
                     "component": "oh-grid-col",
-                    "config": {"width": "50"},
+                    "config": {},
                     "slots": {
                       "default": [
                         {

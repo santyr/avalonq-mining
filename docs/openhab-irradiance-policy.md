@@ -72,6 +72,7 @@ Important properties:
 - keeps dry-run charger gating aligned with the live control policy
 - updates its cache-backed irradiance series only on irradiance changes and the periodic cron tick, reducing read-modify-write races from unrelated triggers
 - uses least-squares slope calculations over the full sample window instead of only first/last endpoints
+- now has a canonical shared source file in the repo: `openhab/examples/avalonq-dryrun-policy-core.js`
 
 ## Recommended mapping for the eventual dry-run/live policy
 
