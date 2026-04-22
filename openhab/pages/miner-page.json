@@ -1,0 +1,200 @@
+{
+  "uid": "Miner_Page",
+  "tags": ["mining", "avalonq"],
+  "props": {
+    "parameters": [],
+    "parameterGroups": []
+  },
+  "component": "oh-layout-page",
+  "config": {
+    "label": "Miner"
+  },
+  "slots": {
+    "canvas": [],
+    "grid": [],
+    "masonry": [],
+    "default": [
+      {
+        "component": "f7-block-title",
+        "config": {
+          "title": "Current Miner"
+        }
+      },
+      {
+        "component": "oh-grid-cells",
+        "config": {
+          "cellsPerRow": 2,
+          "layout": "fixed"
+        },
+        "slots": {
+          "default": [
+            {
+              "component": "oh-toggle-card",
+              "config": {
+                "item": "Miner_Power",
+                "title": "Existing Miner Power"
+              }
+            },
+            {
+              "component": "oh-label-card",
+              "config": {
+                "item": "BatterySoC_Calculated",
+                "title": "Battery SoC"
+              }
+            },
+            {
+              "component": "oh-label-card",
+              "config": {
+                "item": "PV_Power",
+                "title": "PV Power"
+              }
+            },
+            {
+              "component": "oh-label-card",
+              "config": {
+                "item": "AmbientWeatherWS2902A_SolarRadiation",
+                "title": "Solar Irradiance"
+              }
+            }
+          ]
+        }
+      },
+      {
+        "component": "f7-block-title",
+        "config": {
+          "title": "Avalon Q Dry Run"
+        }
+      },
+      {
+        "component": "oh-grid-cells",
+        "config": {
+          "cellsPerRow": 2,
+          "layout": "fixed"
+        },
+        "slots": {
+          "default": [
+            {
+              "component": "oh-label-card",
+              "config": {
+                "item": "AvalonQ_Miner1_DryRun_Status",
+                "title": "Dry Run Status"
+              }
+            },
+            {
+              "component": "oh-label-card",
+              "config": {
+                "item": "AvalonQ_Miner1_DryRun_ModeDecision",
+                "title": "Mode Decision"
+              }
+            },
+            {
+              "component": "oh-label-card",
+              "config": {
+                "item": "AvalonQ_Miner1_Workmode",
+                "title": "Avalon Workmode"
+              }
+            },
+            {
+              "component": "oh-label-card",
+              "config": {
+                "item": "AvalonQ_Miner1_Availability",
+                "title": "Avalon Availability"
+              }
+            },
+            {
+              "component": "oh-toggle-card",
+              "config": {
+                "item": "AvalonQ_Miner1_LoadManagement_Enable",
+                "title": "Avalon Load Management"
+              }
+            },
+            {
+              "component": "oh-label-card",
+              "config": {
+                "item": "AvalonQ_Miner1_SoC_Effective",
+                "title": "Effective SoC"
+              }
+            },
+            {
+              "component": "oh-label-card",
+              "config": {
+                "item": "AvalonQ_Miner1_PV_Expected_Watts",
+                "title": "Expected PV"
+              }
+            },
+            {
+              "component": "oh-label-card",
+              "config": {
+                "item": "AvalonQ_Miner1_PV_Actual_Watts",
+                "title": "Actual PV"
+              }
+            },
+            {
+              "component": "oh-label-card",
+              "config": {
+                "item": "AvalonQ_Miner1_PV_Curtailment_Ratio",
+                "title": "Curtailment Ratio"
+              }
+            },
+            {
+              "component": "oh-label-card",
+              "config": {
+                "item": "AvalonQ_Miner1_Panel_CellTemp_Estimate",
+                "title": "Cell Temp Estimate"
+              }
+            },
+            {
+              "component": "oh-label-card",
+              "config": {
+                "item": "AvalonQ_Miner1_SolarIrradiance_5minAvg",
+                "title": "Irradiance 5m Avg"
+              }
+            },
+            {
+              "component": "oh-label-card",
+              "config": {
+                "item": "AvalonQ_Miner1_SolarIrradiance_Slope_15min",
+                "title": "Irradiance Slope 15m"
+              }
+            },
+            {
+              "component": "oh-label-card",
+              "config": {
+                "item": "AvalonQ_Miner1_DryRun_ModeChanges_24h",
+                "title": "Mode Changes 24h"
+              }
+            },
+            {
+              "component": "oh-label-card",
+              "config": {
+                "item": "AvalonQ_Miner1_DryRun_DwellTime_Current",
+                "title": "Current Dwell"
+              }
+            },
+            {
+              "component": "oh-label-card",
+              "config": {
+                "item": "AvalonQ_Miner1_DryRun_Eco_Pct_24h",
+                "title": "Eco 24h"
+              }
+            },
+            {
+              "component": "oh-label-card",
+              "config": {
+                "item": "AvalonQ_Miner1_DryRun_Standard_Pct_24h",
+                "title": "Standard 24h"
+              }
+            },
+            {
+              "component": "oh-label-card",
+              "config": {
+                "item": "AvalonQ_Miner1_DryRun_Standby_Pct_24h",
+                "title": "Standby 24h"
+              }
+            }
+          ]
+        }
+      }
+    ]
+  }
+}
