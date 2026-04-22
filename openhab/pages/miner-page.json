@@ -7,7 +7,8 @@
   },
   "component": "oh-layout-page",
   "config": {
-    "label": "Miner"
+    "label": "Miner",
+    "sidebar": true
   },
   "slots": {
     "canvas": [],
@@ -15,225 +16,213 @@
     "masonry": [],
     "default": [
       {
-        "component": "f7-block-title",
-        "config": {
-          "title": "Current Miner"
-        }
-      },
-      {
-        "component": "oh-grid-cells",
-        "config": {
-          "cellsPerRow": 2,
-          "layout": "fixed"
-        },
+        "component": "oh-block",
+        "config": {},
         "slots": {
           "default": [
             {
-              "component": "oh-toggle-card",
+              "component": "f7-block-title",
               "config": {
-                "item": "Miner_Power",
-                "title": "Existing Miner Power"
+                "title": "Current Miner"
               }
             },
             {
-              "component": "oh-label-card",
-              "config": {
-                "item": "BatterySoC_Calculated",
-                "title": "Battery SoC"
-              }
-            },
-            {
-              "component": "oh-label-card",
-              "config": {
-                "item": "PV_Power",
-                "title": "PV Power"
-              }
-            },
-            {
-              "component": "oh-label-card",
-              "config": {
-                "item": "AmbientWeatherWS2902A_SolarRadiation",
-                "title": "Solar Irradiance"
+              "component": "oh-grid-row",
+              "config": {},
+              "slots": {
+                "default": [
+                  {
+                    "component": "oh-grid-col",
+                    "config": {"width": "25"},
+                    "slots": {"default": [{"component": "oh-toggle-card", "config": {"item": "Miner_Power", "title": "Existing Miner Power", "outline": true}}]}
+                  },
+                  {
+                    "component": "oh-grid-col",
+                    "config": {"width": "25"},
+                    "slots": {"default": [{"component": "oh-label-card", "config": {"item": "BatterySoC_Calculated", "title": "Battery SoC", "outline": true, "trendItem": "BatterySoC_Calculated"}}]}
+                  },
+                  {
+                    "component": "oh-grid-col",
+                    "config": {"width": "25"},
+                    "slots": {"default": [{"component": "oh-label-card", "config": {"item": "PV_Power", "title": "PV Power", "outline": true, "trendItem": "PV_Power"}}]}
+                  },
+                  {
+                    "component": "oh-grid-col",
+                    "config": {"width": "25"},
+                    "slots": {"default": [{"component": "oh-label-card", "config": {"item": "AmbientWeatherWS2902A_SolarRadiation", "title": "Solar Irradiance", "outline": true, "trendItem": "AmbientWeatherWS2902A_SolarRadiation"}}]}
+                  }
+                ]
               }
             }
           ]
         }
       },
       {
-        "component": "f7-block-title",
-        "config": {
-          "title": "Avalon Q Dry Run"
-        }
-      },
-      {
-        "component": "oh-grid-cells",
-        "config": {
-          "cellsPerRow": 2,
-          "layout": "fixed"
-        },
+        "component": "oh-block",
+        "config": {},
         "slots": {
           "default": [
             {
-              "component": "oh-label-card",
+              "component": "f7-block-title",
               "config": {
-                "item": "AvalonQ_Miner1_DryRun_Status",
-                "title": "Dry Run Status"
+                "title": "Avalon Q Dry Run"
               }
             },
             {
-              "component": "oh-label-card",
-              "config": {
-                "item": "AvalonQ_Miner1_DryRun_ModeDecision",
-                "title": "Mode Decision"
+              "component": "oh-grid-row",
+              "config": {},
+              "slots": {
+                "default": [
+                  {
+                    "component": "oh-grid-col",
+                    "config": {"width": "25"},
+                    "slots": {"default": [{"component": "oh-label-card", "config": {"item": "AvalonQ_Miner1_DryRun_Status", "title": "Dry Run Status", "outline": true}}]}
+                  },
+                  {
+                    "component": "oh-grid-col",
+                    "config": {"width": "25"},
+                    "slots": {"default": [{"component": "oh-label-card", "config": {"item": "AvalonQ_Miner1_Workmode", "title": "Avalon Workmode", "outline": true}}]}
+                  },
+                  {
+                    "component": "oh-grid-col",
+                    "config": {"width": "25"},
+                    "slots": {"default": [{"component": "oh-label-card", "config": {"item": "AvalonQ_Miner1_Availability", "title": "Availability", "outline": true}}]}
+                  },
+                  {
+                    "component": "oh-grid-col",
+                    "config": {"width": "25"},
+                    "slots": {"default": [{"component": "oh-toggle-card", "config": {"item": "AvalonQ_Miner1_LoadManagement_Enable", "title": "Load Management", "outline": true}}]}
+                  }
+                ]
               }
             },
             {
-              "component": "oh-label-card",
-              "config": {
-                "item": "AvalonQ_Miner1_Workmode",
-                "title": "Avalon Workmode"
+              "component": "oh-grid-row",
+              "config": {},
+              "slots": {
+                "default": [
+                  {
+                    "component": "oh-grid-col",
+                    "config": {"width": "25"},
+                    "slots": {"default": [{"component": "oh-label-card", "config": {"item": "AvalonQ_Miner1_SoC_Effective", "title": "Effective SoC", "outline": true, "trendItem": "AvalonQ_Miner1_SoC_Effective"}}]}
+                  },
+                  {
+                    "component": "oh-grid-col",
+                    "config": {"width": "25"},
+                    "slots": {"default": [{"component": "oh-label-card", "config": {"item": "AvalonQ_Miner1_PV_Expected_Watts", "title": "Expected PV", "outline": true, "trendItem": "AvalonQ_Miner1_PV_Expected_Watts"}}]}
+                  },
+                  {
+                    "component": "oh-grid-col",
+                    "config": {"width": "25"},
+                    "slots": {"default": [{"component": "oh-label-card", "config": {"item": "AvalonQ_Miner1_PV_Actual_Watts", "title": "Actual PV", "outline": true, "trendItem": "AvalonQ_Miner1_PV_Actual_Watts"}}]}
+                  },
+                  {
+                    "component": "oh-grid-col",
+                    "config": {"width": "25"},
+                    "slots": {"default": [{"component": "oh-label-card", "config": {"item": "AvalonQ_Miner1_PV_Curtailment_Ratio", "title": "Curtailment Ratio", "outline": true, "trendItem": "AvalonQ_Miner1_PV_Curtailment_Ratio"}}]}
+                  }
+                ]
               }
             },
             {
-              "component": "oh-label-card",
-              "config": {
-                "item": "AvalonQ_Miner1_Availability",
-                "title": "Avalon Availability"
+              "component": "oh-grid-row",
+              "config": {},
+              "slots": {
+                "default": [
+                  {
+                    "component": "oh-grid-col",
+                    "config": {"width": "25"},
+                    "slots": {"default": [{"component": "oh-label-card", "config": {"item": "AvalonQ_Miner1_Panel_CellTemp_Estimate", "title": "Cell Temp Estimate", "outline": true, "trendItem": "AvalonQ_Miner1_Panel_CellTemp_Estimate"}}]}
+                  },
+                  {
+                    "component": "oh-grid-col",
+                    "config": {"width": "25"},
+                    "slots": {"default": [{"component": "oh-label-card", "config": {"item": "AvalonQ_Miner1_SolarIrradiance_5minAvg", "title": "Irradiance 5m Avg", "outline": true, "trendItem": "AvalonQ_Miner1_SolarIrradiance_5minAvg"}}]}
+                  },
+                  {
+                    "component": "oh-grid-col",
+                    "config": {"width": "25"},
+                    "slots": {"default": [{"component": "oh-label-card", "config": {"item": "AvalonQ_Miner1_SolarIrradiance_Slope_15min", "title": "Slope 15m", "outline": true, "trendItem": "AvalonQ_Miner1_SolarIrradiance_Slope_15min"}}]}
+                  },
+                  {
+                    "component": "oh-grid-col",
+                    "config": {"width": "25"},
+                    "slots": {"default": [{"component": "oh-label-card", "config": {"item": "AvalonQ_Miner1_DryRun_ModeChanges_24h", "title": "Mode Changes 24h", "outline": true, "trendItem": "AvalonQ_Miner1_DryRun_ModeChanges_24h"}}]}
+                  }
+                ]
               }
             },
             {
-              "component": "oh-toggle-card",
-              "config": {
-                "item": "AvalonQ_Miner1_LoadManagement_Enable",
-                "title": "Avalon Load Management"
+              "component": "oh-grid-row",
+              "config": {},
+              "slots": {
+                "default": [
+                  {
+                    "component": "oh-grid-col",
+                    "config": {"width": "34"},
+                    "slots": {"default": [{"component": "oh-label-card", "config": {"item": "AvalonQ_Miner1_DryRun_Eco_Pct_24h", "title": "Eco 24h", "outline": true, "trendItem": "AvalonQ_Miner1_DryRun_Eco_Pct_24h"}}]}
+                  },
+                  {
+                    "component": "oh-grid-col",
+                    "config": {"width": "33"},
+                    "slots": {"default": [{"component": "oh-label-card", "config": {"item": "AvalonQ_Miner1_DryRun_Standard_Pct_24h", "title": "Standard 24h", "outline": true, "trendItem": "AvalonQ_Miner1_DryRun_Standard_Pct_24h"}}]}
+                  },
+                  {
+                    "component": "oh-grid-col",
+                    "config": {"width": "33"},
+                    "slots": {"default": [{"component": "oh-label-card", "config": {"item": "AvalonQ_Miner1_DryRun_Standby_Pct_24h", "title": "Standby 24h", "outline": true, "trendItem": "AvalonQ_Miner1_DryRun_Standby_Pct_24h"}}]}
+                  }
+                ]
               }
             },
             {
-              "component": "oh-label-card",
-              "config": {
-                "item": "AvalonQ_Miner1_SoC_Effective",
-                "title": "Effective SoC"
-              }
-            },
-            {
-              "component": "oh-label-card",
-              "config": {
-                "item": "AvalonQ_Miner1_PV_Expected_Watts",
-                "title": "Expected PV"
-              }
-            },
-            {
-              "component": "oh-label-card",
-              "config": {
-                "item": "AvalonQ_Miner1_PV_Actual_Watts",
-                "title": "Actual PV"
-              }
-            },
-            {
-              "component": "oh-label-card",
-              "config": {
-                "item": "AvalonQ_Miner1_PV_Curtailment_Ratio",
-                "title": "Curtailment Ratio"
-              }
-            },
-            {
-              "component": "oh-label-card",
-              "config": {
-                "item": "AvalonQ_Miner1_Panel_CellTemp_Estimate",
-                "title": "Cell Temp Estimate"
-              }
-            },
-            {
-              "component": "oh-label-card",
-              "config": {
-                "item": "AvalonQ_Miner1_SolarIrradiance_5minAvg",
-                "title": "Irradiance 5m Avg"
-              }
-            },
-            {
-              "component": "oh-label-card",
-              "config": {
-                "item": "AvalonQ_Miner1_SolarIrradiance_Slope_15min",
-                "title": "Irradiance Slope 15m"
-              }
-            },
-            {
-              "component": "oh-label-card",
-              "config": {
-                "item": "AvalonQ_Miner1_DryRun_ModeChanges_24h",
-                "title": "Mode Changes 24h"
-              }
-            },
-            {
-              "component": "oh-label-card",
-              "config": {
-                "item": "AvalonQ_Miner1_DryRun_DwellTime_Current",
-                "title": "Current Dwell"
-              }
-            },
-            {
-              "component": "oh-label-card",
-              "config": {
-                "item": "AvalonQ_Miner1_DryRun_Eco_Pct_24h",
-                "title": "Eco 24h"
-              }
-            },
-            {
-              "component": "oh-label-card",
-              "config": {
-                "item": "AvalonQ_Miner1_DryRun_Standard_Pct_24h",
-                "title": "Standard 24h"
-              }
-            },
-            {
-              "component": "oh-label-card",
-              "config": {
-                "item": "AvalonQ_Miner1_DryRun_Standby_Pct_24h",
-                "title": "Standby 24h"
+              "component": "oh-grid-row",
+              "config": {},
+              "slots": {
+                "default": [
+                  {
+                    "component": "oh-grid-col",
+                    "config": {},
+                    "slots": {"default": [{"component": "oh-label-card", "config": {"item": "AvalonQ_Miner1_DryRun_ModeDecision", "title": "Mode Decision", "outline": true, "fontSize": "12px"}}]}
+                  }
+                ]
               }
             }
           ]
         }
       },
       {
-        "component": "f7-block-title",
-        "config": {
-          "title": "Charts"
-        }
-      },
-      {
-        "component": "oh-grid-cells",
-        "config": {
-          "cellsPerRow": 3,
-          "layout": "fixed"
-        },
+        "component": "oh-block",
+        "config": {},
         "slots": {
           "default": [
             {
-              "component": "oh-link-card",
+              "component": "f7-block-title",
               "config": {
-                "title": "Expected vs Actual PV",
-                "iconF7": "chart_bar_square",
-                "action": "navigate",
-                "actionPage": "Miner_Avalon_PV_Chart"
+                "title": "Charts"
               }
             },
             {
-              "component": "oh-link-card",
-              "config": {
-                "title": "Curtailment Ratio",
-                "iconF7": "chart_pie",
-                "action": "navigate",
-                "actionPage": "Miner_Avalon_Curtailment_Chart"
-              }
-            },
-            {
-              "component": "oh-link-card",
-              "config": {
-                "title": "Irradiance & Slopes",
-                "iconF7": "sun_max",
-                "action": "navigate",
-                "actionPage": "Miner_Avalon_Irradiance_Chart"
+              "component": "oh-grid-row",
+              "config": {},
+              "slots": {
+                "default": [
+                  {
+                    "component": "oh-grid-col",
+                    "config": {"width": "33"},
+                    "slots": {"default": [{"component": "oh-link-card", "config": {"title": "Expected vs Actual PV", "iconF7": "chart_bar_square", "action": "navigate", "actionPage": "Miner_Avalon_PV_Chart", "outline": true}}]}
+                  },
+                  {
+                    "component": "oh-grid-col",
+                    "config": {"width": "33"},
+                    "slots": {"default": [{"component": "oh-link-card", "config": {"title": "Curtailment Ratio", "iconF7": "chart_pie", "action": "navigate", "actionPage": "Miner_Avalon_Curtailment_Chart", "outline": true}}]}
+                  },
+                  {
+                    "component": "oh-grid-col",
+                    "config": {"width": "33"},
+                    "slots": {"default": [{"component": "oh-link-card", "config": {"title": "Irradiance & Slopes", "iconF7": "sun_max", "action": "navigate", "actionPage": "Miner_Avalon_Irradiance_Chart", "outline": true}}]}
+                  }
+                ]
               }
             }
           ]
