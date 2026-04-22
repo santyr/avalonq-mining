@@ -1,0 +1,135 @@
+{
+  "uid": "Avalon_Details_Page",
+  "tags": ["mining", "avalonq", "details"],
+  "props": {
+    "parameters": [],
+    "parameterGroups": []
+  },
+  "component": "oh-layout-page",
+  "config": {
+    "label": "Avalon Details",
+    "sidebar": true
+  },
+  "slots": {
+    "canvas": [],
+    "grid": [],
+    "masonry": [],
+    "default": [
+      {
+        "component": "oh-block",
+        "config": {},
+        "slots": {
+          "default": [
+            {"component": "f7-block-title", "config": {"title": "Miner Telemetry"}},
+            {
+              "component": "oh-grid-row",
+              "config": {},
+              "slots": {
+                "default": [
+                  {"component": "oh-grid-col", "config": {"width": "20"}, "slots": {"default": [{"component": "oh-label-card", "config": {"item": "AvalonQ_Miner1_HashrateTHS", "title": "Hashrate", "outline": true}}]}},
+                  {"component": "oh-grid-col", "config": {"width": "20"}, "slots": {"default": [{"component": "oh-label-card", "config": {"item": "AvalonQ_Miner1_PowerW", "title": "Miner Power", "outline": true}}]}},
+                  {"component": "oh-grid-col", "config": {"width": "20"}, "slots": {"default": [{"component": "oh-label-card", "config": {"item": "AvalonQ_Miner1_EfficiencyJTH", "title": "Efficiency", "outline": true}}]}},
+                  {"component": "oh-grid-col", "config": {"width": "20"}, "slots": {"default": [{"component": "oh-label-card", "config": {"item": "AvalonQ_Miner1_PingMS", "title": "Ping", "outline": true}}]}},
+                  {"component": "oh-grid-col", "config": {"width": "20"}, "slots": {"default": [{"component": "oh-label-card", "config": {"item": "AvalonQ_Miner1_PoolOnline", "title": "Pool Online", "outline": true}}]}}
+                ]
+              }
+            },
+            {
+              "component": "oh-grid-row",
+              "config": {},
+              "slots": {
+                "default": [
+                  {"component": "oh-grid-col", "config": {"width": "20"}, "slots": {"default": [{"component": "oh-label-card", "config": {"item": "AvalonQ_Miner1_InternalTemp", "title": "Internal Temp", "outline": true}}]}},
+                  {"component": "oh-grid-col", "config": {"width": "20"}, "slots": {"default": [{"component": "oh-label-card", "config": {"item": "AvalonQ_Miner1_InletTemp", "title": "Inlet Temp", "outline": true}}]}},
+                  {"component": "oh-grid-col", "config": {"width": "20"}, "slots": {"default": [{"component": "oh-label-card", "config": {"item": "AvalonQ_Miner1_OutletTemp", "title": "Outlet Temp", "outline": true}}]}},
+                  {"component": "oh-grid-col", "config": {"width": "20"}, "slots": {"default": [{"component": "oh-label-card", "config": {"item": "AvalonQ_Miner1_AvgChipTemp", "title": "Avg Chip Temp", "outline": true}}]}},
+                  {"component": "oh-grid-col", "config": {"width": "20"}, "slots": {"default": [{"component": "oh-label-card", "config": {"item": "AvalonQ_Miner1_MaxChipTemp", "title": "Max Chip Temp", "outline": true}}]}}
+                ]
+              }
+            },
+            {
+              "component": "oh-grid-row",
+              "config": {},
+              "slots": {
+                "default": [
+                  {"component": "oh-grid-col", "config": {"width": "25"}, "slots": {"default": [{"component": "oh-label-card", "config": {"item": "AvalonQ_Miner1_Fan1RPM", "title": "Fan 1", "outline": true}}]}},
+                  {"component": "oh-grid-col", "config": {"width": "25"}, "slots": {"default": [{"component": "oh-label-card", "config": {"item": "AvalonQ_Miner1_Fan2RPM", "title": "Fan 2", "outline": true}}]}},
+                  {"component": "oh-grid-col", "config": {"width": "25"}, "slots": {"default": [{"component": "oh-label-card", "config": {"item": "AvalonQ_Miner1_Fan3RPM", "title": "Fan 3", "outline": true}}]}},
+                  {"component": "oh-grid-col", "config": {"width": "25"}, "slots": {"default": [{"component": "oh-label-card", "config": {"item": "AvalonQ_Miner1_Fan4RPM", "title": "Fan 4", "outline": true}}]}}
+                ]
+              }
+            }
+          ]
+        }
+      },
+      {
+        "component": "oh-block",
+        "config": {},
+        "slots": {
+          "default": [
+            {"component": "f7-block-title", "config": {"title": "Shares and Pool Stats"}},
+            {
+              "component": "oh-grid-row",
+              "config": {},
+              "slots": {
+                "default": [
+                  {"component": "oh-grid-col", "config": {"width": "20"}, "slots": {"default": [{"component": "oh-label-card", "config": {"item": "AvalonQ_Miner1_AcceptedShares", "title": "Accepted", "outline": true}}]}},
+                  {"component": "oh-grid-col", "config": {"width": "20"}, "slots": {"default": [{"component": "oh-label-card", "config": {"item": "AvalonQ_Miner1_RejectedShares", "title": "Rejected", "outline": true}}]}},
+                  {"component": "oh-grid-col", "config": {"width": "20"}, "slots": {"default": [{"component": "oh-label-card", "config": {"item": "AvalonQ_Miner1_HardwareErrors", "title": "HW Errors", "outline": true}}]}},
+                  {"component": "oh-grid-col", "config": {"width": "20"}, "slots": {"default": [{"component": "oh-label-card", "config": {"item": "AvalonQ_Miner1_RejectionRate", "title": "Reject Rate", "outline": true}}]}},
+                  {"component": "oh-grid-col", "config": {"width": "20"}, "slots": {"default": [{"component": "oh-label-card", "config": {"item": "AvalonQ_Miner1_PoolURL", "title": "Pool URL", "outline": true}}]}}
+                ]
+              }
+            }
+          ]
+        }
+      },
+      {
+        "component": "oh-block",
+        "config": {},
+        "slots": {
+          "default": [
+            {"component": "f7-block-title", "config": {"title": "Firmware and Identity"}},
+            {
+              "component": "oh-grid-row",
+              "config": {},
+              "slots": {
+                "default": [
+                  {"component": "oh-grid-col", "config": {"width": "17"}, "slots": {"default": [{"component": "oh-label-card", "config": {"item": "AvalonQ_Miner1_Firmware", "title": "Firmware", "outline": true}}]}},
+                  {"component": "oh-grid-col", "config": {"width": "17"}, "slots": {"default": [{"component": "oh-label-card", "config": {"item": "AvalonQ_Miner1_APIVersion", "title": "API Version", "outline": true}}]}},
+                  {"component": "oh-grid-col", "config": {"width": "17"}, "slots": {"default": [{"component": "oh-label-card", "config": {"item": "AvalonQ_Miner1_CGMinerVersion", "title": "CGMiner", "outline": true}}]}},
+                  {"component": "oh-grid-col", "config": {"width": "17"}, "slots": {"default": [{"component": "oh-label-card", "config": {"item": "AvalonQ_Miner1_Model", "title": "Model", "outline": true}}]}},
+                  {"component": "oh-grid-col", "config": {"width": "16"}, "slots": {"default": [{"component": "oh-label-card", "config": {"item": "AvalonQ_Miner1_MAC", "title": "MAC", "outline": true}}]}},
+                  {"component": "oh-grid-col", "config": {"width": "16"}, "slots": {"default": [{"component": "oh-label-card", "config": {"item": "AvalonQ_Miner1_DNA", "title": "DNA", "outline": true}}]}}
+                ]
+              }
+            }
+          ]
+        }
+      },
+      {
+        "component": "oh-block",
+        "config": {},
+        "slots": {
+          "default": [
+            {"component": "f7-block-title", "config": {"title": "Manual Controls"}},
+            {
+              "component": "oh-grid-row",
+              "config": {},
+              "slots": {
+                "default": [
+                  {"component": "oh-grid-col", "config": {"width": "17"}, "slots": {"default": [{"component": "oh-input-card", "config": {"item": "AvalonQ_Miner1_Workmode_Set", "title": "Set Workmode", "outline": true}}]}},
+                  {"component": "oh-grid-col", "config": {"width": "17"}, "slots": {"default": [{"component": "oh-toggle-card", "config": {"item": "AvalonQ_Miner1_Standby_Set", "title": "Standby Command", "outline": true}}]}},
+                  {"component": "oh-grid-col", "config": {"width": "16"}, "slots": {"default": [{"component": "oh-toggle-card", "config": {"item": "AvalonQ_Miner1_Reboot", "title": "Reboot", "outline": true}}]}},
+                  {"component": "oh-grid-col", "config": {"width": "17"}, "slots": {"default": [{"component": "oh-input-card", "config": {"item": "AvalonQ_Miner1_FanSpeed_Set", "title": "Fan Speed", "outline": true}}]}},
+                  {"component": "oh-grid-col", "config": {"width": "16"}, "slots": {"default": [{"component": "oh-toggle-card", "config": {"item": "AvalonQ_Miner1_FanAuto_Set", "title": "Fan Auto", "outline": true}}]}},
+                  {"component": "oh-grid-col", "config": {"width": "17"}, "slots": {"default": [{"component": "oh-toggle-card", "config": {"item": "AvalonQ_Miner1_LCD_Set", "title": "LCD", "outline": true}}]}}
+                ]
+              }
+            }
+          ]
+        }
+      }
+    ]
+  }
+}

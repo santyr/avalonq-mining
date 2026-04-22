@@ -22,198 +22,7 @@
           "default": [
             {
               "component": "f7-block-title",
-              "config": {
-                "title": "Current Miner"
-              }
-            },
-            {
-              "component": "oh-grid-row",
-              "config": {},
-              "slots": {
-                "default": [
-                  {
-                    "component": "oh-grid-col",
-                    "config": {"width": "25"},
-                    "slots": {"default": [{"component": "oh-toggle-card", "config": {"item": "Miner_Power", "title": "Existing Miner Power", "outline": true}}]}
-                  },
-                  {
-                    "component": "oh-grid-col",
-                    "config": {"width": "25"},
-                    "slots": {"default": [{"component": "oh-label-card", "config": {"item": "BatterySoC_Calculated", "title": "Battery SoC", "outline": true, "trendItem": "BatterySoC_Calculated"}}]}
-                  },
-                  {
-                    "component": "oh-grid-col",
-                    "config": {"width": "25"},
-                    "slots": {"default": [{"component": "oh-label-card", "config": {"item": "PV_Power", "title": "PV Power", "outline": true, "trendItem": "PV_Power"}}]}
-                  },
-                  {
-                    "component": "oh-grid-col",
-                    "config": {"width": "25"},
-                    "slots": {"default": [{"component": "oh-label-card", "config": {"item": "AmbientWeatherWS2902A_SolarRadiation", "title": "Solar Irradiance", "outline": true, "trendItem": "AmbientWeatherWS2902A_SolarRadiation"}}]}
-                  }
-                ]
-              }
-            }
-          ]
-        }
-      },
-      {
-        "component": "oh-block",
-        "config": {},
-        "slots": {
-          "default": [
-            {
-              "component": "f7-block-title",
-              "config": {
-                "title": "Avalon Q Dry Run"
-              }
-            },
-            {
-              "component": "oh-grid-row",
-              "config": {},
-              "slots": {
-                "default": [
-                  {
-                    "component": "oh-grid-col",
-                    "config": {"width": "25"},
-                    "slots": {"default": [{"component": "oh-label-card", "config": {"item": "AvalonQ_Miner1_DryRun_Status", "title": "Dry Run Status", "outline": true}}]}
-                  },
-                  {
-                    "component": "oh-grid-col",
-                    "config": {"width": "25"},
-                    "slots": {"default": [{"component": "oh-label-card", "config": {"item": "AvalonQ_Miner1_Workmode", "title": "Avalon Workmode", "outline": true}}]}
-                  },
-                  {
-                    "component": "oh-grid-col",
-                    "config": {"width": "25"},
-                    "slots": {"default": [{"component": "oh-label-card", "config": {"item": "AvalonQ_Miner1_Availability", "title": "Availability", "outline": true}}]}
-                  },
-                  {
-                    "component": "oh-grid-col",
-                    "config": {"width": "25"},
-                    "slots": {"default": [{"component": "oh-toggle-card", "config": {"item": "AvalonQ_Miner1_LoadManagement_Enable", "title": "Load Management", "outline": true}}]}
-                  }
-                ]
-              }
-            },
-            {
-              "component": "oh-grid-row",
-              "config": {},
-              "slots": {
-                "default": [
-                  {
-                    "component": "oh-grid-col",
-                    "config": {},
-                    "slots": {"default": [{"component": "oh-label-card", "config": {"item": "AvalonQ_Miner1_DryRun_ThrashAlert", "title": "Thrash Alert", "outline": true, "trendItem": "AvalonQ_Miner1_DryRun_ModeChanges_24h", "fontWeight": "bold", "label": "=(items.AvalonQ_Miner1_DryRun_ThrashAlert.state === 'normal') ? 'normal' : items.AvalonQ_Miner1_DryRun_ThrashAlert.state", "style": {"background": "=(items.AvalonQ_Miner1_DryRun_ThrashAlert.state === 'normal') ? '#1b5e20' : '#8e0000'", "color": "#ffffff"}}}]}
-                  }
-                ]
-              }
-            },
-            {
-              "component": "oh-grid-row",
-              "config": {},
-              "slots": {
-                "default": [
-                  {
-                    "component": "oh-grid-col",
-                    "config": {"width": "25"},
-                    "slots": {"default": [{"component": "oh-label-card", "config": {"item": "AvalonQ_Miner1_SoC_Effective", "title": "Effective SoC", "outline": true, "trendItem": "AvalonQ_Miner1_SoC_Effective"}}]}
-                  },
-                  {
-                    "component": "oh-grid-col",
-                    "config": {"width": "25"},
-                    "slots": {"default": [{"component": "oh-label-card", "config": {"item": "AvalonQ_Miner1_PV_Expected_Watts", "title": "Expected PV", "outline": true, "trendItem": "AvalonQ_Miner1_PV_Expected_Watts"}}]}
-                  },
-                  {
-                    "component": "oh-grid-col",
-                    "config": {"width": "25"},
-                    "slots": {"default": [{"component": "oh-label-card", "config": {"item": "AvalonQ_Miner1_PV_Actual_Watts", "title": "Actual PV", "outline": true, "trendItem": "AvalonQ_Miner1_PV_Actual_Watts"}}]}
-                  },
-                  {
-                    "component": "oh-grid-col",
-                    "config": {"width": "25"},
-                    "slots": {"default": [{"component": "oh-label-card", "config": {"item": "AvalonQ_Miner1_PV_Curtailment_Ratio", "title": "Curtailment Ratio", "outline": true, "trendItem": "AvalonQ_Miner1_PV_Curtailment_Ratio"}}]}
-                  }
-                ]
-              }
-            },
-            {
-              "component": "oh-grid-row",
-              "config": {},
-              "slots": {
-                "default": [
-                  {
-                    "component": "oh-grid-col",
-                    "config": {"width": "25"},
-                    "slots": {"default": [{"component": "oh-label-card", "config": {"item": "AvalonQ_Miner1_Panel_CellTemp_Estimate", "title": "Cell Temp Estimate", "outline": true, "trendItem": "AvalonQ_Miner1_Panel_CellTemp_Estimate"}}]}
-                  },
-                  {
-                    "component": "oh-grid-col",
-                    "config": {"width": "25"},
-                    "slots": {"default": [{"component": "oh-label-card", "config": {"item": "AvalonQ_Miner1_SolarIrradiance_5minAvg", "title": "Irradiance 5m Avg", "outline": true, "trendItem": "AvalonQ_Miner1_SolarIrradiance_5minAvg"}}]}
-                  },
-                  {
-                    "component": "oh-grid-col",
-                    "config": {"width": "25"},
-                    "slots": {"default": [{"component": "oh-label-card", "config": {"item": "AvalonQ_Miner1_SolarIrradiance_Slope_15min", "title": "Slope 15m", "outline": true, "trendItem": "AvalonQ_Miner1_SolarIrradiance_Slope_15min"}}]}
-                  },
-                  {
-                    "component": "oh-grid-col",
-                    "config": {"width": "25"},
-                    "slots": {"default": [{"component": "oh-label-card", "config": {"item": "AvalonQ_Miner1_DryRun_ModeChanges_24h", "title": "Mode Changes 24h", "outline": true, "trendItem": "AvalonQ_Miner1_DryRun_ModeChanges_24h"}}]}
-                  }
-                ]
-              }
-            },
-            {
-              "component": "oh-grid-row",
-              "config": {},
-              "slots": {
-                "default": [
-                  {
-                    "component": "oh-grid-col",
-                    "config": {"width": "34"},
-                    "slots": {"default": [{"component": "oh-label-card", "config": {"item": "AvalonQ_Miner1_DryRun_Eco_Pct_24h", "title": "Eco 24h", "outline": true, "trendItem": "AvalonQ_Miner1_DryRun_Eco_Pct_24h"}}]}
-                  },
-                  {
-                    "component": "oh-grid-col",
-                    "config": {"width": "33"},
-                    "slots": {"default": [{"component": "oh-label-card", "config": {"item": "AvalonQ_Miner1_DryRun_Standard_Pct_24h", "title": "Standard 24h", "outline": true, "trendItem": "AvalonQ_Miner1_DryRun_Standard_Pct_24h"}}]}
-                  },
-                  {
-                    "component": "oh-grid-col",
-                    "config": {"width": "33"},
-                    "slots": {"default": [{"component": "oh-label-card", "config": {"item": "AvalonQ_Miner1_DryRun_Standby_Pct_24h", "title": "Standby 24h", "outline": true, "trendItem": "AvalonQ_Miner1_DryRun_Standby_Pct_24h"}}]}
-                  }
-                ]
-              }
-            },
-            {
-              "component": "oh-grid-row",
-              "config": {},
-              "slots": {
-                "default": [
-                  {
-                    "component": "oh-grid-col",
-                    "config": {},
-                    "slots": {"default": [{"component": "oh-label-card", "config": {"item": "AvalonQ_Miner1_DryRun_ModeDecision", "title": "Mode Decision", "outline": true, "fontSize": "12px"}}]}
-                  }
-                ]
-              }
-            }
-          ]
-        }
-      },
-      {
-        "component": "oh-block",
-        "config": {},
-        "slots": {
-          "default": [
-            {
-              "component": "f7-block-title",
-              "config": {
-                "title": "Charts"
-              }
+              "config": {"title": "Avalon Dry Run Summary"}
             },
             {
               "component": "oh-grid-row",
@@ -226,12 +35,12 @@
                     "slots": {
                       "default": [
                         {
-                          "component": "oh-webframe-card",
+                          "component": "oh-label-card",
                           "config": {
-                            "title": "Expected vs Actual PV",
-                            "height": "320px",
-                            "src": "/page/Miner_Avalon_PV_Chart",
-                            "outline": true
+                            "item": "AvalonQ_Miner1_DryRun_ModeDecision",
+                            "title": "Mode Decision",
+                            "outline": true,
+                            "fontSize": "12px"
                           }
                         }
                       ]
@@ -243,12 +52,18 @@
                     "slots": {
                       "default": [
                         {
-                          "component": "oh-webframe-card",
+                          "component": "oh-label-card",
                           "config": {
-                            "title": "Curtailment Ratio",
-                            "height": "320px",
-                            "src": "/page/Miner_Avalon_Curtailment_Chart",
-                            "outline": true
+                            "item": "AvalonQ_Miner1_DryRun_ThrashAlert",
+                            "title": "Thrash Alert",
+                            "outline": true,
+                            "trendItem": "AvalonQ_Miner1_DryRun_ModeChanges_24h",
+                            "fontWeight": "bold",
+                            "label": "=(items.AvalonQ_Miner1_DryRun_ThrashAlert.state === 'normal') ? 'normal' : items.AvalonQ_Miner1_DryRun_ThrashAlert.state",
+                            "style": {
+                              "background": "=(items.AvalonQ_Miner1_DryRun_ThrashAlert.state === 'normal') ? '#1b5e20' : '#8e0000'",
+                              "color": "#ffffff"
+                            }
                           }
                         }
                       ]
@@ -262,23 +77,136 @@
               "config": {},
               "slots": {
                 "default": [
-                  {
-                    "component": "oh-grid-col",
-                    "config": {},
-                    "slots": {
-                      "default": [
-                        {
-                          "component": "oh-webframe-card",
-                          "config": {
-                            "title": "Irradiance & Slopes",
-                            "height": "320px",
-                            "src": "/page/Miner_Avalon_Irradiance_Chart",
-                            "outline": true
-                          }
-                        }
-                      ]
-                    }
-                  }
+                  {"component": "oh-grid-col", "config": {"width": "17"}, "slots": {"default": [{"component": "oh-label-card", "config": {"item": "AvalonQ_Miner1_SoC_Effective", "title": "Effective SoC", "outline": true, "trendItem": "AvalonQ_Miner1_SoC_Effective"}}]}},
+                  {"component": "oh-grid-col", "config": {"width": "17"}, "slots": {"default": [{"component": "oh-label-card", "config": {"item": "AvalonQ_Miner1_PV_Expected_Watts", "title": "Expected PV", "outline": true, "trendItem": "AvalonQ_Miner1_PV_Expected_Watts"}}]}},
+                  {"component": "oh-grid-col", "config": {"width": "17"}, "slots": {"default": [{"component": "oh-label-card", "config": {"item": "AvalonQ_Miner1_PV_Actual_Watts", "title": "Actual PV", "outline": true, "trendItem": "AvalonQ_Miner1_PV_Actual_Watts"}}]}},
+                  {"component": "oh-grid-col", "config": {"width": "17"}, "slots": {"default": [{"component": "oh-label-card", "config": {"item": "AvalonQ_Miner1_PV_Curtailment_Ratio", "title": "Curtailment Ratio", "outline": true, "trendItem": "AvalonQ_Miner1_PV_Curtailment_Ratio"}}]}},
+                  {"component": "oh-grid-col", "config": {"width": "16"}, "slots": {"default": [{"component": "oh-label-card", "config": {"item": "AvalonQ_Miner1_Workmode", "title": "Workmode", "outline": true}}]}},
+                  {"component": "oh-grid-col", "config": {"width": "16"}, "slots": {"default": [{"component": "oh-label-card", "config": {"item": "AvalonQ_Miner1_Availability", "title": "Availability", "outline": true}}]}}
+                ]
+              }
+            }
+          ]
+        }
+      },
+      {
+        "component": "oh-block",
+        "config": {},
+        "slots": {
+          "default": [
+            {"component": "f7-block-title", "config": {"title": "Why the Policy Chose This"}},
+            {
+              "component": "oh-grid-row",
+              "config": {},
+              "slots": {
+                "default": [
+                  {"component": "oh-grid-col", "config": {"width": "16"}, "slots": {"default": [{"component": "oh-label-card", "config": {"item": "AvalonQ_Miner1_SolarIrradiance", "title": "Irradiance", "outline": true, "trendItem": "AvalonQ_Miner1_SolarIrradiance"}}]}},
+                  {"component": "oh-grid-col", "config": {"width": "16"}, "slots": {"default": [{"component": "oh-label-card", "config": {"item": "AvalonQ_Miner1_SolarIrradiance_5minAvg", "title": "Irradiance 5m Avg", "outline": true, "trendItem": "AvalonQ_Miner1_SolarIrradiance_5minAvg"}}]}},
+                  {"component": "oh-grid-col", "config": {"width": "17"}, "slots": {"default": [{"component": "oh-label-card", "config": {"item": "AvalonQ_Miner1_SolarIrradiance_Slope_15min", "title": "Slope 15m", "outline": true, "trendItem": "AvalonQ_Miner1_SolarIrradiance_Slope_15min"}}]}},
+                  {"component": "oh-grid-col", "config": {"width": "17"}, "slots": {"default": [{"component": "oh-label-card", "config": {"item": "AvalonQ_Miner1_SolarIrradiance_Slope_3min", "title": "Slope 3m", "outline": true, "trendItem": "AvalonQ_Miner1_SolarIrradiance_Slope_3min"}}]}},
+                  {"component": "oh-grid-col", "config": {"width": "17"}, "slots": {"default": [{"component": "oh-label-card", "config": {"item": "AvalonQ_Miner1_Panel_CellTemp_Estimate", "title": "Cell Temp Estimate", "outline": true, "trendItem": "AvalonQ_Miner1_Panel_CellTemp_Estimate"}}]}},
+                  {"component": "oh-grid-col", "config": {"width": "17"}, "slots": {"default": [{"component": "oh-label-card", "config": {"item": "ChargerStatus", "title": "Charger Stage", "outline": true}}]}}
+                ]
+              }
+            }
+          ]
+        }
+      },
+      {
+        "component": "oh-block",
+        "config": {},
+        "slots": {
+          "default": [
+            {"component": "f7-block-title", "config": {"title": "Policy Stability"}},
+            {
+              "component": "oh-grid-row",
+              "config": {},
+              "slots": {
+                "default": [
+                  {"component": "oh-grid-col", "config": {"width": "20"}, "slots": {"default": [{"component": "oh-label-card", "config": {"item": "AvalonQ_Miner1_DryRun_ModeChanges_24h", "title": "Mode Changes 24h", "outline": true, "trendItem": "AvalonQ_Miner1_DryRun_ModeChanges_24h"}}]}},
+                  {"component": "oh-grid-col", "config": {"width": "20"}, "slots": {"default": [{"component": "oh-label-card", "config": {"item": "AvalonQ_Miner1_DryRun_DwellTime_Current", "title": "Current Dwell", "outline": true, "trendItem": "AvalonQ_Miner1_DryRun_DwellTime_Current"}}]}},
+                  {"component": "oh-grid-col", "config": {"width": "20"}, "slots": {"default": [{"component": "oh-label-card", "config": {"item": "AvalonQ_Miner1_DryRun_Eco_Pct_24h", "title": "Eco 24h", "outline": true, "trendItem": "AvalonQ_Miner1_DryRun_Eco_Pct_24h"}}]}},
+                  {"component": "oh-grid-col", "config": {"width": "20"}, "slots": {"default": [{"component": "oh-label-card", "config": {"item": "AvalonQ_Miner1_DryRun_Standard_Pct_24h", "title": "Standard 24h", "outline": true, "trendItem": "AvalonQ_Miner1_DryRun_Standard_Pct_24h"}}]}},
+                  {"component": "oh-grid-col", "config": {"width": "20"}, "slots": {"default": [{"component": "oh-label-card", "config": {"item": "AvalonQ_Miner1_DryRun_Standby_Pct_24h", "title": "Standby 24h", "outline": true, "trendItem": "AvalonQ_Miner1_DryRun_Standby_Pct_24h"}}]}}
+                ]
+              }
+            }
+          ]
+        }
+      },
+      {
+        "component": "oh-block",
+        "config": {},
+        "slots": {
+          "default": [
+            {"component": "f7-block-title", "config": {"title": "Avalon Control Readiness"}},
+            {
+              "component": "oh-grid-row",
+              "config": {},
+              "slots": {
+                "default": [
+                  {"component": "oh-grid-col", "config": {"width": "20"}, "slots": {"default": [{"component": "oh-label-card", "config": {"item": "AvalonQ_Miner1_Availability", "title": "Availability", "outline": true}}]}},
+                  {"component": "oh-grid-col", "config": {"width": "20"}, "slots": {"default": [{"component": "oh-label-card", "config": {"item": "AvalonQ_Miner1_Workmode", "title": "Workmode", "outline": true}}]}},
+                  {"component": "oh-grid-col", "config": {"width": "20"}, "slots": {"default": [{"component": "oh-label-card", "config": {"item": "AvalonQ_Miner1_StandbyState", "title": "Standby State", "outline": true}}]}},
+                  {"component": "oh-grid-col", "config": {"width": "20"}, "slots": {"default": [{"component": "oh-toggle-card", "config": {"item": "AvalonQ_Miner1_LoadManagement_Enable", "title": "Load Mgmt", "outline": true}}]}},
+                  {"component": "oh-grid-col", "config": {"width": "20"}, "slots": {"default": [{"component": "oh-toggle-card", "config": {"item": "AvalonQ_Miner1_PowerRelay_Set", "title": "Power Relay", "outline": true}}]}}
+                ]
+              }
+            },
+            {
+              "component": "oh-grid-row",
+              "config": {},
+              "slots": {
+                "default": [
+                  {"component": "oh-grid-col", "config": {}, "slots": {"default": [{"component": "oh-link-card", "config": {"title": "Avalon Details", "iconF7": "list_bullet_rectangle", "action": "navigate", "actionPage": "Avalon_Details_Page", "outline": true}}]}}
+                ]
+              }
+            }
+          ]
+        }
+      },
+      {
+        "component": "oh-block",
+        "config": {},
+        "slots": {
+          "default": [
+            {"component": "f7-block-title", "config": {"title": "Charts"}},
+            {
+              "component": "oh-grid-row",
+              "config": {},
+              "slots": {
+                "default": [
+                  {"component": "oh-grid-col", "config": {"width": "50"}, "slots": {"default": [{"component": "oh-webframe-card", "config": {"title": "Expected vs Actual PV", "height": "320px", "src": "/page/Miner_Avalon_PV_Chart", "outline": true}}]}},
+                  {"component": "oh-grid-col", "config": {"width": "50"}, "slots": {"default": [{"component": "oh-webframe-card", "config": {"title": "Curtailment Ratio", "height": "320px", "src": "/page/Miner_Avalon_Curtailment_Chart", "outline": true}}]}}
+                ]
+              }
+            },
+            {
+              "component": "oh-grid-row",
+              "config": {},
+              "slots": {
+                "default": [
+                  {"component": "oh-grid-col", "config": {}, "slots": {"default": [{"component": "oh-webframe-card", "config": {"title": "Irradiance & Slopes", "height": "320px", "src": "/page/Miner_Avalon_Irradiance_Chart", "outline": true}}]}}
+                ]
+              }
+            }
+          ]
+        }
+      },
+      {
+        "component": "oh-block",
+        "config": {},
+        "slots": {
+          "default": [
+            {"component": "f7-block-title", "config": {"title": "Existing Miner"}},
+            {
+              "component": "oh-grid-row",
+              "config": {},
+              "slots": {
+                "default": [
+                  {"component": "oh-grid-col", "config": {"width": "34"}, "slots": {"default": [{"component": "oh-toggle-card", "config": {"item": "Miner_Power", "title": "Existing Miner Power", "outline": true}}]}},
+                  {"component": "oh-grid-col", "config": {"width": "33"}, "slots": {"default": [{"component": "oh-label-card", "config": {"item": "BatterySoC_Calculated", "title": "Battery SoC", "outline": true, "trendItem": "BatterySoC_Calculated"}}]}},
+                  {"component": "oh-grid-col", "config": {"width": "33"}, "slots": {"default": [{"component": "oh-label-card", "config": {"item": "PV_Power", "title": "PV Power", "outline": true, "trendItem": "PV_Power"}}]}}
                 ]
               }
             }
