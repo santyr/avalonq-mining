@@ -1,122 +1,77 @@
-// Example openHAB Items for a direct Bitaxe Gamma (BM1370) integration.
-//
-// The matching JS rule file assumes the prefix `Bitaxe_Gamma1_`.
-// The `Gamma1` suffix leaves room for future multi-miner expansion.
-//
-// All items belong to the equipment group `gBitaxe_Gamma1`.
+// openHAB Items for the deployed Bitaxe Gamma 1 integration.
+// Generated from live openHAB item definitions at http://192.168.1.161:8080.
+// The live equipment group is `gBitaxe_Gamma1`.
 
-Group gBitaxe_Gamma1 "Bitaxe Gamma 1"
+Group                  gBitaxe_Gamma1                                                 "Bitaxe Gamma 1"
 
-// -----------------------------------------------------------------------------
-// Availability and state
-// -----------------------------------------------------------------------------
-
-String Bitaxe_Gamma1_Availability         "Availability [%s]"                 <network>      (gBitaxe_Gamma1)
-Switch Bitaxe_Gamma1_OverheatMode         "Overheat Mode"                     <error>        (gBitaxe_Gamma1)
-Switch Bitaxe_Gamma1_OverclockEnabled     "Overclock Enabled"                 <settings>     (gBitaxe_Gamma1)
-Switch Bitaxe_Gamma1_AutoFan_State        "Auto Fan Active"                   <fan>          (gBitaxe_Gamma1)
-String Bitaxe_Gamma1_Profile              "Applied Profile [%s]"              <text>         (gBitaxe_Gamma1)
-
-// -----------------------------------------------------------------------------
-// Metrics
-// -----------------------------------------------------------------------------
-
-Number:Power            Bitaxe_Gamma1_Power               "Power [%.2f W]"                  <energy>       (gBitaxe_Gamma1)
-Number                  Bitaxe_Gamma1_VoltageInput_mV     "Input Voltage [%.0f mV]"         <energy>       (gBitaxe_Gamma1)
-Number                  Bitaxe_Gamma1_Current_mA          "Input Current [%.0f mA]"         <energy>       (gBitaxe_Gamma1)
-Number:Temperature      Bitaxe_Gamma1_ASIC_Temp           "ASIC Temp [%.1f °C]"             <temperature>  (gBitaxe_Gamma1)
-Number:Temperature      Bitaxe_Gamma1_VR_Temp             "VR Temp [%.1f °C]"               <temperature>  (gBitaxe_Gamma1)
-Number                  Bitaxe_Gamma1_Hashrate            "Hashrate [%.1f GH/s]"            <line>         (gBitaxe_Gamma1)
-Number                  Bitaxe_Gamma1_Hashrate_1m         "Hashrate 1m [%.1f GH/s]"         <line>         (gBitaxe_Gamma1)
-Number                  Bitaxe_Gamma1_Hashrate_10m        "Hashrate 10m [%.1f GH/s]"        <line>         (gBitaxe_Gamma1)
-Number                  Bitaxe_Gamma1_Hashrate_1h         "Hashrate 1h [%.1f GH/s]"         <line>         (gBitaxe_Gamma1)
-Number                  Bitaxe_Gamma1_ExpectedHashrate    "Expected Hashrate [%.1f GH/s]"   <line>         (gBitaxe_Gamma1)
-Number:Dimensionless    Bitaxe_Gamma1_ErrorPct            "Error Percentage [%.2f %%]"      <chart>        (gBitaxe_Gamma1)
-Number                  Bitaxe_Gamma1_Frequency           "Target Frequency [%.0f MHz]"     <settings>     (gBitaxe_Gamma1)
-Number                  Bitaxe_Gamma1_CoreVoltage         "Target Core Voltage [%.0f mV]"   <energy>       (gBitaxe_Gamma1)
-Number                  Bitaxe_Gamma1_CoreVoltageActual   "Actual Core Voltage [%.0f mV]"   <energy>       (gBitaxe_Gamma1)
-Number:Dimensionless    Bitaxe_Gamma1_FanSpeed            "Fan Speed [%.0f %%]"             <fan>          (gBitaxe_Gamma1)
-Number                  Bitaxe_Gamma1_FanRPM              "Fan RPM [%.0f rpm]"              <fan>          (gBitaxe_Gamma1)
-Number:Temperature      Bitaxe_Gamma1_TempTarget          "Temp Target [%.0f °C]"           <temperature>  (gBitaxe_Gamma1)
-Number                  Bitaxe_Gamma1_SharesAccepted      "Shares Accepted [%.0f]"          <chart>        (gBitaxe_Gamma1)
-Number                  Bitaxe_Gamma1_SharesRejected      "Shares Rejected [%.0f]"          <chart>        (gBitaxe_Gamma1)
-String                  Bitaxe_Gamma1_BestDiff            "Best Difficulty [%s]"            <chart>        (gBitaxe_Gamma1)
-String                  Bitaxe_Gamma1_BestSessionDiff     "Best Session Difficulty [%s]"    <chart>        (gBitaxe_Gamma1)
-Number:Time             Bitaxe_Gamma1_UptimeSeconds       "Uptime [%.0f s]"                 <time>         (gBitaxe_Gamma1)
-
-// -----------------------------------------------------------------------------
-// Info
-// -----------------------------------------------------------------------------
-
-String Bitaxe_Gamma1_Firmware             "Firmware [%s]"                     <text>         (gBitaxe_Gamma1)
-String Bitaxe_Gamma1_AxeOSVersion         "AxeOS Version [%s]"                <text>         (gBitaxe_Gamma1)
-String Bitaxe_Gamma1_BoardVersion         "Board Version [%s]"                <text>         (gBitaxe_Gamma1)
-String Bitaxe_Gamma1_ASICModel            "ASIC Model [%s]"                   <text>         (gBitaxe_Gamma1)
-String Bitaxe_Gamma1_Hostname             "Hostname [%s]"                     <text>         (gBitaxe_Gamma1)
-String Bitaxe_Gamma1_IPv4                 "IPv4 [%s]"                         <network>      (gBitaxe_Gamma1)
-String Bitaxe_Gamma1_PoolURL              "Pool URL [%s]"                     <text>         (gBitaxe_Gamma1)
-Number Bitaxe_Gamma1_PoolPort             "Pool Port [%d]"                    <text>         (gBitaxe_Gamma1)
-String Bitaxe_Gamma1_PoolUser             "Pool User [%s]"                    <text>         (gBitaxe_Gamma1)
-String Bitaxe_Gamma1_FallbackPoolURL      "Fallback Pool URL [%s]"            <text>         (gBitaxe_Gamma1)
-Number Bitaxe_Gamma1_FallbackPoolPort     "Fallback Pool Port [%d]"           <text>         (gBitaxe_Gamma1)
-String Bitaxe_Gamma1_FallbackPoolUser     "Fallback Pool User [%s]"           <text>         (gBitaxe_Gamma1)
-
-// -----------------------------------------------------------------------------
-// Raw response cache (optional, useful for troubleshooting)
-// -----------------------------------------------------------------------------
-
-String Bitaxe_Gamma1_RawSystemInfo        "Raw /api/system/info JSON [%s]"    <code>         (gBitaxe_Gamma1)
-String Bitaxe_Gamma1_RawSystemAsic        "Raw /api/system/asic JSON [%s]"    <code>         (gBitaxe_Gamma1)
-
-// -----------------------------------------------------------------------------
-// Manual control items
-// -----------------------------------------------------------------------------
-
-Number Bitaxe_Gamma1_TargetFrequency_Set  "Set Target Frequency [%d MHz]"     <settings>     (gBitaxe_Gamma1)
-Number Bitaxe_Gamma1_TargetVoltage_Set    "Set Target Core Voltage [%d mV]"   <energy>       (gBitaxe_Gamma1)
-String Bitaxe_Gamma1_Profile_Set          "Set Profile [%s]"                  <settings>     (gBitaxe_Gamma1)
-Number Bitaxe_Gamma1_FanSpeed_Set         "Set Fan Speed [%d %%]"             <fan>          (gBitaxe_Gamma1)
-Switch Bitaxe_Gamma1_FanAuto_Set          "Set Auto Fan"                      <fan>          (gBitaxe_Gamma1)
-Switch Bitaxe_Gamma1_Identify             "Identify Miner"                    <switch>       (gBitaxe_Gamma1)
-Switch Bitaxe_Gamma1_Restart              "Restart Miner"                     <switch>       (gBitaxe_Gamma1)
-
-// -----------------------------------------------------------------------------
-// Load-management items for residual-watts based automation
-// -----------------------------------------------------------------------------
-// The Bitaxe physical power relay is intentionally the existing `Miner_Power`
-// item already present in the live openHAB instance. See bitaxe.js and
-// bitaxe-voltage-protection.js for the coupling note.
-//
-// `Bitaxe_Gamma1_LoadManagement_Enable` is scaffolding for a future live
-// controller (not present yet). It mirrors the Avalon equivalent so the
-// operator flip-to-enable flow is consistent across both miners. Until that
-// rule exists, this switch is read by the commissioning checklist but has no
-// rule-level behavior.
-
-Switch Bitaxe_Gamma1_LoadManagement_Enable  "Load Management Enabled"         <battery>      (gBitaxe_Gamma1)
-String Bitaxe_Gamma1_LoadDecision           "Load Decision [%s]"              <text>         (gBitaxe_Gamma1)
-
-// -----------------------------------------------------------------------------
-// Dry-run items
-// -----------------------------------------------------------------------------
-
-// Item names retain the `DryRun_` prefix for backward compatibility with the
-// policy core code, but the display labels are live-control oriented since
-// the live controller now applies these decisions.
-String               Bitaxe_Gamma1_DryRun_Status                "Policy Status [%s]"                <text>   (gBitaxe_Gamma1)
-String               Bitaxe_Gamma1_DryRun_ModeDecision          "Policy Decision [%s]"              <text>   (gBitaxe_Gamma1)
-String               Bitaxe_Gamma1_DryRun_Profile               "Target Profile [%s]"               <text>   (gBitaxe_Gamma1)
-Number               Bitaxe_Gamma1_DryRun_TargetFrequency       "Target Frequency [%d MHz]"         <settings> (gBitaxe_Gamma1)
-Number               Bitaxe_Gamma1_DryRun_TargetVoltage         "Target Core Voltage [%d mV]"       <energy> (gBitaxe_Gamma1)
-Number:Power         Bitaxe_Gamma1_DryRun_ProfilePower          "Target Profile Power [%.1f W]"     <energy> (gBitaxe_Gamma1)
-Number:Power         Bitaxe_Gamma1_DryRun_ResidualWatts         "Residual Watts [%.0f W]"           <energy> (gBitaxe_Gamma1)
-Number:Power         Bitaxe_Gamma1_DryRun_AvalonModeWatts       "Avalon Mode Watts [%.0f W]"        <energy> (gBitaxe_Gamma1)
-Number               Bitaxe_Gamma1_DryRun_ModeChanges_24h       "Profile Changes 24h [%.0f]"        <chart>  (gBitaxe_Gamma1)
-Number:Time          Bitaxe_Gamma1_DryRun_DwellTime_Current     "Current Dwell [%s]"                <time>   (gBitaxe_Gamma1)
-Number:Dimensionless Bitaxe_Gamma1_DryRun_Min_Pct_24h           "Min 24h [%.1f %%]"                 <chart>  (gBitaxe_Gamma1)
-Number:Dimensionless Bitaxe_Gamma1_DryRun_Low_Pct_24h           "Low 24h [%.1f %%]"                 <chart>  (gBitaxe_Gamma1)
-Number:Dimensionless Bitaxe_Gamma1_DryRun_Stock_Pct_24h         "Stock 24h [%.1f %%]"               <chart>  (gBitaxe_Gamma1)
-Number:Dimensionless Bitaxe_Gamma1_DryRun_Mid_Pct_24h           "Mid 24h [%.1f %%]"                 <chart>  (gBitaxe_Gamma1)
-Number:Dimensionless Bitaxe_Gamma1_DryRun_High_Pct_24h          "High 24h [%.1f %%]"                <chart>  (gBitaxe_Gamma1)
-Number:Dimensionless Bitaxe_Gamma1_DryRun_Max_Pct_24h           "Max 24h [%.1f %%]"                 <chart>  (gBitaxe_Gamma1)
-Number:Dimensionless Bitaxe_Gamma1_DryRun_Standby_Pct_24h       "Standby 24h [%.1f %%]"             <chart>  (gBitaxe_Gamma1)
+String                 Bitaxe_Gamma1_Availability                                     "Availability [%s]" <network> (gBitaxe_Gamma1)
+Switch                 Bitaxe_Gamma1_OverheatMode                                     "Overheat Mode" <error> (gBitaxe_Gamma1)
+Switch                 Bitaxe_Gamma1_OverclockEnabled                                 "Overclock Enabled" <settings> (gBitaxe_Gamma1)
+Switch                 Bitaxe_Gamma1_AutoFan_State                                    "Auto Fan Active" <fan> (gBitaxe_Gamma1)
+String                 Bitaxe_Gamma1_Profile                                          "Applied Profile [%s]" <text> (gBitaxe_Gamma1)
+Number:Power           Bitaxe_Gamma1_Power                                            "Power [%.2f W]" <energy> (gBitaxe_Gamma1)
+Number                 Bitaxe_Gamma1_VoltageInput_mV                                  "Input Voltage [%.0f mV]" <energy> (gBitaxe_Gamma1)
+Number                 Bitaxe_Gamma1_Current_mA                                       "Input Current [%.0f mA]" <energy> (gBitaxe_Gamma1)
+Number:Temperature     Bitaxe_Gamma1_ASIC_Temp                                        "ASIC Temp [%.1f %unit%]" <temperature> (gBitaxe_Gamma1)
+Number:Temperature     Bitaxe_Gamma1_VR_Temp                                          "VR Temp [%.1f %unit%]" <temperature> (gBitaxe_Gamma1)
+Number                 Bitaxe_Gamma1_Hashrate                                         "Hashrate [%.1f GH/s]" <line> (gBitaxe_Gamma1)
+Number                 Bitaxe_Gamma1_Hashrate_1m                                      "Hashrate 1m [%.1f GH/s]" <line> (gBitaxe_Gamma1)
+Number                 Bitaxe_Gamma1_Hashrate_10m                                     "Hashrate 10m [%.1f GH/s]" <line> (gBitaxe_Gamma1)
+Number                 Bitaxe_Gamma1_Hashrate_1h                                      "Hashrate 1h [%.1f GH/s]" <line> (gBitaxe_Gamma1)
+Number                 Bitaxe_Gamma1_ExpectedHashrate                                 "Expected Hashrate [%.1f GH/s]" <line> (gBitaxe_Gamma1)
+Number:Dimensionless   Bitaxe_Gamma1_ErrorPct                                         "Error Percentage [%.2f %%]" <chart> (gBitaxe_Gamma1)
+Number                 Bitaxe_Gamma1_Frequency                                        "Target Frequency [%.0f MHz]" <settings> (gBitaxe_Gamma1)
+Number                 Bitaxe_Gamma1_CoreVoltage                                      "Target Core Voltage [%.0f mV]" <energy> (gBitaxe_Gamma1)
+Number                 Bitaxe_Gamma1_CoreVoltageActual                                "Actual Core Voltage [%.0f mV]" <energy> (gBitaxe_Gamma1)
+Number:Dimensionless   Bitaxe_Gamma1_FanSpeed                                         "Fan Speed [%.0f %%]" <fan> (gBitaxe_Gamma1)
+Number                 Bitaxe_Gamma1_FanRPM                                           "Fan RPM [%.0f rpm]" <fan> (gBitaxe_Gamma1)
+Number:Temperature     Bitaxe_Gamma1_TempTarget                                       "Temp Target [%.0f %unit%]" <temperature> (gBitaxe_Gamma1)
+Number                 Bitaxe_Gamma1_SharesAccepted                                   "Shares Accepted [%.0f]" <chart> (gBitaxe_Gamma1)
+Number                 Bitaxe_Gamma1_SharesRejected                                   "Shares Rejected [%.0f]" <chart> (gBitaxe_Gamma1)
+String                 Bitaxe_Gamma1_BestDiff                                         "Best Difficulty [%s]" <chart> (gBitaxe_Gamma1)
+String                 Bitaxe_Gamma1_BestSessionDiff                                  "Best Session Difficulty [%s]" <chart> (gBitaxe_Gamma1)
+Number:Time            Bitaxe_Gamma1_UptimeSeconds                                    "Uptime [%.0f s]" <time> (gBitaxe_Gamma1)
+String                 Bitaxe_Gamma1_Firmware                                         "Firmware [%s]" <text> (gBitaxe_Gamma1)
+String                 Bitaxe_Gamma1_AxeOSVersion                                     "AxeOS Version [%s]" <text> (gBitaxe_Gamma1)
+String                 Bitaxe_Gamma1_BoardVersion                                     "Board Version [%s]" <text> (gBitaxe_Gamma1)
+String                 Bitaxe_Gamma1_ASICModel                                        "ASIC Model [%s]" <text> (gBitaxe_Gamma1)
+String                 Bitaxe_Gamma1_Hostname                                         "Hostname [%s]" <text> (gBitaxe_Gamma1)
+String                 Bitaxe_Gamma1_IPv4                                             "IPv4 [%s]" <network> (gBitaxe_Gamma1)
+String                 Bitaxe_Gamma1_PoolURL                                          "Pool URL [%s]" <text> (gBitaxe_Gamma1)
+Number                 Bitaxe_Gamma1_PoolPort                                         "Pool Port [%d]" <text> (gBitaxe_Gamma1)
+String                 Bitaxe_Gamma1_PoolUser                                         "Pool User [%s]" <text> (gBitaxe_Gamma1)
+String                 Bitaxe_Gamma1_FallbackPoolURL                                  "Fallback Pool URL [%s]" <text> (gBitaxe_Gamma1)
+Number                 Bitaxe_Gamma1_FallbackPoolPort                                 "Fallback Pool Port [%d]" <text> (gBitaxe_Gamma1)
+String                 Bitaxe_Gamma1_FallbackPoolUser                                 "Fallback Pool User [%s]" <text> (gBitaxe_Gamma1)
+String                 Bitaxe_Gamma1_RawSystemInfo                                    "Raw /api/system/info JSON [%s]" <code> (gBitaxe_Gamma1)
+String                 Bitaxe_Gamma1_RawSystemAsic                                    "Raw /api/system/asic JSON [%s]" <code> (gBitaxe_Gamma1)
+Number                 Bitaxe_Gamma1_TargetFrequency_Set                              "Set Target Frequency [%d MHz]" <settings> (gBitaxe_Gamma1)
+Number                 Bitaxe_Gamma1_TargetVoltage_Set                                "Set Target Core Voltage [%d mV]" <energy> (gBitaxe_Gamma1)
+String                 Bitaxe_Gamma1_Profile_Set                                      "Last/Profile Command [%s]" <settings> (gBitaxe_Gamma1)
+Number                 Bitaxe_Gamma1_FanSpeed_Set                                     "Set Fan Speed [%d %%]" <fan> (gBitaxe_Gamma1)
+Switch                 Bitaxe_Gamma1_FanAuto_Set                                      "Set Auto Fan" <fan> (gBitaxe_Gamma1)
+Switch                 Bitaxe_Gamma1_Identify                                         "Identify Miner" <switch> (gBitaxe_Gamma1)
+Switch                 Bitaxe_Gamma1_Restart                                          "Restart Miner" <switch> (gBitaxe_Gamma1)
+Switch                 Bitaxe_Gamma1_LoadManagement_Enable                            "Load Management Enabled" <battery> (gBitaxe_Gamma1)
+String                 Bitaxe_Gamma1_LoadDecision                                     "Load Decision [%s]" <text> (gBitaxe_Gamma1)
+String                 Bitaxe_Gamma1_DryRun_Status                                    "Policy Status [%s]" <text> (gBitaxe_Gamma1)
+String                 Bitaxe_Gamma1_DryRun_ModeDecision                              "Policy Decision [%s]" <text> (gBitaxe_Gamma1)
+String                 Bitaxe_Gamma1_DryRun_Profile                                   "Target Profile [%s]" <text> (gBitaxe_Gamma1)
+Number                 Bitaxe_Gamma1_DryRun_TargetFrequency                           "Target Frequency [%d MHz]" <settings> (gBitaxe_Gamma1)
+Number                 Bitaxe_Gamma1_DryRun_TargetVoltage                             "Target Core Voltage [%d mV]" <energy> (gBitaxe_Gamma1)
+Number:Power           Bitaxe_Gamma1_DryRun_ProfilePower                              "Target Profile Power [%.1f W]" <energy> (gBitaxe_Gamma1)
+Number:Power           Bitaxe_Gamma1_DryRun_ResidualWatts                             "Residual Watts [%.0f W]" <energy> (gBitaxe_Gamma1)
+Number:Power           Bitaxe_Gamma1_DryRun_AvalonModeWatts                           "Avalon Mode Watts [%.0f W]" <energy> (gBitaxe_Gamma1)
+Number:Power           Bitaxe_Gamma1_DryRun_SiteHeadroomWatts                         "Site Headroom Watts" <energy> (gBitaxe_Gamma1)
+Number:Power           Bitaxe_Gamma1_DryRun_AvalonEffectiveWatts                      "Avalon Effective Watts" <energy> (gBitaxe_Gamma1)
+Number:Power           Bitaxe_Gamma1_DryRun_ResidualAfterPlannedAvalonWatts           "Residual After Planned Avalon" <energy> (gBitaxe_Gamma1)
+Number:Power           Bitaxe_Gamma1_DryRun_ResidualAfterEffectiveAvalonWatts         "Residual After Effective Avalon" <energy> (gBitaxe_Gamma1)
+Number                 Bitaxe_Gamma1_DryRun_ModeChanges_24h                           "Profile Changes 24h [%.0f]" <chart> (gBitaxe_Gamma1)
+Number:Time            Bitaxe_Gamma1_DryRun_DwellTime_Current                         "Current Dwell [%s]" <time> (gBitaxe_Gamma1)
+Number:Dimensionless   Bitaxe_Gamma1_DryRun_Min_Pct_24h                               "Min 24h [%.1f %%]" <chart> (gBitaxe_Gamma1)
+Number:Dimensionless   Bitaxe_Gamma1_DryRun_Low_Pct_24h                               "Low 24h [%.1f %%]" <chart> (gBitaxe_Gamma1)
+Number:Dimensionless   Bitaxe_Gamma1_DryRun_Stock_Pct_24h                             "Stock 24h [%.1f %%]" <chart> (gBitaxe_Gamma1)
+Number:Dimensionless   Bitaxe_Gamma1_DryRun_Mid_Pct_24h                               "Mid 24h [%.1f %%]" <chart> (gBitaxe_Gamma1)
+Number:Dimensionless   Bitaxe_Gamma1_DryRun_High_Pct_24h                              "High 24h [%.1f %%]" <chart> (gBitaxe_Gamma1)
+Number:Dimensionless   Bitaxe_Gamma1_DryRun_Max_Pct_24h                               "Max 24h [%.1f %%]" <chart> (gBitaxe_Gamma1)
+Number:Dimensionless   Bitaxe_Gamma1_DryRun_Standby_Pct_24h                           "Standby 24h [%.1f %%]" <chart> (gBitaxe_Gamma1)

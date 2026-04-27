@@ -20,10 +20,12 @@ const CFG = {
   // duplicate the irradiance modelling.
   pvExpectedItem: 'AvalonQ_Miner1_PV_Expected_Watts',
   avalonModeDecisionItem: 'AvalonQ_Miner1_DryRun_ModeDecision',
+  avalonLoadManagementEnableItem: 'AvalonQ_Miner1_LoadManagement_Enable',
   irradianceSlope15mItem: 'AvalonQ_Miner1_SolarIrradiance_Slope_15min',
   socEffectiveItem: 'AvalonQ_Miner1_SoC_Effective',
   socFallbackItem: 'BatterySoC_Calculated',
   chargingItem: 'BatteryChargingStatus',
+  chargerStageItem: 'ChargerStatus',
 
   // Bitaxe live telemetry used for thermal guardrails. Tolerated as
   // missing/NaN before commissioning; see decideProfile().
@@ -190,6 +192,29 @@ function avalonWattsForMode(mode) {
   return 0;
 }
 
+function effectiveAvalonWatts(mode, avalonLiveEnabled) {
+  // While Avalon is pre-hardware or live load management is OFF, its dry-run
+  // mode is a reservation/forecast only. Do not subtract planned Avalon watts
+  // from the Bitaxe's real residual headroom until Avalon is actually enabled.
+  return avalonLiveEnabled ? avalonWattsForMode(mode) : 0;
+}
+
+function computeResiduals(ctx) {
+  const expectedPv = Number(ctx.expectedPv);
+  const avalonMode = ctx.avalonMode || 'Standby';
+  const avalonLiveEnabled = ctx.avalonLiveEnabled === true;
+  const siteHeadroomWatts = Math.max(0, expectedPv - CFG.baselineHouseLoadWatts);
+  const avalonPlannedWatts = avalonWattsForMode(avalonMode);
+  const avalonEffectiveWatts = effectiveAvalonWatts(avalonMode, avalonLiveEnabled);
+  return {
+    siteHeadroomWatts,
+    avalonPlannedWatts,
+    avalonEffectiveWatts,
+    residualAfterPlannedAvalonWatts: siteHeadroomWatts - avalonPlannedWatts,
+    residualAfterEffectiveAvalonWatts: siteHeadroomWatts - avalonEffectiveWatts,
+  };
+}
+
 function getEffectiveSoc() {
   const preferred = getNumericState(CFG.socEffectiveItem, NaN);
   if (Number.isFinite(preferred)) return preferred;
@@ -277,6 +302,7 @@ function decideProfile(ctx) {
   const {
     soc,
     charging,
+    chargerStage,
     residualWatts,
     slope15m,
     slope15mSustainMinutes,
@@ -288,12 +314,15 @@ function decideProfile(ctx) {
     currentMs,
   } = ctx;
 
-  // With a full bank in Float, `BatteryChargingStatus` can flicker as the XW+
-  // cycles its charge controller. Tolerate those flickers when SoC is high so
-  // we do not trip to Standby every time the charger blips. Low SoC still
-  // enforces the strict gate because there is no solar/battery headroom to
-  // justify running miners unless the charger is genuinely active.
-  const chargerEffective = charging || (Number.isFinite(soc) && soc >= 95);
+  // `stageActive` = charger reports Bulk/Absorption/Float — i.e. PV is
+  // actively involved with the battery. `chargerEffective` is the gentler
+  // "tolerate flickers" flag used for the initial gate; it also accepts a
+  // brief raw-charging pulse or a high SoC, since BatteryChargingStatus can
+  // blink during Float.
+  const activeStages = ['Bulk', 'Absorption', 'Float'];
+  const stageActive = typeof chargerStage === 'string' && activeStages.includes(chargerStage);
+  const chargerEffective = charging || stageActive || (Number.isFinite(soc) && soc >= 95);
+
   if (!chargerEffective && !CFG.allowMiningWithoutCharger) {
     return { profile: 'Standby', reason: 'charger_inactive' };
   }
@@ -308,7 +337,18 @@ function decideProfile(ctx) {
   }
 
   let target = pickProfileByResidual(residualWatts, soc);
-  const reason = target === 'Standby' ? 'insufficient_residual' : 'residual_band';
+  let reason = target === 'Standby' ? 'insufficient_residual' : 'residual_band';
+
+  // Min-floor while charger is actively engaged. The Bitaxe at Min draws
+  // ~10 W — negligible next to an active charger — and absorbs curtailed PV
+  // while in Float. Only fires when SoC is already high enough for Min
+  // (see `minProfileMinSoc` in CFG). Keeps the dashboard label truthful: if
+  // the device is at 400/1100 mining, the policy should say "Min", not
+  // "Standby".
+  if (target === 'Standby' && stageActive && soc >= CFG.minProfileMinSoc) {
+    target = 'Min';
+    reason = 'min_floor_charging';
+  }
 
   // Hysteresis + dwell run first so normal thrash-prevention applies within
   // the residual-chosen target. Thermal always runs last so it can override
@@ -379,6 +419,7 @@ function runDryPolicy() {
   const slope15m = getNumericState(CFG.irradianceSlope15mItem, 0);
   const soc = getEffectiveSoc();
   const charging = getBoolState(CFG.chargingItem, false);
+  const chargerStage = getStringState(CFG.chargerStageItem, '');
   const asicTempC = getCelsiusState(CFG.bitaxeTempItem, NaN);
   const vrTempC = getCelsiusState(CFG.bitaxeVRTempItem, NaN);
   const overheatMode = getBoolState(CFG.bitaxeOverheatItem, false);
@@ -388,9 +429,13 @@ function runDryPolicy() {
     return;
   }
 
-  const availableWatts = Math.max(0, expectedPv - CFG.baselineHouseLoadWatts);
-  const avalonWatts = avalonWattsForMode(avalonMode);
-  const residualWatts = availableWatts - avalonWatts;
+  const avalonLiveEnabled = getBoolState(CFG.avalonLoadManagementEnableItem, false);
+  const residuals = computeResiduals({ expectedPv, avalonMode, avalonLiveEnabled });
+  const availableWatts = residuals.siteHeadroomWatts;
+  const avalonWatts = residuals.avalonPlannedWatts;
+  const avalonEffectiveWattsValue = residuals.avalonEffectiveWatts;
+  const residualAfterPlannedAvalonWatts = residuals.residualAfterPlannedAvalonWatts;
+  const residualWatts = residuals.residualAfterEffectiveAvalonWatts;
   const slope15mSustainMinutes = updateNegativeSlopeSustain(slope15m);
 
   const currentMs = nowMs();
@@ -398,6 +443,7 @@ function runDryPolicy() {
   const decision = decideProfile({
     soc,
     charging,
+    chargerStage,
     residualWatts,
     slope15m,
     slope15mSustainMinutes,
@@ -423,6 +469,10 @@ function runDryPolicy() {
   post(itemName('DryRun_ProfilePower'), spec.watts);
   post(itemName('DryRun_ResidualWatts'), Math.round(residualWatts));
   post(itemName('DryRun_AvalonModeWatts'), avalonWatts);
+  post(itemName('DryRun_SiteHeadroomWatts'), Math.round(availableWatts));
+  post(itemName('DryRun_AvalonEffectiveWatts'), avalonEffectiveWattsValue);
+  post(itemName('DryRun_ResidualAfterPlannedAvalonWatts'), Math.round(residualAfterPlannedAvalonWatts));
+  post(itemName('DryRun_ResidualAfterEffectiveAvalonWatts'), Math.round(residualWatts));
   post(itemName('DryRun_ModeChanges_24h'), metrics.changeCount);
   post(itemName('DryRun_DwellTime_Current'), `${metrics.dwellMinutes.toFixed(1)} min`);
   post(itemName('DryRun_Min_Pct_24h'), (metrics.pct.Min || 0).toFixed(1));
@@ -440,9 +490,12 @@ function runDryPolicy() {
     `volt=${spec.coreVoltage}`,
     `wexp=${spec.watts}`,
     `avalon=${avalonMode}`,
-    `aw=${avalonWatts}`,
-    `avail=${Math.round(availableWatts)}`,
-    `resid=${Math.round(residualWatts)}`,
+    `aw_plan=${avalonWatts}`,
+    `aw_eff=${avalonEffectiveWattsValue}`,
+    `avalon_live=${avalonLiveEnabled}`,
+    `headroom=${Math.round(availableWatts)}`,
+    `resid_plan=${Math.round(residualAfterPlannedAvalonWatts)}`,
+    `resid_real=${Math.round(residualWatts)}`,
     `s15=${slope15m.toFixed(1)}`,
     `s15hold=${slope15mSustainMinutes.toFixed(1)}m`,
     `soc=${soc.toFixed(1)}`,
@@ -470,6 +523,8 @@ module.exports = {
   PROFILE_NAMES,
   parseAvalonMode,
   avalonWattsForMode,
+  effectiveAvalonWatts,
+  computeResiduals,
   pickProfileByResidual,
   applyHysteresis,
   applyDwell,

@@ -29,16 +29,34 @@ const CFG = {
   noctC: 45,
   tempCoeffPerC: 0.004,
   fixedLossFactor: 0.90,
+  // Historical Bulk/high-demand rows showed actual harvest around 80% of the
+  // irradiance-derived estimate. Use this confidence derate for admission
+  // control while still publishing raw expected PV for diagnostics.
+  pvConfidenceFactor: 0.80,
   baselineHouseLoadWatts: 300,
 
   // Keep dry-run charger gating aligned with the live control policy.
   allowMiningWithoutCharger: false,
 
   // Dry-run mode thresholds use available watts after baseline house load.
-  standardAvailableWatts: 1500,
+  // Eco/Standard needs explicit hysteresis. A single 1500 W boundary caused
+  // repeated cloud-edge flapping, e.g. 1497 W -> Eco then 1543 W -> Standard.
+  standardEnterAvailableWatts: 1700,
+  standardExitAvailableWatts: 1300,
   superAvailableWatts: 1900,
+  // Eco also needs hysteresis. The 2026-04-26 history showed 800/801 W
+  // boundary flapping between Standby and Eco. Enter above Eco's nominal draw;
+  // hold briefly through cloud dips, then exit below a lower threshold.
   ecoAvailableWatts: 800,
+  ecoEnterAvailableWatts: 900,
+  ecoExitAvailableWatts: 650,
   ecoTrendingAvailableWatts: 500,
+
+  // Minimum dwell timers for non-safety Eco/Standard transitions. Safety
+  // Standby decisions above these checks remain immediate.
+  standardEnterMinDwellMinutes: 15,
+  standardExitMinDwellMinutes: 10,
+  ecoExitMinDwellMinutes: 10,
 
   // AGM-REGIME SoC guardrails (conservative). The Fullriver DC400-6 bank is
   // at end-of-life and cannot tolerate deep discharge or sustained heavy
@@ -71,10 +89,24 @@ const CFG = {
   slopeLongWindowMinutes: 15,
   metricsWindowHours: 24,
 
-  // Super disabled in AGM regime. The 20A branch can carry it electrically,
-  // but driving a 1674 W load through a dying bank would accelerate failure
-  // and risks tipping a fragile cell into a short. Re-enable after LFP.
+  // Electrical branch model. The Avalon is planned for a 20A circuit, so Super
+  // is plausible after commissioning. It remains disabled until the real
+  // device, branch, thermals, and measured wall power are validated.
+  circuitAmps: 20,
+  circuitVoltage: 120,
+  continuousCircuitDerate: 0.80,
+
+  // Super disabled in AGM/pre-commissioning regime. The 20A branch can carry
+  // it electrically, but live Super still requires explicit enablement and
+  // measured validation.
   allowSuperMode: false,
+};
+
+const AVALON_MODE_WATTS = {
+  Standby: 0,
+  Eco: 800,
+  Standard: 1300,
+  Super: 1674,
 };
 
 function itemName(suffix) {
@@ -213,6 +245,13 @@ function updateModeHistory(mode) {
   return history;
 }
 
+function getCurrentModeState() {
+  const history = cache.private.get('avalonqModeHistory') || [];
+  const last = history.length ? history[history.length - 1] : null;
+  if (!last) return { mode: '', dwellMinutes: Infinity };
+  return { mode: last.mode, dwellMinutes: (nowMs() - last.ts) / 60000.0 };
+}
+
 function computeModeMetrics(history, currentMode) {
   const now = nowMs();
   const windowStart = now - (CFG.metricsWindowHours * 3600 * 1000);
@@ -259,6 +298,8 @@ function decideMode(ctx) {
     availableWatts,
     slope15m,
     slope15mSustainMinutes,
+    previousMode,
+    previousDwellMinutes,
   } = ctx;
 
   // "Charger effectively active" tolerates the brief BatteryChargingStatus
@@ -283,6 +324,35 @@ function decideMode(ctx) {
   if (slope15m <= CFG.standbySlope15mThreshold && slope15mSustainMinutes >= CFG.standbySlopeSustainMinutes) {
     return { mode: 'Standby', reason: 'irradiance_drop_sustained' };
   }
+
+  const standardSlopeOk = slope15m > CFG.standardSlope15mFloor;
+  const standardSocOk = soc > CFG.standardMinSoc;
+  const dwell = Number.isFinite(previousDwellMinutes) ? previousDwellMinutes : Infinity;
+
+  // If already in Standard, use a lower exit threshold and a short minimum
+  // dwell to stop cloud-edge flapping around the entry point. Safety Standby
+  // checks above still bypass this hold.
+  if (previousMode === 'Standard' && standardSocOk && standardSlopeOk) {
+    if (availableWatts > CFG.standardExitAvailableWatts) {
+      return { mode: 'Standard', reason: 'standard_hysteresis_hold' };
+    }
+    if (dwell < CFG.standardExitMinDwellMinutes) {
+      return { mode: 'Standard', reason: 'standard_min_dwell' };
+    }
+  }
+
+  // If already in Eco, hold through brief cloud-edge dips. This prevents
+  // 800 W boundary oscillation while still allowing a real downshift after a
+  // sustained deficit. Safety Standby checks above bypass this hold.
+  if (previousMode === 'Eco' && soc > CFG.ecoMinSoc) {
+    if (availableWatts >= CFG.ecoExitAvailableWatts) {
+      return { mode: 'Eco', reason: 'eco_hysteresis_hold' };
+    }
+    if (dwell < CFG.ecoExitMinDwellMinutes) {
+      return { mode: 'Eco', reason: 'eco_min_dwell' };
+    }
+  }
+
   // Peak-solar Super mode (requires 20A mining branch + allowSuperMode). Only
   // fires when irradiance is stable or rising so a cloud edge does not strand
   // the Avalon at full load. `chargerEffective` is used instead of the raw
@@ -298,22 +368,25 @@ function decideMode(ctx) {
   }
   // Strong-solar Standard is checked before the high-SoC shortcut so a full
   // battery does not cap the dump load at Eco when PV is actively being
-  // curtailed. The Schneider XW6848-21 has 6.8 kW of continuous capacity, so
-  // running Standard on top of normal house load is well within envelope.
+  // curtailed. Require both a higher entry threshold and a minimum dwell in
+  // the prior non-Standard mode before stepping up.
   if (
-    availableWatts > CFG.standardAvailableWatts &&
-    soc > CFG.standardMinSoc &&
-    slope15m > CFG.standardSlope15mFloor
+    availableWatts > CFG.standardEnterAvailableWatts &&
+    standardSocOk &&
+    standardSlopeOk
   ) {
+    if (previousMode && previousMode !== 'Standard' && dwell < CFG.standardEnterMinDwellMinutes) {
+      return { mode: previousMode, reason: 'standard_entry_dwell_hold' };
+    }
     return { mode: 'Standard', reason: 'strong_solar' };
   }
-  if (soc >= CFG.dumpLoadMinSoc) {
+  if (availableWatts >= CFG.ecoEnterAvailableWatts && soc >= CFG.dumpLoadMinSoc) {
     return { mode: 'Eco', reason: 'high_soc_dump_load' };
   }
-  if (availableWatts > CFG.ecoAvailableWatts && soc > CFG.ecoMinSoc) {
+  if (availableWatts >= CFG.ecoEnterAvailableWatts && soc > CFG.ecoMinSoc) {
     return { mode: 'Eco', reason: 'moderate_solar' };
   }
-  if (availableWatts > CFG.ecoTrendingAvailableWatts && soc > CFG.ecoTrendingMinSoc && slope15m > 0) {
+  if (availableWatts >= CFG.ecoEnterAvailableWatts && availableWatts > CFG.ecoTrendingAvailableWatts && soc > CFG.ecoTrendingMinSoc && slope15m > 0) {
     return { mode: 'Eco', reason: 'solar_trending_up' };
   }
   return { mode: 'Standby', reason: 'insufficient_margin' };
@@ -345,9 +418,12 @@ function runDryPolicy() {
 
   const cellTempC = computeCellTempEstimateC(ambientC, avg5m);
   const expectedPvWatts = computeExpectedPvWatts(avg5m, cellTempC);
-  const availableWatts = Math.max(0, expectedPvWatts - CFG.baselineHouseLoadWatts);
+  const safeExpectedPvWatts = expectedPvWatts * CFG.pvConfidenceFactor;
+  const availableWattsRaw = Math.max(0, expectedPvWatts - CFG.baselineHouseLoadWatts);
+  const availableWatts = Math.max(0, safeExpectedPvWatts - CFG.baselineHouseLoadWatts);
   const curtailmentRatio = expectedPvWatts > 0 ? (pvActual / expectedPvWatts) : 0;
 
+  const modeState = getCurrentModeState();
   const decision = decideMode({
     soc,
     charging,
@@ -355,6 +431,8 @@ function runDryPolicy() {
     availableWatts,
     slope15m,
     slope15mSustainMinutes,
+    previousMode: modeState.mode,
+    previousDwellMinutes: modeState.dwellMinutes,
   });
 
   const history = updateModeHistory(decision.mode);
@@ -387,8 +465,10 @@ function runDryPolicy() {
     `s15hold=${slope15mSustainMinutes.toFixed(1)}m`,
     `tcell=${cellTempC.toFixed(1)}C`,
     `expected=${Math.round(expectedPvWatts)}`,
+    `safe_expected=${Math.round(safeExpectedPvWatts)}`,
     `actual=${Math.round(pvActual)}`,
     `curt=${curtailmentRatio.toFixed(2)}`,
+    `avail_raw=${Math.round(availableWattsRaw)}`,
     `avail=${Math.round(availableWatts)}`,
     `soc=${soc.toFixed(1)}`,
     `chg=${charging}`,
@@ -396,6 +476,8 @@ function runDryPolicy() {
     `v=${Number.isFinite(dcVoltage) ? dcVoltage.toFixed(2) : 'n/a'}`,
     `chg24=${metrics.changeCount}`,
     `dwell=${metrics.dwellMinutes.toFixed(1)}m`,
+    `prev=${modeState.mode || 'none'}`,
+    `prevdwell=${Number.isFinite(modeState.dwellMinutes) ? modeState.dwellMinutes.toFixed(1) : 'n/a'}m`,
   ].join(',');
 
   post(itemName('DryRun_ModeDecision'), detail);
@@ -405,4 +487,4 @@ function runDryPolicy() {
   console.info(`AvalonQ dry-run decision: ${detail}`);
 }
 
-module.exports = { CFG, runDryPolicy };
+module.exports = { CFG, AVALON_MODE_WATTS, decideMode, runDryPolicy };

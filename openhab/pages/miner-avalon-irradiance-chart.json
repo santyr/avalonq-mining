@@ -1,73 +1,136 @@
 {
-  "uid": "Miner_Avalon_Irradiance_Chart",
-  "tags": ["mining", "avalonq"],
-  "props": {
-    "parameters": [],
-    "parameterGroups": []
-  },
   "component": "oh-chart-page",
   "config": {
     "label": "Avalon Irradiance and Slopes",
     "period": "D"
   },
+  "props": {
+    "parameterGroups": [],
+    "parameters": []
+  },
   "slots": {
     "dataZoom": [
-      {"component": "oh-chart-datazoom", "config": {"type": "inside"}}
+      {
+        "component": "oh-chart-datazoom",
+        "config": {
+          "type": "inside"
+        }
+      }
     ],
     "grid": [
-      {"component": "oh-chart-grid", "config": {"includeLabels": true, "top": "8%", "height": "42%"}},
-      {"component": "oh-chart-grid", "config": {"includeLabels": true, "top": "58%", "height": "30%"}}
+      {
+        "component": "oh-chart-grid",
+        "config": {
+          "height": "42%",
+          "includeLabels": true,
+          "top": "8%"
+        }
+      },
+      {
+        "component": "oh-chart-grid",
+        "config": {
+          "height": "30%",
+          "includeLabels": true,
+          "top": "58%"
+        }
+      }
     ],
     "legend": [
-      {"component": "oh-chart-legend", "config": {"bottom": 3, "type": "scroll"}}
-    ],
-    "tooltip": [
-      {"component": "oh-chart-tooltip", "config": {"confine": true, "smartFormatter": true}}
-    ],
-    "xAxis": [
-      {"component": "oh-time-axis", "config": {"gridIndex": 0}},
-      {"component": "oh-time-axis", "config": {"gridIndex": 1}}
-    ],
-    "yAxis": [
-      {"component": "oh-value-axis", "config": {"gridIndex": 0, "name": "W/m²", "scale": true}},
-      {"component": "oh-value-axis", "config": {"gridIndex": 1, "name": "W/m²/min", "scale": true}}
+      {
+        "component": "oh-chart-legend",
+        "config": {
+          "bottom": 3.0,
+          "type": "scroll"
+        }
+      }
     ],
     "series": [
       {
         "component": "oh-time-series",
         "config": {
+          "areaStyle": {
+            "opacity": 0.15
+          },
+          "gridIndex": 0.0,
           "item": "AvalonQ_Miner1_SolarIrradiance_5minAvg",
           "name": "Irradiance 5m Avg",
           "type": "line",
-          "gridIndex": 0,
-          "xAxisIndex": 0,
-          "yAxisIndex": 0,
-          "areaStyle": {"opacity": 0.15}
+          "xAxisIndex": 0.0,
+          "yAxisIndex": 0.0
         }
       },
       {
         "component": "oh-time-series",
         "config": {
+          "gridIndex": 1.0,
           "item": "AvalonQ_Miner1_SolarIrradiance_Slope_3min",
           "name": "Slope 3m",
           "type": "line",
-          "gridIndex": 1,
-          "xAxisIndex": 1,
-          "yAxisIndex": 1
+          "xAxisIndex": 1.0,
+          "yAxisIndex": 1.0
         }
       },
       {
         "component": "oh-time-series",
         "config": {
+          "gridIndex": 1.0,
           "item": "AvalonQ_Miner1_SolarIrradiance_Slope_15min",
+          "lineStyle": {
+            "width": 3.0
+          },
           "name": "Slope 15m",
           "type": "line",
-          "gridIndex": 1,
-          "xAxisIndex": 1,
-          "yAxisIndex": 1,
-          "lineStyle": {"width": 3}
+          "xAxisIndex": 1.0,
+          "yAxisIndex": 1.0
+        }
+      }
+    ],
+    "tooltip": [
+      {
+        "component": "oh-chart-tooltip",
+        "config": {
+          "confine": true,
+          "smartFormatter": true
+        }
+      }
+    ],
+    "xAxis": [
+      {
+        "component": "oh-time-axis",
+        "config": {
+          "gridIndex": 0.0
+        }
+      },
+      {
+        "component": "oh-time-axis",
+        "config": {
+          "gridIndex": 1.0
+        }
+      }
+    ],
+    "yAxis": [
+      {
+        "component": "oh-value-axis",
+        "config": {
+          "gridIndex": 0.0,
+          "name": "W/m\u00b2",
+          "scale": true
+        }
+      },
+      {
+        "component": "oh-value-axis",
+        "config": {
+          "gridIndex": 1.0,
+          "name": "W/m\u00b2/min",
+          "scale": true
         }
       }
     ]
-  }
+  },
+  "tags": [
+    "avalonq",
+    "mining"
+  ],
+  "timestamp": "Apr 22, 2026, 10:51:49 AM",
+  "uid": "Miner_Avalon_Irradiance_Chart"
 }

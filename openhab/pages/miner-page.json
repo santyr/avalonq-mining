@@ -1,19 +1,15 @@
 {
-  "uid": "Miner_Page",
-  "tags": ["mining", "avalonq", "bitaxe"],
-  "props": {
-    "parameters": [],
-    "parameterGroups": []
-  },
   "component": "oh-layout-page",
   "config": {
     "label": "Miner",
     "sidebar": true
   },
+  "props": {
+    "parameterGroups": [],
+    "parameters": []
+  },
   "slots": {
     "canvas": [],
-    "grid": [],
-    "masonry": [],
     "default": [
       {
         "component": "oh-block",
@@ -25,8 +21,52 @@
               "config": {},
               "slots": {
                 "default": [
-                  {"component": "oh-grid-col", "config": {"width": "50"}, "slots": {"default": [{"component": "oh-label-card", "config": {"item": "AvalonQ_Miner1_HashrateTHS", "title": "Avalon Q", "trendItem": "AvalonQ_Miner1_HashrateTHS", "label": "=(items.AvalonQ_Miner1_Availability.state === 'online') ? ((items.AvalonQ_Miner1_Workmode.state || '-') + ' · ' + ((items.AvalonQ_Miner1_HashrateTHS.state && items.AvalonQ_Miner1_HashrateTHS.state !== 'NULL') ? Number(items.AvalonQ_Miner1_HashrateTHS.state).toFixed(1) + ' TH/s' : '-') + ' · ' + ((items.AvalonQ_Miner1_PowerW.state && items.AvalonQ_Miner1_PowerW.state !== 'NULL') ? Number(items.AvalonQ_Miner1_PowerW.state).toFixed(0) + ' W' : '-')) : 'offline'"}}]}},
-                  {"component": "oh-grid-col", "config": {"width": "50"}, "slots": {"default": [{"component": "oh-label-card", "config": {"item": "Bitaxe_Gamma1_Hashrate", "title": "Bitaxe Gamma", "trendItem": "Bitaxe_Gamma1_Hashrate", "label": "=(items.Bitaxe_Gamma1_Availability.state === 'online') ? ((items.Bitaxe_Gamma1_DryRun_Profile.state || '-') + ' · ' + ((items.Bitaxe_Gamma1_Hashrate.state && items.Bitaxe_Gamma1_Hashrate.state !== 'NULL') ? Number(items.Bitaxe_Gamma1_Hashrate.state).toFixed(0) + ' GH/s' : '-') + ' · ' + ((items.Bitaxe_Gamma1_Power.state && items.Bitaxe_Gamma1_Power.state !== 'NULL') ? Number(items.Bitaxe_Gamma1_Power.state).toFixed(1) + ' W' : '-')) : 'offline'"}}]}}
+                  {
+                    "component": "oh-grid-col",
+                    "config": {
+                      "width": "50"
+                    },
+                    "slots": {
+                      "default": [
+                        {
+                          "component": "oh-label-card",
+                          "config": {
+                            "action": "analyzer",
+                            "actionAnalyzerItems": [
+                              "AvalonQ_Miner1_HashrateTHS"
+                            ],
+                            "footer": "Staged / dry-run only; live Avalon telemetry pending hardware validation",
+                            "item": "AvalonQ_Miner1_HashrateTHS",
+                            "title": "Avalon Q",
+                            "trendItem": "AvalonQ_Miner1_HashrateTHS"
+                          }
+                        }
+                      ]
+                    }
+                  },
+                  {
+                    "component": "oh-grid-col",
+                    "config": {
+                      "width": "50"
+                    },
+                    "slots": {
+                      "default": [
+                        {
+                          "component": "oh-label-card",
+                          "config": {
+                            "action": "analyzer",
+                            "actionAnalyzerItems": [
+                              "Bitaxe_Gamma1_Hashrate"
+                            ],
+                            "footer": "Live Bitaxe status; load policy shown in item details",
+                            "item": "Bitaxe_Gamma1_Hashrate",
+                            "title": "Bitaxe Gamma",
+                            "trendItem": "Bitaxe_Gamma1_Hashrate"
+                          }
+                        }
+                      ]
+                    }
+                  }
                 ]
               }
             },
@@ -35,8 +75,42 @@
               "config": {},
               "slots": {
                 "default": [
-                  {"component": "oh-grid-col", "config": {"width": "50"}, "slots": {"default": [{"component": "oh-toggle-card", "config": {"item": "AvalonQ_Miner1_LoadManagement_Enable", "title": "Avalon Load Mgmt"}}]}},
-                  {"component": "oh-grid-col", "config": {"width": "50"}, "slots": {"default": [{"component": "oh-toggle-card", "config": {"item": "Miner_Power", "title": "Bitaxe AC Power"}}]}}
+                  {
+                    "component": "oh-grid-col",
+                    "config": {
+                      "width": "50"
+                    },
+                    "slots": {
+                      "default": [
+                        {
+                          "component": "oh-toggle-card",
+                          "config": {
+                            "footer": "Dry-run only; live Avalon control rules are disabled pending hardware validation",
+                            "item": "AvalonQ_Miner1_LoadManagement_Enable",
+                            "title": "Avalon Load Mgmt (staged)"
+                          }
+                        }
+                      ]
+                    }
+                  },
+                  {
+                    "component": "oh-grid-col",
+                    "config": {
+                      "width": "50"
+                    },
+                    "slots": {
+                      "default": [
+                        {
+                          "component": "oh-toggle-card",
+                          "config": {
+                            "footer": "Existing Bitaxe relay path \u2014 do not reuse for Avalon",
+                            "item": "Miner_Power",
+                            "title": "Bitaxe AC Power"
+                          }
+                        }
+                      ]
+                    }
+                  }
                 ]
               }
             },
@@ -45,8 +119,50 @@
               "config": {},
               "slots": {
                 "default": [
-                  {"component": "oh-grid-col", "config": {"width": "50"}, "slots": {"default": [{"component": "oh-label-card", "config": {"item": "AvalonQ_Miner1_DryRun_ThrashAlert", "title": "Avalon Thrash", "fontWeight": "bold", "label": "=(items.AvalonQ_Miner1_DryRun_ThrashAlert.state === 'normal') ? 'normal' : items.AvalonQ_Miner1_DryRun_ThrashAlert.state", "style": {"background": "=(items.AvalonQ_Miner1_DryRun_ThrashAlert.state === 'normal') ? '#1b5e20' : '#8e0000'", "color": "#ffffff"}}}]}},
-                  {"component": "oh-grid-col", "config": {"width": "50"}, "slots": {"default": [{"component": "oh-toggle-card", "config": {"item": "Bitaxe_Gamma1_LoadManagement_Enable", "title": "Bitaxe Load Mgmt"}}]}}
+                  {
+                    "component": "oh-grid-col",
+                    "config": {
+                      "width": "50"
+                    },
+                    "slots": {
+                      "default": [
+                        {
+                          "component": "oh-label-card",
+                          "config": {
+                            "action": "analyzer",
+                            "actionAnalyzerItems": [
+                              "AvalonQ_Miner1_DryRun_ThrashAlert"
+                            ],
+                            "fontWeight": "bold",
+                            "item": "AvalonQ_Miner1_DryRun_ThrashAlert",
+                            "style": {
+                              "background": "=(items.AvalonQ_Miner1_DryRun_ThrashAlert.state === 'normal') ? '#1b5e20' : '#8e0000'",
+                              "color": "#ffffff"
+                            },
+                            "title": "Avalon Thrash"
+                          }
+                        }
+                      ]
+                    }
+                  },
+                  {
+                    "component": "oh-grid-col",
+                    "config": {
+                      "width": "50"
+                    },
+                    "slots": {
+                      "default": [
+                        {
+                          "component": "oh-toggle-card",
+                          "config": {
+                            "footer": "Live Bitaxe residual-watts profile control",
+                            "item": "Bitaxe_Gamma1_LoadManagement_Enable",
+                            "title": "Bitaxe Load Mgmt"
+                          }
+                        }
+                      ]
+                    }
+                  }
                 ]
               }
             },
@@ -55,8 +171,59 @@
               "config": {},
               "slots": {
                 "default": [
-                  {"component": "oh-grid-col", "config": {"width": "50"}, "slots": {"default": [{"component": "oh-label-card", "config": {"item": "AvalonQ_Miner1_PoolOnline", "title": "Avalon Pool", "fontWeight": "bold", "label": "=(items.AvalonQ_Miner1_PoolOnline.state === 'ON') ? 'online' : 'offline'", "style": {"background": "=(items.AvalonQ_Miner1_PoolOnline.state === 'ON') ? '#1b5e20' : '#8e0000'", "color": "#ffffff"}}}]}},
-                  {"component": "oh-grid-col", "config": {"width": "50"}, "slots": {"default": [{"component": "oh-label-card", "config": {"item": "Bitaxe_Gamma1_OverheatMode", "title": "Bitaxe Overheat", "fontWeight": "bold", "style": {"background": "=(items.Bitaxe_Gamma1_OverheatMode.state === 'ON') ? '#8e0000' : '#1b5e20'", "color": "#ffffff"}}}]}}
+                  {
+                    "component": "oh-grid-col",
+                    "config": {
+                      "width": "50"
+                    },
+                    "slots": {
+                      "default": [
+                        {
+                          "component": "oh-label-card",
+                          "config": {
+                            "action": "analyzer",
+                            "actionAnalyzerItems": [
+                              "AvalonQ_Miner1_PoolOnline"
+                            ],
+                            "fontWeight": "bold",
+                            "footer": "Staged until Avalon hardware/live polling is enabled",
+                            "item": "AvalonQ_Miner1_PoolOnline",
+                            "style": {
+                              "background": "=(items.AvalonQ_Miner1_PoolOnline.state === 'ON') ? '#1b5e20' : '#8e0000'",
+                              "color": "#ffffff"
+                            },
+                            "title": "Avalon Pool"
+                          }
+                        }
+                      ]
+                    }
+                  },
+                  {
+                    "component": "oh-grid-col",
+                    "config": {
+                      "width": "50"
+                    },
+                    "slots": {
+                      "default": [
+                        {
+                          "component": "oh-label-card",
+                          "config": {
+                            "action": "analyzer",
+                            "actionAnalyzerItems": [
+                              "Bitaxe_Gamma1_OverheatMode"
+                            ],
+                            "fontWeight": "bold",
+                            "item": "Bitaxe_Gamma1_OverheatMode",
+                            "style": {
+                              "background": "=(items.Bitaxe_Gamma1_OverheatMode.state === 'ON') ? '#8e0000' : '#1b5e20'",
+                              "color": "#ffffff"
+                            },
+                            "title": "Bitaxe Overheat"
+                          }
+                        }
+                      ]
+                    }
+                  }
                 ]
               }
             },
@@ -65,8 +232,50 @@
               "config": {},
               "slots": {
                 "default": [
-                  {"component": "oh-grid-col", "config": {"width": "50"}, "slots": {"default": [{"component": "oh-label-card", "config": {"item": "AvalonQ_Miner1_HashrateTHS", "title": "Avalon Hashrate", "trendItem": "AvalonQ_Miner1_HashrateTHS"}}]}},
-                  {"component": "oh-grid-col", "config": {"width": "50"}, "slots": {"default": [{"component": "oh-label-card", "config": {"item": "Bitaxe_Gamma1_Hashrate", "title": "Bitaxe Hashrate", "trendItem": "Bitaxe_Gamma1_Hashrate"}}]}}
+                  {
+                    "component": "oh-grid-col",
+                    "config": {
+                      "width": "50"
+                    },
+                    "slots": {
+                      "default": [
+                        {
+                          "component": "oh-label-card",
+                          "config": {
+                            "action": "analyzer",
+                            "actionAnalyzerItems": [
+                              "AvalonQ_Miner1_PowerW"
+                            ],
+                            "item": "AvalonQ_Miner1_PowerW",
+                            "title": "Avalon Power",
+                            "trendItem": "AvalonQ_Miner1_PowerW"
+                          }
+                        }
+                      ]
+                    }
+                  },
+                  {
+                    "component": "oh-grid-col",
+                    "config": {
+                      "width": "50"
+                    },
+                    "slots": {
+                      "default": [
+                        {
+                          "component": "oh-label-card",
+                          "config": {
+                            "action": "analyzer",
+                            "actionAnalyzerItems": [
+                              "Bitaxe_Gamma1_Power"
+                            ],
+                            "item": "Bitaxe_Gamma1_Power",
+                            "title": "Bitaxe Power",
+                            "trendItem": "Bitaxe_Gamma1_Power"
+                          }
+                        }
+                      ]
+                    }
+                  }
                 ]
               }
             },
@@ -75,8 +284,49 @@
               "config": {},
               "slots": {
                 "default": [
-                  {"component": "oh-grid-col", "config": {"width": "50"}, "slots": {"default": [{"component": "oh-label-card", "config": {"item": "AvalonQ_Miner1_PowerW", "title": "Avalon Power", "trendItem": "AvalonQ_Miner1_PowerW"}}]}},
-                  {"component": "oh-grid-col", "config": {"width": "50"}, "slots": {"default": [{"component": "oh-label-card", "config": {"item": "Bitaxe_Gamma1_Power", "title": "Bitaxe Power", "trendItem": "Bitaxe_Gamma1_Power"}}]}}
+                  {
+                    "component": "oh-grid-col",
+                    "config": {
+                      "width": "50"
+                    },
+                    "slots": {
+                      "default": [
+                        {
+                          "component": "oh-label-card",
+                          "config": {
+                            "action": "analyzer",
+                            "actionAnalyzerItems": [
+                              "AvalonQ_Miner1_EfficiencyJTH"
+                            ],
+                            "item": "AvalonQ_Miner1_EfficiencyJTH",
+                            "title": "Avalon Efficiency"
+                          }
+                        }
+                      ]
+                    }
+                  },
+                  {
+                    "component": "oh-grid-col",
+                    "config": {
+                      "width": "50"
+                    },
+                    "slots": {
+                      "default": [
+                        {
+                          "component": "oh-label-card",
+                          "config": {
+                            "action": "analyzer",
+                            "actionAnalyzerItems": [
+                              "Bitaxe_Gamma1_ErrorPct"
+                            ],
+                            "item": "Bitaxe_Gamma1_ErrorPct",
+                            "title": "Bitaxe Error %",
+                            "trendItem": "Bitaxe_Gamma1_ErrorPct"
+                          }
+                        }
+                      ]
+                    }
+                  }
                 ]
               }
             },
@@ -85,8 +335,51 @@
               "config": {},
               "slots": {
                 "default": [
-                  {"component": "oh-grid-col", "config": {"width": "50"}, "slots": {"default": [{"component": "oh-label-card", "config": {"item": "AvalonQ_Miner1_EfficiencyJTH", "title": "Avalon Efficiency"}}]}},
-                  {"component": "oh-grid-col", "config": {"width": "50"}, "slots": {"default": [{"component": "oh-label-card", "config": {"item": "Bitaxe_Gamma1_ErrorPct", "title": "Bitaxe Error %", "trendItem": "Bitaxe_Gamma1_ErrorPct"}}]}}
+                  {
+                    "component": "oh-grid-col",
+                    "config": {
+                      "width": "50"
+                    },
+                    "slots": {
+                      "default": [
+                        {
+                          "component": "oh-label-card",
+                          "config": {
+                            "action": "analyzer",
+                            "actionAnalyzerItems": [
+                              "AvalonQ_Miner1_AvgChipTemp"
+                            ],
+                            "item": "AvalonQ_Miner1_AvgChipTemp",
+                            "title": "Avalon Avg Chip Temp",
+                            "trendItem": "AvalonQ_Miner1_AvgChipTemp"
+                          }
+                        }
+                      ]
+                    }
+                  },
+                  {
+                    "component": "oh-grid-col",
+                    "config": {
+                      "width": "50"
+                    },
+                    "slots": {
+                      "default": [
+                        {
+                          "component": "oh-label-card",
+                          "config": {
+                            "action": "analyzer",
+                            "actionAnalyzerItems": [
+                              "Bitaxe_Gamma1_ASIC_Temp"
+                            ],
+                            "footer": "Displayed in openHAB system units",
+                            "item": "Bitaxe_Gamma1_ASIC_Temp",
+                            "title": "Bitaxe ASIC Temp",
+                            "trendItem": "Bitaxe_Gamma1_ASIC_Temp"
+                          }
+                        }
+                      ]
+                    }
+                  }
                 ]
               }
             },
@@ -95,8 +388,50 @@
               "config": {},
               "slots": {
                 "default": [
-                  {"component": "oh-grid-col", "config": {"width": "50"}, "slots": {"default": [{"component": "oh-label-card", "config": {"item": "AvalonQ_Miner1_AvgChipTemp", "title": "Avalon Avg Chip Temp", "trendItem": "AvalonQ_Miner1_AvgChipTemp"}}]}},
-                  {"component": "oh-grid-col", "config": {"width": "50"}, "slots": {"default": [{"component": "oh-label-card", "config": {"item": "Bitaxe_Gamma1_ASIC_Temp", "title": "Bitaxe ASIC Temp", "trendItem": "Bitaxe_Gamma1_ASIC_Temp"}}]}}
+                  {
+                    "component": "oh-grid-col",
+                    "config": {
+                      "width": "50"
+                    },
+                    "slots": {
+                      "default": [
+                        {
+                          "component": "oh-label-card",
+                          "config": {
+                            "action": "analyzer",
+                            "actionAnalyzerItems": [
+                              "AvalonQ_Miner1_MaxChipTemp"
+                            ],
+                            "item": "AvalonQ_Miner1_MaxChipTemp",
+                            "title": "Avalon Max Chip Temp"
+                          }
+                        }
+                      ]
+                    }
+                  },
+                  {
+                    "component": "oh-grid-col",
+                    "config": {
+                      "width": "50"
+                    },
+                    "slots": {
+                      "default": [
+                        {
+                          "component": "oh-label-card",
+                          "config": {
+                            "action": "analyzer",
+                            "actionAnalyzerItems": [
+                              "Bitaxe_Gamma1_VR_Temp"
+                            ],
+                            "footer": "Displayed in openHAB system units",
+                            "item": "Bitaxe_Gamma1_VR_Temp",
+                            "title": "Bitaxe VR Temp",
+                            "trendItem": "Bitaxe_Gamma1_VR_Temp"
+                          }
+                        }
+                      ]
+                    }
+                  }
                 ]
               }
             },
@@ -105,8 +440,48 @@
               "config": {},
               "slots": {
                 "default": [
-                  {"component": "oh-grid-col", "config": {"width": "50"}, "slots": {"default": [{"component": "oh-label-card", "config": {"item": "AvalonQ_Miner1_MaxChipTemp", "title": "Avalon Max Chip Temp"}}]}},
-                  {"component": "oh-grid-col", "config": {"width": "50"}, "slots": {"default": [{"component": "oh-label-card", "config": {"item": "Bitaxe_Gamma1_VR_Temp", "title": "Bitaxe VR Temp", "trendItem": "Bitaxe_Gamma1_VR_Temp"}}]}}
+                  {
+                    "component": "oh-grid-col",
+                    "config": {
+                      "width": "50"
+                    },
+                    "slots": {
+                      "default": [
+                        {
+                          "component": "oh-label-card",
+                          "config": {
+                            "action": "analyzer",
+                            "actionAnalyzerItems": [
+                              "AvalonQ_Miner1_PingMS"
+                            ],
+                            "item": "AvalonQ_Miner1_PingMS",
+                            "title": "Avalon Pool Ping"
+                          }
+                        }
+                      ]
+                    }
+                  },
+                  {
+                    "component": "oh-grid-col",
+                    "config": {
+                      "width": "50"
+                    },
+                    "slots": {
+                      "default": [
+                        {
+                          "component": "oh-label-card",
+                          "config": {
+                            "action": "analyzer",
+                            "actionAnalyzerItems": [
+                              "Bitaxe_Gamma1_FanRPM"
+                            ],
+                            "item": "Bitaxe_Gamma1_FanRPM",
+                            "title": "Bitaxe Fan RPM"
+                          }
+                        }
+                      ]
+                    }
+                  }
                 ]
               }
             },
@@ -115,8 +490,48 @@
               "config": {},
               "slots": {
                 "default": [
-                  {"component": "oh-grid-col", "config": {"width": "50"}, "slots": {"default": [{"component": "oh-label-card", "config": {"item": "AvalonQ_Miner1_PingMS", "title": "Avalon Pool Ping"}}]}},
-                  {"component": "oh-grid-col", "config": {"width": "50"}, "slots": {"default": [{"component": "oh-label-card", "config": {"item": "Bitaxe_Gamma1_FanRPM", "title": "Bitaxe Fan RPM"}}]}}
+                  {
+                    "component": "oh-grid-col",
+                    "config": {
+                      "width": "50"
+                    },
+                    "slots": {
+                      "default": [
+                        {
+                          "component": "oh-label-card",
+                          "config": {
+                            "action": "analyzer",
+                            "actionAnalyzerItems": [
+                              "AvalonQ_Miner1_AcceptedShares"
+                            ],
+                            "item": "AvalonQ_Miner1_AcceptedShares",
+                            "title": "Avalon Accepted"
+                          }
+                        }
+                      ]
+                    }
+                  },
+                  {
+                    "component": "oh-grid-col",
+                    "config": {
+                      "width": "50"
+                    },
+                    "slots": {
+                      "default": [
+                        {
+                          "component": "oh-label-card",
+                          "config": {
+                            "action": "analyzer",
+                            "actionAnalyzerItems": [
+                              "Bitaxe_Gamma1_Frequency"
+                            ],
+                            "item": "Bitaxe_Gamma1_Frequency",
+                            "title": "Bitaxe Frequency"
+                          }
+                        }
+                      ]
+                    }
+                  }
                 ]
               }
             },
@@ -125,8 +540,48 @@
               "config": {},
               "slots": {
                 "default": [
-                  {"component": "oh-grid-col", "config": {"width": "50"}, "slots": {"default": [{"component": "oh-label-card", "config": {"item": "AvalonQ_Miner1_AcceptedShares", "title": "Avalon Accepted"}}]}},
-                  {"component": "oh-grid-col", "config": {"width": "50"}, "slots": {"default": [{"component": "oh-label-card", "config": {"item": "Bitaxe_Gamma1_Frequency", "title": "Bitaxe Frequency", "label": "=items.Bitaxe_Gamma1_Frequency.state + ' MHz'"}}]}}
+                  {
+                    "component": "oh-grid-col",
+                    "config": {
+                      "width": "50"
+                    },
+                    "slots": {
+                      "default": [
+                        {
+                          "component": "oh-label-card",
+                          "config": {
+                            "action": "analyzer",
+                            "actionAnalyzerItems": [
+                              "AvalonQ_Miner1_RejectedShares"
+                            ],
+                            "item": "AvalonQ_Miner1_RejectedShares",
+                            "title": "Avalon Rejected"
+                          }
+                        }
+                      ]
+                    }
+                  },
+                  {
+                    "component": "oh-grid-col",
+                    "config": {
+                      "width": "50"
+                    },
+                    "slots": {
+                      "default": [
+                        {
+                          "component": "oh-label-card",
+                          "config": {
+                            "action": "analyzer",
+                            "actionAnalyzerItems": [
+                              "Bitaxe_Gamma1_CoreVoltage"
+                            ],
+                            "item": "Bitaxe_Gamma1_CoreVoltage",
+                            "title": "Bitaxe Core Voltage"
+                          }
+                        }
+                      ]
+                    }
+                  }
                 ]
               }
             },
@@ -135,8 +590,49 @@
               "config": {},
               "slots": {
                 "default": [
-                  {"component": "oh-grid-col", "config": {"width": "50"}, "slots": {"default": [{"component": "oh-label-card", "config": {"item": "AvalonQ_Miner1_RejectedShares", "title": "Avalon Rejected"}}]}},
-                  {"component": "oh-grid-col", "config": {"width": "50"}, "slots": {"default": [{"component": "oh-label-card", "config": {"item": "Bitaxe_Gamma1_CoreVoltage", "title": "Bitaxe Core Voltage", "label": "=items.Bitaxe_Gamma1_CoreVoltage.state + ' mV'"}}]}}
+                  {
+                    "component": "oh-grid-col",
+                    "config": {
+                      "width": "50"
+                    },
+                    "slots": {
+                      "default": [
+                        {
+                          "component": "oh-label-card",
+                          "config": {
+                            "action": "analyzer",
+                            "actionAnalyzerItems": [
+                              "AvalonQ_Miner1_HardwareErrors"
+                            ],
+                            "item": "AvalonQ_Miner1_HardwareErrors",
+                            "title": "Avalon HW Errors"
+                          }
+                        }
+                      ]
+                    }
+                  },
+                  {
+                    "component": "oh-grid-col",
+                    "config": {
+                      "width": "50"
+                    },
+                    "slots": {
+                      "default": [
+                        {
+                          "component": "oh-label-card",
+                          "config": {
+                            "action": "analyzer",
+                            "actionAnalyzerItems": [
+                              "Bitaxe_Gamma1_DryRun_ResidualWatts"
+                            ],
+                            "item": "Bitaxe_Gamma1_DryRun_ResidualWatts",
+                            "title": "Bitaxe Residual W",
+                            "trendItem": "Bitaxe_Gamma1_DryRun_ResidualWatts"
+                          }
+                        }
+                      ]
+                    }
+                  }
                 ]
               }
             },
@@ -145,8 +641,48 @@
               "config": {},
               "slots": {
                 "default": [
-                  {"component": "oh-grid-col", "config": {"width": "50"}, "slots": {"default": [{"component": "oh-label-card", "config": {"item": "AvalonQ_Miner1_HardwareErrors", "title": "Avalon HW Errors"}}]}},
-                  {"component": "oh-grid-col", "config": {"width": "50"}, "slots": {"default": [{"component": "oh-label-card", "config": {"item": "Bitaxe_Gamma1_DryRun_ResidualWatts", "title": "Bitaxe Residual W", "trendItem": "Bitaxe_Gamma1_DryRun_ResidualWatts"}}]}}
+                  {
+                    "component": "oh-grid-col",
+                    "config": {
+                      "width": "50"
+                    },
+                    "slots": {
+                      "default": [
+                        {
+                          "component": "oh-label-card",
+                          "config": {
+                            "action": "analyzer",
+                            "actionAnalyzerItems": [
+                              "AvalonQ_Miner1_UptimeSeconds"
+                            ],
+                            "item": "AvalonQ_Miner1_UptimeSeconds",
+                            "title": "Avalon Uptime"
+                          }
+                        }
+                      ]
+                    }
+                  },
+                  {
+                    "component": "oh-grid-col",
+                    "config": {
+                      "width": "50"
+                    },
+                    "slots": {
+                      "default": [
+                        {
+                          "component": "oh-label-card",
+                          "config": {
+                            "action": "analyzer",
+                            "actionAnalyzerItems": [
+                              "Bitaxe_Gamma1_UptimeSeconds"
+                            ],
+                            "item": "Bitaxe_Gamma1_UptimeSeconds",
+                            "title": "Bitaxe Uptime"
+                          }
+                        }
+                      ]
+                    }
+                  }
                 ]
               }
             },
@@ -155,8 +691,48 @@
               "config": {},
               "slots": {
                 "default": [
-                  {"component": "oh-grid-col", "config": {"width": "50"}, "slots": {"default": [{"component": "oh-label-card", "config": {"item": "AvalonQ_Miner1_UptimeSeconds", "title": "Avalon Uptime"}}]}},
-                  {"component": "oh-grid-col", "config": {"width": "50"}, "slots": {"default": [{"component": "oh-label-card", "config": {"item": "Bitaxe_Gamma1_UptimeSeconds", "title": "Bitaxe Uptime"}}]}}
+                  {
+                    "component": "oh-grid-col",
+                    "config": {
+                      "width": "50"
+                    },
+                    "slots": {
+                      "default": [
+                        {
+                          "component": "oh-label-card",
+                          "config": {
+                            "action": "analyzer",
+                            "actionAnalyzerItems": [
+                              "AvalonQ_Miner1_Firmware"
+                            ],
+                            "item": "AvalonQ_Miner1_Firmware",
+                            "title": "Avalon Firmware"
+                          }
+                        }
+                      ]
+                    }
+                  },
+                  {
+                    "component": "oh-grid-col",
+                    "config": {
+                      "width": "50"
+                    },
+                    "slots": {
+                      "default": [
+                        {
+                          "component": "oh-label-card",
+                          "config": {
+                            "action": "analyzer",
+                            "actionAnalyzerItems": [
+                              "Bitaxe_Gamma1_Firmware"
+                            ],
+                            "item": "Bitaxe_Gamma1_Firmware",
+                            "title": "Bitaxe Firmware"
+                          }
+                        }
+                      ]
+                    }
+                  }
                 ]
               }
             },
@@ -164,25 +740,21 @@
               "component": "oh-grid-row",
               "config": {},
               "slots": {
-                "default": [
-                  {"component": "oh-grid-col", "config": {"width": "50"}, "slots": {"default": [{"component": "oh-label-card", "config": {"item": "AvalonQ_Miner1_Firmware", "title": "Avalon Firmware"}}]}},
-                  {"component": "oh-grid-col", "config": {"width": "50"}, "slots": {"default": [{"component": "oh-label-card", "config": {"item": "Bitaxe_Gamma1_Firmware", "title": "Bitaxe Firmware"}}]}}
-                ]
-              }
-            },
-            {
-              "component": "oh-grid-row",
-              "config": {},
-              "slots": {
-                "default": [
-                  {"component": "oh-grid-col", "config": {"width": "50"}, "slots": {"default": [{"component": "oh-label-card", "config": {"item": "AvalonQ_Miner1_DryRun_ModeDecision", "title": "Avalon decision", "fontSize": "12px"}}]}},
-                  {"component": "oh-grid-col", "config": {"width": "50"}, "slots": {"default": [{"component": "oh-label-card", "config": {"item": "Bitaxe_Gamma1_DryRun_ModeDecision", "title": "Bitaxe decision", "fontSize": "12px"}}]}}
-                ]
+                "default": []
               }
             }
           ]
         }
       }
-    ]
-  }
+    ],
+    "grid": [],
+    "masonry": []
+  },
+  "tags": [
+    "avalonq",
+    "bitaxe",
+    "mining"
+  ],
+  "timestamp": "Apr 25, 2026, 9:04:37 AM",
+  "uid": "Miner_Page"
 }

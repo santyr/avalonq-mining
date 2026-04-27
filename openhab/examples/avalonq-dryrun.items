@@ -1,26 +1,23 @@
-// Additional openHAB Items for the Avalon Q dry-run policy.
-//
-// These can be deployed alongside avalonq.items so the dry-run scripts are
-// self-contained and do not depend on out-of-band REST-created items.
-//
-// Assumes the main equipment group from avalonq.items already exists:
-//   Group gAvalonQ_Miner1
+// Additional openHAB Items for the deployed Avalon Q dry-run policy.
+// Generated from live openHAB item definitions at http://192.168.1.161:8080.
+// Assumes the live equipment group from avalonq.items exists: `AvalonQ_Miner1`.
 
-Number:Intensity   AvalonQ_Miner1_SolarIrradiance            "Solar Irradiance [%.1f %unit%]"          <sun>          (gAvalonQ_Miner1)
-Number:Intensity   AvalonQ_Miner1_SolarIrradiance_5minAvg    "Solar Irradiance 5m Avg [%.1f %unit%]"   <sun>          (gAvalonQ_Miner1)
-Number             AvalonQ_Miner1_SolarIrradiance_Slope      "Solar Irradiance Slope [%.1f W/m²/min]"  <sun>          (gAvalonQ_Miner1)
-Number             AvalonQ_Miner1_SolarIrradiance_Slope_3min "Solar Irradiance Slope 3m [%.1f W/m²/min]" <sun>       (gAvalonQ_Miner1)
-Number             AvalonQ_Miner1_SolarIrradiance_Slope_15min "Solar Irradiance Slope 15m [%.1f W/m²/min]" <sun>     (gAvalonQ_Miner1)
-Number:Temperature AvalonQ_Miner1_Panel_CellTemp_Estimate    "Cell Temp Estimate [%.1f %unit%]"        <temperature>  (gAvalonQ_Miner1)
-Number             AvalonQ_Miner1_SoC_Effective              "Effective SoC [%.2f %%]"                 <battery>      (gAvalonQ_Miner1)
-Number:Power       AvalonQ_Miner1_PV_Expected_Watts          "PV Expected [%.0f %unit%]"              <energy>       (gAvalonQ_Miner1)
-Number:Power       AvalonQ_Miner1_PV_Actual_Watts            "PV Actual [%.0f %unit%]"                <energy>       (gAvalonQ_Miner1)
-Number:Dimensionless AvalonQ_Miner1_PV_Curtailment_Ratio     "PV Curtailment Ratio [%.2f]"             <chart>        (gAvalonQ_Miner1)
-String             AvalonQ_Miner1_DryRun_ModeDecision        "Dry Run Mode Decision [%s]"              <text>         (gAvalonQ_Miner1)
-String             AvalonQ_Miner1_DryRun_Status              "Dry Run Status [%s]"                     <text>         (gAvalonQ_Miner1)
-Number             AvalonQ_Miner1_DryRun_ModeChanges_24h     "Dry Run Mode Changes 24h [%.0f]"         <chart>        (gAvalonQ_Miner1)
-Number:Time        AvalonQ_Miner1_DryRun_DwellTime_Current   "Dry Run Current Dwell [%s]"              <time>         (gAvalonQ_Miner1)
-Number:Dimensionless AvalonQ_Miner1_DryRun_Eco_Pct_24h       "Dry Run Eco 24h [%.1f %%]"               <chart>        (gAvalonQ_Miner1)
-Number:Dimensionless AvalonQ_Miner1_DryRun_Standard_Pct_24h  "Dry Run Standard 24h [%.1f %%]"          <chart>        (gAvalonQ_Miner1)
-Number:Dimensionless AvalonQ_Miner1_DryRun_Super_Pct_24h     "Dry Run Super 24h [%.1f %%]"             <chart>        (gAvalonQ_Miner1)
-Number:Dimensionless AvalonQ_Miner1_DryRun_Standby_Pct_24h   "Dry Run Standby 24h [%.1f %%]"           <chart>        (gAvalonQ_Miner1)
+Number:Intensity       AvalonQ_Miner1_SolarIrradiance                                 "Solar Irradiance [%.1f %unit%]" <sun> (AvalonQ_Miner1)
+Number:Intensity       AvalonQ_Miner1_SolarIrradiance_5minAvg                         "Solar Irradiance 5m Avg [%.1f %unit%]" <sun> (AvalonQ_Miner1)
+Number                 AvalonQ_Miner1_SolarIrradiance_Slope                           "Solar Irradiance Slope [%.1f W/m²/min]" <sun> (AvalonQ_Miner1)
+Number                 AvalonQ_Miner1_SolarIrradiance_Slope_3min                      "Solar Irradiance Slope 3m [%.1f W/m²/min]" <sun> (AvalonQ_Miner1)
+Number                 AvalonQ_Miner1_SolarIrradiance_Slope_15min                     "Solar Irradiance Slope 15m [%.1f W/m²/min]" <sun> (AvalonQ_Miner1)
+Number:Temperature     AvalonQ_Miner1_Panel_CellTemp_Estimate                         "Cell Temp Estimate [%.1f %unit%]" <temperature> (AvalonQ_Miner1)
+Number                 AvalonQ_Miner1_SoC_Effective                                   "Effective SoC [%.2f %%]" <battery> (AvalonQ_Miner1)
+Number:Power           AvalonQ_Miner1_PV_Expected_Watts                               "PV Expected [%.0f %unit%]" <energy> (AvalonQ_Miner1)
+Number:Power           AvalonQ_Miner1_PV_Actual_Watts                                 "PV Actual [%.0f %unit%]" <energy> (AvalonQ_Miner1)
+Number:Dimensionless   AvalonQ_Miner1_PV_Curtailment_Ratio                            "PV Curtailment Ratio [%.2f]" <chart> (AvalonQ_Miner1)
+String                 AvalonQ_Miner1_DryRun_ModeDecision                             "Dry Run Mode Decision [%s]" <text> (AvalonQ_Miner1)
+String                 AvalonQ_Miner1_DryRun_Status                                   "Dry Run Status [%s]" <text> (AvalonQ_Miner1)
+String                 AvalonQ_Miner1_DryRun_ThrashAlert                              "Dry Run Thrash Alert [%s]" <alarm> (AvalonQ_Miner1)
+Number                 AvalonQ_Miner1_DryRun_ModeChanges_24h                          "Dry Run Mode Changes 24h [%.0f]" <chart> (AvalonQ_Miner1)
+Number:Time            AvalonQ_Miner1_DryRun_DwellTime_Current                        "Dry Run Current Dwell [%.0f min]" <time> (AvalonQ_Miner1)
+Number:Dimensionless   AvalonQ_Miner1_DryRun_Eco_Pct_24h                              "Dry Run Eco 24h [%.1f %%]" <chart> (AvalonQ_Miner1)
+Number:Dimensionless   AvalonQ_Miner1_DryRun_Standard_Pct_24h                         "Dry Run Standard 24h [%.1f %%]" <chart> (AvalonQ_Miner1)
+Number:Dimensionless   AvalonQ_Miner1_DryRun_Super_Pct_24h                            "Dry Run Super 24h [%.1f %%]" <chart> (AvalonQ_Miner1)
+Number:Dimensionless   AvalonQ_Miner1_DryRun_Standby_Pct_24h                          "Dry Run Standby 24h [%.1f %%]" <chart> (AvalonQ_Miner1)

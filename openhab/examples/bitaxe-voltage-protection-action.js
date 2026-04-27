@@ -32,8 +32,13 @@ const CFG = {
 
   // AGM-REGIME thresholds (conservative). The Fullriver DC400-6 bank is at
   // end-of-life: 4 of 16 cells failed, ~50-60% usable capacity, cannot tolerate
-  // deep discharge or high charge voltage. Owner's stated shallow discharge
-  // floor is ~50.2 V. See https://github.com/santyr/Solar_PV.
+  // deep discharge or high charge voltage. See https://github.com/santyr/Solar_PV.
+  //
+  // Hard-cut voltage is set to the average of daily minimum DCData_Voltage
+  // observed over the last 4 months (2025-12-24 → 2026-04-22, 112 days):
+  // mean 49.58 V, median 49.56 V, overall minimum 48.80 V. Setting the hard
+  // cut at the daily-minimum average means the relay only trips when the bank
+  // drops below typical behavior — routine daily lows will not nuisance-trip.
   //
   // Post-LFP-upgrade target values (Q2 2026, after Discover AES install):
   //   softLowVolts: 49.0, hardLowVolts: 47.0, recoveryVolts: 50.0
@@ -44,7 +49,7 @@ const CFG = {
   softDelayCriticalS: 10,
 
   // Stage 2 (hard): kill the relay outright.
-  hardLowVolts: 50.2,
+  hardLowVolts: 49.58,
   hardDelayNormalS: 60,
   hardDelayCriticalS: 20,
 
